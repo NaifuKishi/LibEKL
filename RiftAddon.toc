@@ -10,6 +10,11 @@ Environment = "4.0"
 
 RunOnStartup = {
   "main.lua",
+
+  "locales/localizationDE.lua",
+  "locales/localizationFR.lua",
+  "locales/localizationEN.lua",
+  "locales/localizationRU.lua",
   
   "buffManager/buffManager.lua",
 
@@ -29,7 +34,8 @@ RunOnStartup = {
   "tools/uuid.lua",
 
   "ui/ui.lua",
-  "ui/button/buttonMetro.lua",
+  "ui/button/button.lua",
+  "ui/button/actionButtonMetro.lua",
 
   "ui/default/canvas.lua",
   "ui/default/frame.lua",
@@ -46,6 +52,8 @@ RunOnStartup = {
   "ui/tools/progressBar.lua",
   "ui/tooltip/itemTooltip.lua",
   "ui/tooltip/tooltip.lua",
+  "ui/window/dialogMetro.lua",
+  "ui/window/windowElement.lua",
   "ui/window/windowMetro.lua",
   
   "unit/unit.lua",

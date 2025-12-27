@@ -28,7 +28,7 @@ local function settingsHandler(_, addon)
 	
 	if LibEKL.events.checkEvents ("EKL.internal", true) == false then return nil end
 
-    LibEKL.ui.setupBoundCheck()
+    LibEKL.ui.setupBoundCheck()	
 	
 	_libInit = true
 		

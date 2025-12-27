@@ -13,13 +13,7 @@ local internalFunc  = privateVars.internalFunc
 
 local function _uiTextfield(name, parent) 
 
-	--if LibEKL.internalFunc.checkEvents (name, true) == false then return nil end
-
 	local borderColor, focusColor, innerColor
-
-	--local borderColor =  LibEKL.art.GetThemeColor("elementSubColor2")
-	--local focusColor = LibEKL.art.GetThemeColor("highlightColor")
-	--local innerColor = LibEKL.art.GetThemeColor("elementMainColor")
 
 	local textField = LibEKL.uiCreateFrame ('nkFrame', name, parent)
 	local textFieldInner = LibEKL.uiCreateFrame ('nkFrame', name .. ".inner", textField)
@@ -47,11 +41,9 @@ local function _uiTextfield(name, parent)
 	
 	textField:SetWidth(100)
 	textField:SetHeight(20)
-	--textField:SetBackgroundColor(borderColor.r, borderColor.g, borderColor.b, borderColor.a)
 		
 	textFieldInner:SetPoint("TOPLEFT", textField, "TOPLEFT", 1, 1)
 	textFieldInner:SetPoint("BOTTOMRIGHT", textField, "BOTTOMRIGHT", -1, -1)
-	--textFieldInner:SetBackgroundColor(innerColor.r, innerColor.g, innerColor.b, innerColor.a)
 	
 	textFieldEdit:SetPoint("TOPLEFT", textFieldInner, "TOPLEFT", 1, 1)
 	textFieldEdit:SetPoint("BOTTOMRIGHT", textFieldInner, "BOTTOMRIGHT", -1, -1)
@@ -81,18 +73,12 @@ local function _uiTextfield(name, parent)
 		end
 	end
 	
-	function textField:SetFocusColor (r, g, b, a)
-	  if type(r) == "table" then
-	    focusColor = r
-	  else	
-		  focusColor = {r = r, g = g, b = b, a = a}
-		end
-	end
+	function textField:SetFocusColor (newColor) focusColor = newColor end
 	
 	function textField:SetInnerColor (newColor)
-    innerColor = newColor
-    textFieldInner:SetBackgroundColor(innerColor.r, innerColor.g, innerColor.b, innerColor.a)
-  end
+    	innerColor = newColor
+    	textFieldInner:SetBackgroundColor(innerColor.r, innerColor.g, innerColor.b, innerColor.a)
+  	end
 	
 	function textField:Leave(flag)
 		textField:SetValue('restoreValue', flag or false)
@@ -155,16 +141,9 @@ local function _uiTextfield(name, parent)
 		
 	end, "nkTextField_" .. name .. "_Key_FocusLoss")
 	
-	function textField:SetColor(r, g, b, a)
-		
-		if type(r) == "table" then
-			borderColor = r
-		else
-			borderColor = {r = r, g = g, b = b, a = a}
-		end
-		
-		textField:SetBackgroundColor(borderColor.r, borderColor.g, borderColor.b, borderColor.a)
-		
+	function textField:SetBorderColor(newColor)
+		borderColor = newColor		
+		textField:SetBackgroundColor(borderColor.r, borderColor.g, borderColor.b, borderColor.a)		
 	end
 	
 	function textField:SetSelection(startPos, endPos) textFieldEdit:SetSelection(startPos, endPos) end

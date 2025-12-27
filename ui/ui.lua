@@ -33,6 +33,9 @@ local stringGSub				= string.gsub
 
 ---------- init variables --------- 
 
+if not uiElements.messageDialog then uiElements.messageDialog = {} end
+if not uiElements.confirmDialog then uiElements.confirmDialog = {} end
+
 data.frameCount = 0
 data.canvasCount = 0
 data.textCount = 0
@@ -208,7 +211,7 @@ function LibEKL.ui.reloadDialog (title)
 	msg:SetFontSize(16)
 	msg:SetFontColor(1,1,1,1)
 	
-	local button = LibEKL.uiCreateFrame("nkButtonMetro", name .. ".button", uiElements.reloadDialog:GetContent())
+	local button = LibEKL.uiCreateFrame("nkButton", name .. ".button", uiElements.reloadDialog:GetContent())
 	button:SetPoint("CENTERTOP", msg, "CENTERBOTTOM", 0, 20)
 	button:SetText(privateVars.langTexts.reloadButton)
 	button:SetMacro("/reloadui")
@@ -376,6 +379,96 @@ function LibEKL.ui.setFont (uiElement, addonId, name)
 
 	uiElement:SetFont(addonId, _fonts[addonId][name])
 
+end
+
+--------- dialogs
+
+function LibEKL.ui.confirmDialog (message, yesFunc, noFunc)
+
+	local thisDialog
+
+	for idx = 1, #uiElements.confirmDialog, 1 do
+		if uiElements.confirmDialog[idx]:GetVisible() == false then
+			thisDialog = uiElements.confirmDialog[idx]
+			break
+		end
+	end
+
+	if thisDialog == nil then
+		if privateVars.uiDialogContext == nil then 
+			privateVars.uiDialogContext = UI.CreateContext("LibEKL.ui.dialog") 
+			privateVars.uiDialogContext:SetStrata ('topmost')
+		end
+	
+		local name = "LibEKLConfirmDialog." .. (#uiElements.messageDialog+1)
+	
+		thisDialog = LibEKL.uiCreateFrame("nkDialogMetro", name, privateVars.uiDialogContext)
+		thisDialog:SetLayer(2)
+		thisDialog:SetWidth(500)
+		thisDialog:SetHeight(250)
+		thisDialog:SetType('confirm')
+		
+		table.insert(uiElements.confirmDialog, thisDialog)
+	end
+	
+	thisDialog:SetMessage(message)
+	thisDialog:SetVisible(true)
+
+	Command.Event.Detach(LibEKL.events[thisDialog:GetName()].LeftButtonClicked, nil, thisDialog:GetName() .. ".LeftButtonClicked") -- detach event if was previously used
+	
+	Command.Event.Attach(LibEKL.events[thisDialog:GetName()].LeftButtonClicked, function ()
+		if yesFunc ~= nil then yesFunc() end
+	end, thisDialog:GetName() .. ".LeftButtonClicked")
+	
+	Command.Event.Detach(LibEKL.events[thisDialog:GetName()].RightButtonClicked, nil, thisDialog:GetName() .. ".RightButtonClicked") -- detach event if was previously used
+	
+	Command.Event.Attach(LibEKL.events[thisDialog:GetName()].RightButtonClicked, function ()
+		if noFunc ~= nil then noFunc() end
+	end, thisDialog:GetName() .. ".RightButtonClicked")
+
+	return thisDialog
+	    
+end
+
+function LibEKL.ui.messageDialog (message, okFunc)
+
+	local thisDialog
+
+	for idx = 1, #uiElements.messageDialog, 1 do
+		if uiElements.messageDialog[idx]:GetVisible() == false then
+			thisDialog = uiElements.messageDialog[idx]
+			break
+		end
+	end
+	
+	if thisDialog == nil then
+		if privateVars.uiDialogContext == nil then 
+			privateVars.uiDialogContext = UI.CreateContext("LibEKL.ui.dialog") 
+			privateVars.uiDialogContext:SetStrata ('topmost')
+		end
+		
+		local name = "LibEKLMessageDialog." .. LibEKL.tools.uuid ()
+	
+		thisDialog = LibEKL.uiCreateFrame("nkDialogMetro", name, privateVars.uiDialogContext)
+		thisDialog:SetLayer(2)
+		thisDialog:SetWidth(500)
+		thisDialog:SetHeight(250)
+		thisDialog:SetType('message')
+		
+		table.insert(uiElements.messageDialog, thisDialog)
+	end
+  
+	thisDialog:SetMessage(message)
+	thisDialog:SetVisible(true)
+	
+	Command.Event.Detach(LibEKL.events[thisDialog:GetName()].CenterButtonClicked, nil, thisDialog:GetName() .. ".CenterButtonClicked") -- detach event if was previously used
+	
+	if okFunc ~= nil then
+		Command.Event.Attach(LibEKL.events[thisDialog:GetName()].CenterButtonClicked, function ()
+			okFunc()
+		end, thisDialog:GetName() .. ".CenterButtonClicked")
+	end
+	
 end
 
 -------- ui element creation
