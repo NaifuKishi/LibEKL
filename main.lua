@@ -16,3 +16,24 @@ privateVars.oFuncs = {}
 local internalFunc  = privateVars.internalFunc
 local data          = privateVars.data
 
+---------- init local variables ---------
+
+local _libInit = false
+
+---------- local function block ---------
+
+local function settingsHandler(_, addon)
+	
+	if _libInit == true then return end
+	
+	if LibEKL.events.checkEvents ("EKL.internal", true) == false then return nil end
+
+    LibEKL.ui.setupBoundCheck()
+	
+	_libInit = true
+		
+end
+
+-------------------- STARTUP EVENTS --------------------
+
+Command.Event.Attach(Event.Addon.SavedVariables.Load.End, settingsHandler, "LibEKL.settingsHandler.SavedVariables.Load.End")

@@ -21,11 +21,15 @@ local uiElements		= privateVars.uiElements
 local uiContext   		= privateVars.uiContext
 local uiTooltipContext	= nil
 
-local inspectSystemSecure = Inspect.System.Secure
-local inspectAddonCurrent = Inspect.Addon.Current
+local inspectSystemSecure 		= Inspect.System.Secure
+local inspectAddonCurrent 		= Inspect.Addon.Current
+local inspectAbilityNewDetail	= Inspect.Ability.New.Detail
+local InspectAbilityDetail		= Inspect.Ability.Detail
 
-local stringUpper		= string.upper
-local stringFormat		= string.format
+local stringUpper				= string.upper
+local stringFormat				= string.format
+local stringLower				= string.lower
+local stringGSub				= string.gsub
 
 ---------- init variables --------- 
 
@@ -118,7 +122,56 @@ function internalFunc.uiGarbageCollector ()
 	if nkDebug then nkDebug.traceEnd (inspectAddonCurrent(), "LibEKL internal.uiGarbageCollector", debugId) end	
 end
 
--------- reload dialog
+-- generic ui functions to handle screen size and bounds
+
+function LibEKL.ui.setupBoundCheck()
+
+	local testFrameH = LibEKL.uiCreateFrame ('nkFrame', "LibEKL.ui.boundTestFrameH", uiContext)
+	testFrameH:SetBackgroundColor(0, 0, 0, 0)
+	testFrameH:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
+	testFrameH:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", 0, 1)
+
+	testFrameH:EventAttach(Event.UI.Layout.Size, function (self)
+		data.uiBoundLeft, data.uiBoundTop, data.uiBoundRight, data.uiBoundBottom = UIParent:GetBounds()
+	end, testFrameH:GetName() .. ".UI.Layout.Size")
+
+	local testFrameV = LibEKL.uiCreateFrame("nkFrame", "boundTestFrameV", uiContext)
+	testFrameV:SetBackgroundColor(0, 0, 0, 0)
+	testFrameV:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
+	testFrameV:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 1, 0)
+
+	testFrameV:EventAttach(Event.UI.Layout.Size, function (self)		
+		data.uiBoundLeft, data.uiBoundTop, data.uiBoundRight, data.uiBoundBottom = UIParent:GetBounds()
+	end, testFrameV:GetName() .. ".UI.Layout.Size")
+	
+end
+
+function LibEKL.ui.getBoundBottom() return data.uiBoundBottom end
+function LibEKL.ui.getBoundRight() return data.uiBoundRight end
+
+function LibEKL.ui.showWithinBound (element, target)
+
+	local from, to, x, y
+
+	if element:GetTop() + element:GetHeight() > LibEKL.ui.getBoundBottom() then
+		if element:GetLeft() + element:GetWidth() > LibEKL.ui.getBoundRight() then
+			from, to, x, y = "BOTTOMRIGHT", "TOPLEFT", -5, -5
+		else
+			from, to, x, y = "BOTTOMLEFT", "TOPRIGHT", 5, -5
+		end
+	else
+		from, to, x, y = "TOPLEFT", "BOTTOMLEFT", -5, 5
+	end
+	
+	if from ~= nil then
+		local left, top, right, bottom = element:GetBounds()
+		element:ClearAll()
+		element:SetPoint(from, target, to, x, y)
+		element:SetWidth(right-left)
+		element:SetHeight(bottom-top)
+	end
+
+end
 
 function LibEKL.ui.reloadDialog (title)
 
@@ -215,7 +268,7 @@ function LibEKL.ui.attachGenericTooltip (target, title, text)
 		privateVars.uiTooltipContext:SetStrata ('topmost')
 	end
 	
-	if uiElements.genericTooltip == nil then	
+	if uiElements.genericTooltip == nil then
 		uiElements.genericTooltip = LibEKL.uiCreateFrame('nkTooltip', 'LibEKL.genericTooltip', privateVars.uiTooltipContext)
 		uiElements.genericTooltip:SetVisible(false)    
 	end
@@ -276,8 +329,7 @@ function LibEKL.ui.attachAbilityTooltip (target, abilityId)
 	else
 		target:EventAttach(Event.UI.Input.Mouse.Cursor.In, function (self)
 			uiElements.abilityTooltip:ClearAll()
-			
-			local err, abilityDetails = pcall (InspectAbilityNewDetail, abilityId)
+			local err, abilityDetails = pcall (inspectAbilityNewDetail, abilityId)
 			if err == false or abilityDetails == nil then
 				err, abilityDetails = pcall (InspectAbilityDetail, abilityId)
 				if err == false or abilityDetails == nil then

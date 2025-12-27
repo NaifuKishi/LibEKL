@@ -133,7 +133,7 @@ local function _uiButtonMetro(name, parent)
 		{xProportional = x1, yProportional = 0, xControlProportional = 0, yControlProportional = 0}
 		}  
 
-		button:SetShape(path, fill, stroke)/home/dirk/Games/Heroic/Prefixes/default/Glyph/drive_c/users/dirk/Documents/RIFT/Interface/Addons/EnKai/ui/button/buttonMetro.lua
+		button:SetShape(path, fill, stroke)
 			local scale = 1 / 36 * (22 * scale)
 			LibEKL.fx.register (name .. ".icon", icon, {id = "rotateCanvas", speed = 0, scale = scale, path = iconPath, fill = iconFill })
 		elseif flag == false and animatedIcon == true then

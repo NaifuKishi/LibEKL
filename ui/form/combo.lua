@@ -364,7 +364,7 @@ local function _uiCombobox(name, parent)
 				elseif combo:GetValue("textures") == true then
 				  if v.texturePath == '' or v.textureType == '' then
             icon:SetVisible(false)
-            label:SetVisible(tru/home/dirk/Games/Heroic/Prefixes/default/Glyph/drive_c/users/dirk/Documents/RIFT/Interface/Addons/EnKai/ui/forme)
+            label:SetVisible(true)
           else
             icon:SetVisible(true)
             icon:SetTextureAsync(v.textureType, v.texturePath)

@@ -19,7 +19,7 @@ local inspectMouse	= Inspect.Mouse
         Creates and configures a customizable slider UI element with label, lane, and position marker components.
         This function provides a framework for creating interactive sliders with various customization options.
     Parameters:
-        name (string): Unique ident/home/dirk/Games/Heroic/Prefixes/default/Glyph/drive_c/users/dirk/Documents/RIFT/Interface/Addons/EnKai/ui/form
+        name (string): Unique identier
         1. Creates the main slider frame and its components (label, lane, inner lane, position marker)
         2. Sets up default styling and positioning
         3. Configures event handlers for mouse interactions (dragging the slider)
