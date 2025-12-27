@@ -1,0 +1,74 @@
+Identifier = "LibEKL"
+Name = "EnKai Light Library"
+Description = "A light version of the EnKai library specifically with the stuff nkUI needs."
+
+Author = "NaifuKishi"
+Email = "naifukishi@gmail.com"
+
+Version = "1.0.0"
+Environment = "4.0"
+
+RunOnStartup = {
+  "main.lua",
+  
+  "buffManager/buffManager.lua",
+
+  "cooldown/cooldown.lua",
+
+  "coroutines/coroutines.lua",
+
+  "events/events.lua",
+
+  "manager/managerV2.lua",
+
+  "map/location.lua",
+
+  "strings/strings.lua",
+
+  "tools/tools.lua",
+  "tools/uuid.lua",
+
+  "ui/ui.lua",
+  "ui/button/buttonMetro.lua",
+
+  "ui/default/canvas.lua",
+  "ui/default/frame.lua",
+  "ui/default/text.lua",
+  "ui/default/texture.lua",
+  "ui/form/checkbox.lua",
+  "ui/form/colorPicker.lua",
+  "ui/form/combo.lua",
+  "ui/form/slider.lua",
+  "ui/form/textfield.lua",
+  "ui/pane/scrollbox.lua",
+  "ui/pane/scrollpane.lua",
+  "ui/pane/tabPaneMetro.lua",
+  "ui/tools/progressBar.lua",
+  "ui/tooltip/itemTooltip.lua",
+  "ui/tooltip/tooltip.lua",
+  "ui/window/windowMetro.lua",
+  
+  "unit/unit.lua",
+  "unit/unitstats.lua",
+  
+  "inventory/inventory.lua", -- requires unit to be loaded first
+ 
+  "version/version.lua"
+}
+
+Embed = {
+  ["Libs/LibAsyncTextures"] = true,
+  ["Libs/LibUnitChange"] = true
+}
+
+Dependencies = {
+  LibAsyncTextures = {"required", "before"},
+  LibUnitChange = {"required", "before"}
+}
+
+SavedVariables = {
+  nkManagerSettings = "account",
+  EnKaiSetup = "account",
+  EnKaiInv = "account",
+  EnKaiDebug = "account",
+}

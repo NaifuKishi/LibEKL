@@ -1,0 +1,377 @@
+local addonInfo, privateVars = ...
+
+---------- init namespace ---------
+
+if not LibEKL then LibEKL = {} end
+if not LibEKL.ui then LibEKL.ui = {} end
+
+if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
+if not privateVars.uiNames then privateVars.uiNames = {} end
+
+if privateVars.uiContext == nil then privateVars.uiContext = UI.CreateContext("LibEKL.ui") end
+
+if not privateVars.uiElements then privateVars.uiElements = {} end
+
+local data       		= privateVars.data
+local internalFunc 		= privateVars.internalFunc
+local uiFunctions		= privateVars.uiFunctions
+local uiNames    		= privateVars.uiNames
+local uiElements		= privateVars.uiElements
+
+local uiContext   		= privateVars.uiContext
+local uiTooltipContext	= nil
+
+local inspectSystemSecure = Inspect.System.Secure
+local inspectAddonCurrent = Inspect.Addon.Current
+
+local stringUpper		= string.upper
+local stringFormat		= string.format
+
+---------- init variables --------- 
+
+data.frameCount = 0
+data.canvasCount = 0
+data.textCount = 0
+data.textureCount = 0
+data.uiBoundLeft, data.uiBoundTop, data.uiBoundRight, data.uiBoundBottom = UIParent:GetBounds()
+
+---------- init local variables ---------
+
+local _gc = {}
+local _freeElements = {}
+local _fonts = {}
+
+local function recycleElement (element, elementType)
+
+	element:SetVisible(false)
+	element:ClearAll()
+	element:SetBackgroundColor(0,0,0,0)
+	element:SetStrata('main')
+	element:SetLayer(0)
+	element:SetMouseMasking('full')
+	element:SetWidth(0)
+	element:SetHeight(0)
+	
+	if element:GetMouseoverUnit() ~= nil then element:SetMouseoverUnit(nil) end
+	
+	--element:SetSecureMode("normal")
+	
+	for k, v in pairs (element:GetEvents()) do
+	  element:EventDetach(k, nil, v.label, v.priority, v.owner)
+	end
+	
+	element:_recycle()
+	
+end
+
+function internalFunc.uiGarbageCollector ()
+	local debugId  
+    if nkDebug then debugId = nkDebug.traceStart (inspectAddonCurrent(), "LibEKL internal.uiGarbageCollector") end
+
+	local secure = inspectSystemSecure()
+	local flag = false
+	local restrictedFailed = false
+
+	for elementType, secureModes in pairs(_gc) do
+
+		if secure == false and #_gc[elementType].restricted > 0 then
+			for idx = 1, #_gc[elementType].restricted, 1 do
+
+				if _gc[elementType].restricted[idx] ~= false then
+
+					local element = _gc[elementType].restricted[idx]
+					local err = pcall (_setInsecure, element)
+	
+					if err == true then -- no error
+						flag = true
+						recycleElement(element, elementType)
+						uiNames[elementType][element:GetRealName()] = ""
+
+						if _freeElements[elementType] == nil then _freeElements[elementType] = {} end
+						table.insert(_freeElements[elementType], element)
+						_gc[elementType].restricted[idx] = false
+					else
+						restrictedFailed = true
+					end
+				end
+			end
+
+			if restrictedFailed == false then _gc[elementType].restricted = {} end
+		end
+
+		for idx = 1, #_gc[elementType].normal, 1 do
+			flag = true
+			local element = _gc[elementType].normal[idx]
+			recycleElement(element, elementType)
+			uiNames[elementType][element:GetRealName()] = ""
+
+			if _freeElements[elementType] == nil then _freeElements[elementType] = {} end
+			table.insert(_freeElements[elementType], element)
+		end
+
+		_gc[elementType].normal = {}
+		
+	end
+
+	if flag == true then LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"]() end
+
+	if nkDebug then nkDebug.traceEnd (inspectAddonCurrent(), "LibEKL internal.uiGarbageCollector", debugId) end	
+end
+
+-------- reload dialog
+
+function LibEKL.ui.reloadDialog (title)
+
+	if uiElements.reloadDialog ~= nil then
+		LibEKL.events.addInsecure(function() 
+			uiElements.reloadDialog:SetTitle(title)
+			uiElements.reloadDialog:SetTitleAlign('center')
+			uiElements.reloadDialog:SetVisible(true)
+		end, nil, nil)
+		return
+	end
+	
+	if privateVars.uiContextSecure == nil then 
+		privateVars.uiContextSecure = UI.CreateContext("LibEKL.ui.secure") 
+		privateVars.uiContextSecure:SetStrata ('topmost')
+		privateVars.uiContextSecure:SetSecureMode('restricted')
+	end
+	
+	local name = "LibEKL.reloadDialog"
+	
+	uiElements.reloadDialog = LibEKL.uiCreateFrame("nkWindowMetro", name, privateVars.uiContextSecure)
+	uiElements.reloadDialog:SetSecureMode('restricted')
+	uiElements.reloadDialog:GetContent():SetSecureMode('restricted')
+	uiElements.reloadDialog:SetTitle(title)
+	uiElements.reloadDialog:SetTitleAlign('center')
+	uiElements.reloadDialog:SetWidth(400)
+	uiElements.reloadDialog:SetHeight(125)
+	uiElements.reloadDialog:SetCloseable(false)
+	uiElements.reloadDialog:SetPoint("CENTERTOP", UIParent, "CENTERTOP", 0, 50)
+	
+	local msg = LibEKL.uiCreateFrame("nkText", name .. ".msg", uiElements.reloadDialog:GetContent())
+	msg:SetText(privateVars.langTexts.msgReload)
+	msg:SetPoint("CENTERTOP", uiElements.reloadDialog:GetContent(), "CENTERTOP", 0, 10)
+	msg:SetFontSize(16)
+	msg:SetFontColor(1,1,1,1)
+	
+	local button = LibEKL.uiCreateFrame("nkButtonMetro", name .. ".button", uiElements.reloadDialog:GetContent())
+	button:SetPoint("CENTERTOP", msg, "CENTERBOTTOM", 0, 20)
+	button:SetText(privateVars.langTexts.reloadButton)
+	button:SetMacro("/reloadui")
+	
+end
+
+-------- tooltips
+
+function LibEKL.ui.attachItemTooltip (target, itemId, callBack)
+
+	local name = "LibEKL.itemTooltip"
+
+	if privateVars.uiTooltipContext == nil then
+		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.ui.tooltip")
+		privateVars.uiTooltipContext:SetStrata ('topmost')
+	end
+	
+	if uiElements.itemTooltip == nil then	
+		uiElements.itemTooltip = LibEKL.uiCreateFrame('nkItemTooltip', name, privateVars.uiTooltipContext)
+		uiElements.itemTooltip:SetVisible(false)    
+		
+		LibEKL.eventHandlers[name]["Visible"], LibEKL.events[name]["Visible"] = Utility.Event.Create(addonInfo.identifier, name .. "Visible")
+	end
+
+	if itemId == nil then
+		target:EventDetach(Event.UI.Input.Mouse.Cursor.In, nil, target:GetName() .. ".Mouse.Cursor.In")
+		target:EventDetach(Event.UI.Input.Mouse.Cursor.Out, nil, target:GetName() .. ".Mouse.Cursor.In")  
+		uiElements.itemTooltip:SetVisible(false)
+	else
+		target:EventAttach(Event.UI.Input.Mouse.Cursor.In, function (self)
+			uiElements.itemTooltip:ClearAll()
+			uiElements.itemTooltip:SetItem(itemId)
+			uiElements.itemTooltip:SetVisible(true)			
+			
+			uiElements.itemTooltip:SetPoint("TOPLEFT", target, "BOTTOMRIGHT", 5, 5)
+			LibEKL.ui.showWithinBound (uiElements.itemTooltip, target)
+			
+			if callBack ~= nil then callBack(target, itemId) end
+			
+			LibEKL.eventHandlers[name]["Visible"](true)
+			
+		end, target:GetName() .. ".Mouse.Cursor.In")
+  
+		target:EventAttach(Event.UI.Input.Mouse.Cursor.Out, function (self)
+			uiElements.itemTooltip:SetVisible(false)
+			LibEKL.eventHandlers[name]["Visible"](false)
+			
+		end, target:GetName() .. ".Mouse.Cursor.Out") 
+	end
+	
+end
+
+function LibEKL.ui.attachGenericTooltip (target, title, text)
+
+	if privateVars.uiTooltipContext == nil then
+		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.ui.tooltip")
+		privateVars.uiTooltipContext:SetStrata ('topmost')
+	end
+	
+	if uiElements.genericTooltip == nil then	
+		uiElements.genericTooltip = LibEKL.uiCreateFrame('nkTooltip', 'LibEKL.genericTooltip', privateVars.uiTooltipContext)
+		uiElements.genericTooltip:SetVisible(false)    
+	end
+
+	if text == nil then
+		target:EventDetach(Event.UI.Input.Mouse.Cursor.In, nil, target:GetName() .. ".Mouse.Cursor.In")
+		target:EventDetach(Event.UI.Input.Mouse.Cursor.Out, nil, target:GetName() .. ".Mouse.Cursor.In")  
+		uiElements.genericTooltip:SetVisible(false)
+	else
+		target:EventAttach(Event.UI.Input.Mouse.Cursor.In, function (self)
+			uiElements.genericTooltip:ClearAll()
+			
+			uiElements.genericTooltip:SetWidth(200)
+			if title ~= nil then 
+				uiElements.genericTooltip:SetTitle(stringGSub(title, "\n", ""))
+			else
+				uiElements.genericTooltip:SetTitle("")
+			end
+			uiElements.genericTooltip:SetLines({{ text = text, wordwrap = true, minWidth = 200 }})
+							
+			uiElements.genericTooltip:SetPoint("TOPLEFT", target, "BOTTOMRIGHT", 5, 5)
+
+			LibEKL.ui.showWithinBound (uiElements.genericTooltip, target)
+			
+			uiElements.genericTooltip:SetVisible(true)			
+		end, target:GetName() .. ".Mouse.Cursor.In")
+  
+		target:EventAttach(Event.UI.Input.Mouse.Cursor.Out, function (self)
+			uiElements.genericTooltip:SetVisible(false)
+		end, target:GetName() .. ".Mouse.Cursor.Out") 
+	end
+
+end
+
+function LibEKL.ui.genericTooltipSetFont (addonId, fontName)
+	if privateVars.uiTooltipContext == nil then return end
+	if uiElements.genericTooltip == nil then return end
+
+	uiElements.genericTooltip:SetFont (addonId, fontName)
+end
+
+function LibEKL.ui.attachAbilityTooltip (target, abilityId)
+
+	if privateVars.uiTooltipContext == nil then
+		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.ui.tooltip")
+		privateVars.uiTooltipContext:SetStrata ('topmost')
+	end
+	
+	if uiElements.abilityTooltip == nil then	
+		uiElements.abilityTooltip = LibEKL.uiCreateFrame('nkTooltip', 'LibEKL.abilityTooltip', privateVars.uiTooltipContext)
+		uiElements.abilityTooltip:SetVisible(false)    
+	end
+
+	if abilityId == nil then
+		target:EventDetach(Event.UI.Input.Mouse.Cursor.In, nil, target:GetName() .. ".Mouse.Cursor.In")
+		target:EventDetach(Event.UI.Input.Mouse.Cursor.Out, nil, target:GetName() .. ".Mouse.Cursor.In")  
+		uiElements.abilityTooltip:SetVisible(false)
+	else
+		target:EventAttach(Event.UI.Input.Mouse.Cursor.In, function (self)
+			uiElements.abilityTooltip:ClearAll()
+			
+			local err, abilityDetails = pcall (InspectAbilityNewDetail, abilityId)
+			if err == false or abilityDetails == nil then
+				err, abilityDetails = pcall (InspectAbilityDetail, abilityId)
+				if err == false or abilityDetails == nil then
+					LibEKL.tools.error.display (addonInfo.identifier, "LibEKL.ui.attachAbilityTooltip: unable to get details of ability with id " .. abilityId)	
+					LibEKL.ui.attachAbilityTooltip (target, nil)
+					return
+				end
+			end
+			
+			uiElements.abilityTooltip:SetWidth(200)
+			uiElements.abilityTooltip:SetTitle(stringGSub(abilityDetails.name, "\n", ""))
+			uiElements.abilityTooltip:SetLines({{ text = abilityDetails.description, wordwrap = true, minWidth = 200  }})
+						
+			uiElements.abilityTooltip:SetPoint("TOPLEFT", target, "BOTTOMRIGHT", 5, 5)
+			LibEKL.ui.showWithinBound (uiElements.abilityTooltip, target)
+			
+			uiElements.abilityTooltip:SetVisible(true)			
+		end, target:GetName() .. ".Mouse.Cursor.In")
+  
+		target:EventAttach(Event.UI.Input.Mouse.Cursor.Out, function (self)
+			uiElements.abilityTooltip:SetVisible(false)
+		end, target:GetName() .. ".Mouse.Cursor.Out") 
+	end
+end
+
+function LibEKL.ui.abilityTooltipSetFont (addonId, fontName)
+	if privateVars.uiTooltipContext == nil then return end
+	if uiElements.abilityTooltip == nil then return end
+
+	uiElements.abilityTooltip:SetFont (addonId, fontName)
+end
+
+-------- font management
+
+function LibEKL.ui.registerFont (addonId, name, path)
+
+	if _fonts[addonId] == nil then _fonts[addonId] = {} end
+
+	_fonts[addonId][name] = path
+
+end
+
+function LibEKL.ui.setFont (uiElement, addonId, name)
+
+	uiElement:SetFont(addonId, _fonts[addonId][name])
+
+end
+
+-------- ui element creation
+
+function LibEKL.uiCreateFrame (frameType, name, parent)
+
+	if frameType == nil or name == nil or parent == nil then
+		LibEKL.tools.error.display (addonInfo.identifier, stringFormat("LibEKL.uiCreateFrame - invalid number of parameters\nexpecting: type of frame (string), name of frame (string), parent of frame (object)\nreceived: %s, %s, %s", frameType, name, parent))
+		return
+	end
+
+	local uiObject = nil
+
+	local checkFrameType = stringUpper(frameType) 
+
+	if _freeElements[checkFrameType] ~= nil and #_freeElements[checkFrameType] > 0 then
+
+		if LibEKL.internal.checkEvents (name, true) == false then return nil end
+
+		uiObject = _freeElements[checkFrameType][1]    
+		uiObject:SetParent(parent)
+
+		if uiNames[checkFrameType] == nil then uiNames[checkFrameType] = {} end
+		
+		uiNames[checkFrameType][uiObject:GetRealName()] = name
+		uiObject:SetVisible(true)
+		uiObject:ClearAll() -- no clue why this is needed for canvas here but the one in _recycleElement doesn't seem to work
+
+		table.remove(_freeElements[checkFrameType], 1)
+		
+		LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"]()
+		
+	else
+		local func = uiFunctions[checkFrameType]
+		if func == nil then
+			LibEKL.tools.error.display (addonInfo.identifier, stringFormat("LibEKL.uiCreateFrame - unknown frame type [%s]", frameType))
+		else
+			uiObject = func(name, parent)
+		end
+	end
+
+	return uiObject
+
+end
+
+LibEKL.ui.registerFont(addonInfo.id, "Montserrat", "fonts/Montserrat-Regular.ttf")
+LibEKL.ui.registerFont(addonInfo.id, "MontserratSemiBold", "fonts/Montserrat-SemiBold.ttf")
+LibEKL.ui.registerFont(addonInfo.id, "MontserratBold", "fonts/Montserrat-Bold.ttf")
+LibEKL.ui.registerFont(addonInfo.id, "FiraMonoBold", "fonts/FiraMono-Bold.ttf")
+LibEKL.ui.registerFont(addonInfo.id, "FiraMonoMedium", "fonts/FiraMono-Medium.ttf")
+LibEKL.ui.registerFont(addonInfo.id, "FiraMono", "fonts/FiraMono-Regular.ttf")
