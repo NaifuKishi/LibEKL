@@ -104,7 +104,7 @@ local function updateHandler()
 
 	-- run always
 
-	internalFunc.coroutinesProcess()
+	internalFunc.CoroutinesProcess()
 	--internalFunc.processFX()
 	processPeriodic()
 		

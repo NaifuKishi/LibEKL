@@ -8,7 +8,7 @@ local lang = nil
 
 ---------- init language texts ---------
 
-if ( Inspect.System.Language() == "German"  ) then
+if ( LibEKL.Tools.Lang.GetLanguage() == "German"  ) then
 
 	lang = {	addonUpdate     = '<font color="#FF6A00">Neue Version <font color="#FFFFFF">%s</font> des Addons <font color="#FFFFFF">%s</font> verfügbar. Bitte aktualisiere das Addon.</font>',
 						tooltips        = { moveToggle = 'Aktivieren Sie diese Box um das Fenster verschieben zu können',

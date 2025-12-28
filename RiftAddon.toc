@@ -11,12 +11,16 @@ Environment = "4.0"
 RunOnStartup = {
   "main.lua",
 
+  "tools/lang.lua",
+
   "locales/localizationDE.lua",
   "locales/localizationFR.lua",
   "locales/localizationEN.lua",
   "locales/localizationRU.lua",
   
   "buffManager/buffManager.lua",
+  "buffManager/buffManagerEvents.lua",
+  "buffManager/buffManagerProcessing.lua",
 
   "cooldown/cooldown.lua",
 
@@ -33,7 +37,6 @@ RunOnStartup = {
   "tools/color.lua",
   "tools/date_time.lua",
   "tools/error.lua",
-  "tools/lang.lua",
   "tools/math.lua",
   "tools/performance.lua",
   "tools/settings.lua",

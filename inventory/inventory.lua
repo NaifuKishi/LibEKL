@@ -23,7 +23,7 @@ local commandSystemWatchdogQuiet	= Command.System.Watchdog.Quiet
 
 local stringFind	= string.find
 
-local LibEKLUnitGetPlayerDetails		= LibEKL.unit.getPlayerDetails
+local LibEKLUnitGetPlayerDetails		= LibEKL.Unit.getPlayerDetails
 
 ---------- init local variables ---------
 

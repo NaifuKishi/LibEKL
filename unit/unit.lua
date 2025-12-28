@@ -1,5 +1,5 @@
 --[[
-   _LibEKL.unit
+   _LibEKL.Unit
     Description:
         Provides a comprehensive unit management system for RIFT addons.
         Handles unit tracking, caching, and event management for various unit types.
@@ -7,7 +7,7 @@
     Parameters:
         None (library initialization)
     Returns:
-        LibEKL.unit: The initialized unit management library
+        LibEKL.Unit: The initialized unit management library
     Process:
         1. Initializes internal data structures for unit tracking
         2. Sets up event handlers for unit availability and changes
@@ -38,7 +38,7 @@ local addonInfo, privateVars = ...
 ---------- init namespace ---------
 
 if not LibEKL then LibEKL = {} end
-if not LibEKL.unit then LibEKL.unit = {} end
+if not LibEKL.Unit then LibEKL.Unit = {} end
 
 local lang        = privateVars.langTexts
 local data        = privateVars.data
@@ -58,7 +58,7 @@ local stringMatch	= string.match
 
 local _unitCache = {}
 local _idCache = {}
-local _subscriptions = {}
+local buffManagerData.subscriptions = {}
 local _unitManager = false
 local _isRaid = false
 local _isGroup = false
@@ -76,13 +76,13 @@ local function buildDebugUI ()
 	local context = UI.CreateContext("nkUI") 
 	context:SetStrata ('dialog')
 
-	local frame = LibEKL.uiCreateFrame("nkFrame", "LibEKL.unit.testFrame", context)
+	local frame = LibEKL.uiCreateFrame("nkFrame", "LibEKL.Unit.testFrame", context)
 	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 500, 0)
 	frame:SetHeight(300)
 	frame:SetWidth(600)
 	frame:SetBackgroundColor(0,0,0,1)
 
-	local text = LibEKL.uiCreateFrame("nkText", "LibEKL.unit.testFrame.text", frame)
+	local text = LibEKL.uiCreateFrame("nkText", "LibEKL.Unit.testFrame.text", frame)
 	text:SetPoint("TOPLEFT", frame, "TOPLEFT", 2, 2)
 	text:SetWidth(598)
 	text:SetHeight(298)
@@ -168,7 +168,7 @@ local function _fctCombatDeath(_, info)
 
 	if info.target ~= nil then
 		
-		local unitTypes = LibEKL.unit.getUnitTypes (info.target)
+		local unitTypes = LibEKL.Unit.getUnitTypes (info.target)
 		if unitTypes == nil then return end
 		
 		for key, _ in pairs(unitTypes) do
@@ -261,7 +261,7 @@ local function unitUnAvailableHandler (_, unitInfo)
 
 	for unitId, _ in pairs (unitInfo) do
 	
-		local unitTypes = LibEKL.unit.getUnitTypes (unitId)
+		local unitTypes = LibEKL.Unit.getUnitTypes (unitId)
 		
 		for idx = 1, #unitTypes, 1 do
 			processUnitChange (unitTypes[idx], nil)
@@ -314,9 +314,9 @@ local function unitChange (unitId, unitType)
 		processUnitChange(unitType, unitId)
 	end
 	
-	if _subscriptions[unitType] == nil then return end
+	if buffManagerData.subscriptions[unitType] == nil then return end
 	
-	for addon, _ in pairs(_subscriptions[unitType]) do
+	for addon, _ in pairs(buffManagerData.subscriptions[unitType]) do
 		LibEKL.eventHandlers["LibEKL.Unit"]["Change"](unitId, unitType)
 		
 		if debugUI then debugUI:Update() end
@@ -420,13 +420,13 @@ end
         - This is a convenience function for getting player unit details
         - The returned table contains various player properties
 ]]
-function LibEKL.unit.getPlayerDetails()
+function LibEKL.Unit.getPlayerDetails()
   
 	if _idCache.player == nil or _unitCache[_idCache.player[1]] == nil then 
 		local temp = inspectUnitDetail('player') 
 		
 		if temp.id ~= 'player' then
-			setIDCache('player', temp.id, true, 'LibEKL.unit.getPlayerDetails')
+			setIDCache('player', temp.id, true, 'LibEKL.Unit.getPlayerDetails')
 			_unitCache[_idCache.player[1]] = temp
 			_unitCache[_idCache.player[1]].lastUpdate = inspectTimeReal()
 		end
@@ -438,8 +438,8 @@ function LibEKL.unit.getPlayerDetails()
    
 end
 
-function LibEKL.unit.setPlayerDetails(detail, value)
-	LibEKL.unit.getPlayerDetails()
+function LibEKL.Unit.setPlayerDetails(detail, value)
+	LibEKL.Unit.getPlayerDetails()
 	_unitCache[_idCache.player[1]][detail] = value
 end
 
@@ -456,7 +456,7 @@ end
         - Returns nil if the calling is not found
         - Uses the addon's language settings for localization
 ]]
-function LibEKL.unit.getCallingText (calling) return lang.callings[calling] end
+function LibEKL.Unit.getCallingText (calling) return lang.callings[calling] end
 
 --[[
    _init
@@ -479,16 +479,16 @@ function LibEKL.unit.getCallingText (calling) return lang.callings[calling] end
         - Sets up the foundation for all unit tracking functionality
         - Creates events that other parts of the addon can subscribe to
 ]]
-function LibEKL.unit.init()
+function LibEKL.Unit.init()
 
-	_subscriptions[inspectAddonCurrent()] = {} -- probably useless
+	buffManagerData.subscriptions[inspectAddonCurrent()] = {} -- probably useless
 
 	if _unitManager == true then return end
 
 	if LibEKL.events.checkEvents ("LibEKL.Unit", true) == false then return nil end
 
-	Command.Event.Attach(Event.Unit.Availability.Full, unitAvailableHandler, "LibEKL.unit.Availability.Full")
-	Command.Event.Attach(Event.Unit.Availability.None, unitUnAvailableHandler, "LibEKL.unit.Availability.None")
+	Command.Event.Attach(Event.Unit.Availability.Full, unitAvailableHandler, "LibEKL.Unit.Availability.Full")
+	Command.Event.Attach(Event.Unit.Availability.None, unitUnAvailableHandler, "LibEKL.Unit.Availability.None")
 	
 	LibEKL.eventHandlers["LibEKL.Unit"]["PlayerAvailable"], LibEKL.events["LibEKL.Unit"]["PlayerAvailable"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.PlayerAvailable")
 	LibEKL.eventHandlers["LibEKL.Unit"]["GroupStatus"], LibEKL.events["LibEKL.Unit"]["GroupStatus"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.GroupStatus")
@@ -538,12 +538,12 @@ end
         - Use this to receive notifications when a specific unit changes
         - The addon will receive Change events for the specified unit type
 ]]
-function LibEKL.unit.subscribe(sType)
+function LibEKL.Unit.subscribe(sType)
 
-	if _subscriptions == nil then _subscriptions = {} end
-	if _subscriptions[sType] == nil then _subscriptions[sType] = {} end
+	if buffManagerData.subscriptions == nil then buffManagerData.subscriptions = {} end
+	if buffManagerData.subscriptions[sType] == nil then buffManagerData.subscriptions[sType] = {} end
 
-	_subscriptions[sType][inspectAddonCurrent()] = true
+	buffManagerData.subscriptions[sType][inspectAddonCurrent()] = true
 	
 	if sType == 'player.target' then
 		local targetID = inspectUnitLookup('player.target')
@@ -570,9 +570,9 @@ end
         - Use this to stop receiving notifications for a specific unit type
 ]]
 
-function LibEKL.unit.unsubscribe(sType)
+function LibEKL.Unit.unsubscribe(sType)
 
-	if _subscriptions[sType] ~= nil then
+	if buffManagerData.subscriptions[sType] ~= nil then
 		subscriptions[sType][inspectAddonCurrent()] = nil
 	end
 
@@ -593,7 +593,7 @@ end
         - Useful for determining the player's current group situation
         - The count parameter is nil when status is "single"
 ]]
-function LibEKL.unit.getGroupStatus ()
+function LibEKL.Unit.getGroupStatus ()
 
 	if _isRaid == true then
 		return 'raid', _raidMembers
@@ -618,13 +618,13 @@ end
         - Returns nil if no units match the specified type
         - The table may contain multiple unit IDs for the same type
 ]]
-function LibEKL.unit.getUnitIDByType (unitType) 
+function LibEKL.Unit.getUnitIDByType (unitType) 
 
 	if _idCache[unitType] == nil then
 		local flag, details = pcall (inspectUnitDetail, unitType)
 		if flag and details ~= nil then
 			--if details.type == unitType then 
-				setIDCache(unitType, details.id, true, 'LibEKL.unit.getUnitIDByType')
+				setIDCache(unitType, details.id, true, 'LibEKL.Unit.getUnitIDByType')
 				_unitCache[details.id] = details
 				_unitCache[details.id].lastUpdate = inspectTimeReal()
 			--end
@@ -650,7 +650,7 @@ end
         - A unit can belong to multiple types (e.g., "player" and "group01")
 ]]
 
-function LibEKL.unit.getUnitTypes (unitID) 
+function LibEKL.Unit.getUnitTypes (unitID) 
 
 	local retValues = {}
 
@@ -678,7 +678,7 @@ end
         - The returned table contains various unit properties
         - Information is cached to minimize API calls
 ]]
-function LibEKL.unit.GetUnitDetail (unitID, force)
+function LibEKL.Unit.GetUnitDetail (unitID, force)
 
 	if _idCache[unitID] ~= nil and #_idCache[unitID] > 0 then
 		unitID = _idCache[unitID][1]
@@ -696,7 +696,7 @@ function LibEKL.unit.GetUnitDetail (unitID, force)
 
 end
 
-function LibEKL.unit.GetUnitByIdentifier (identifier)
+function LibEKL.Unit.GetUnitByIdentifier (identifier)
 
 	local units = inspectUnitList()
 	for unitId, thisIdentifier in pairs(units) do
@@ -712,16 +712,16 @@ function LibEKL.unit.GetUnitByIdentifier (identifier)
 
 end
 
-function LibEKL.unit.UpdateGroupUnit()
+function LibEKL.Unit.UpdateGroupUnit()
 
 	local addon = inspectAddonCurrent()
 	local unitInfo = {}
 	local callEvent = false
 
-	for unitType, value in pairs (_subscriptions) do
+	for unitType, value in pairs (buffManagerData.subscriptions) do
 		if value[addon] == true then
 			if stringFind(unitType, "group") then
-				local unitID = LibEKL.unit.getUnitIDByType (unitType) 				
+				local unitID = LibEKL.Unit.getUnitIDByType (unitType) 				
 				if unitID then
 					for key, thisUnit in pairs(unitID) do
 						unitInfo[thisUnit] = unitType
@@ -733,7 +733,7 @@ function LibEKL.unit.UpdateGroupUnit()
 	end
 
 	if callEvent then 
-		if nkDebug then nkDebug.logEntry (addonInfo.identifier, "LibEKL.unit.UpdateGroupUnit", "", unitInfo) end
+		if nkDebug then nkDebug.logEntry (addonInfo.identifier, "LibEKL.Unit.UpdateGroupUnit", "", unitInfo) end
 		unitAvailableHandler (_, unitInfo)
 	end
 

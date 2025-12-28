@@ -1,14 +1,3 @@
---[[
-   _nkManagerV2
-    Description:
-        Module for managing addon buttons that appear on mouse over.
-    Public Functions:
-        - RegisterButton: Registers a new button with an icon and callback function.
-        - UnregisterButton: Unregisters a button by its name.
-    Version History:
-        - 1.0.0: Initial release
-]]
-
 local addonInfo, privateVars = ...
 
 ---------- init namespace ---------
@@ -22,7 +11,6 @@ local inspectSystemSecure = Inspect.System.Secure
 ---------- init local variables ---------
 				
 local _context = UI.CreateContext("nkManagerV2")
---_context:SetSecureMode('restricted')
 
 ---------- local function block ---------
 
@@ -30,17 +18,9 @@ local _buttons = {}
 local _buttonIcons = {}
 local frame = nil
 
---local function _fctSecureEnter() frame:CloseAllMenus () end
-
---[[
-   createFrame
-    Description:
-        Creates the frame that will hold all registered buttons.
-    Parameters:
-        None
-    Returns:
-        None
-]]
+-- Creates and configures the main frame for the manager UI.
+-- Sets up mouse event handlers for showing/hiding the frame.
+-- @return nil
 local function createFrame()
     frame = UI.CreateFrame("Frame", "nkManagerV2Frame", _context)
     frame:SetPoint("TOPLEFT", UI.Native.MapMini, "BOTTOMLEFT")
@@ -78,23 +58,14 @@ local function createFrame()
           frame:SetAlpha(0)
         end
     end, "LibEKL.managerV2.UI.Input.Mouse.Cursor.Out")
-
 end
 
---[[
-   updateFrame
-    Description:
-        Updates the frame to display all registered buttons.
-    Parameters:
-        None
-    Returns:
-        None
-]]
+-- Updates the frame by clearing existing buttons and adding new ones based on registered buttons.
+-- @return nil
 local function updateFrame()
 
     if not frame then
         createFrame()
-        --Command.Event.Attach(Event.System.Secure.Enter, _fctSecureEnter, "nkManagerv2.System.Secure.Enter")
     end
 
     -- Clear existing buttons
@@ -145,18 +116,12 @@ local function updateFrame()
     frame:SetHeight(height)
 end
 
---[[
-   RegisterButton
-    Description:
-        Registers a new button with an icon and callback function.
-    Parameters:
-        name (string): The name of the button.
-        iconSource (string): The source of the icon (addonname or Rift)
-        icon (string): The path to the icon texture.
-        callback (function): The function to call when the button is clicked.
-    Returns:
-        None
-]]
+-- Registers a new button to be displayed in the manager UI.
+-- @param name The name of the button.
+-- @param iconSource The source of the icon.
+-- @param icon The icon to display.
+-- @param callBack The callback function to execute when the button is clicked.
+-- @return nil
 function LibEKL.managerV2.RegisterButton(name, iconSource, icon, callBack)
     
     _buttons[name] = {icon = icon, iconSource = iconSource, callback = callBack}
@@ -164,20 +129,16 @@ function LibEKL.managerV2.RegisterButton(name, iconSource, icon, callBack)
 
 end
 
---[[
-   UnregisterButton
-    Description:
-        Unregisters a button by its name.
-    Parameters:
-        name (string): The name of the button to unregister.
-    Returns:
-        None
-]]
+-- Unregisters a button from the manager UI.
+-- @param name The name of the button to unregister.
+-- @return nil
 function LibEKL.managerV2.UnregisterButton(name)
     _buttons[name] = nil
     updateFrame()
 end
 
+-- Gets the frame object of the manager UI.
+-- @return The frame object.
 function LibEKL.managerV2.GetFrame()
   return frame
 end

@@ -233,7 +233,7 @@ local function _uiItemTooltip(name, parent)
 				end
 		end)
 
-		LibEKL.coroutines.add ({ func = tooltipCoRoutine, counter = 10, active = true })	
+		LibEKL.Coroutines.Add ({ func = tooltipCoRoutine, counter = 10, active = true })	
 	end
 	
 	function tooltip:SetItemDetails(details, itemLibDetails, equipped, equipSlot)
