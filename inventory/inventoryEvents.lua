@@ -14,18 +14,7 @@ local inventoryEvents	= privateVars.inventoryEvents
 
 ---------- make global functions local ---------
 
-local inspectItemList           	= Inspect.Item.List
-local utilityItemSlotInventory  	= Utility.Item.Slot.Inventory
-local utilityItemSlotQuest      	= Utility.Item.Slot.Quest
-local utilityItemSlotEquipment		= Utility.Item.Slot.Equipment
-local utilityItemSlotBank			= Utility.Item.Slot.Bank
-local utilityItemSlotVault			= Utility.Item.Slot.Vault
 local inspectItemDetail				= Inspect.Item.Detail
-local inspectSystemSecure			= Inspect.System.Secure
-local inspectTimeFrame				= Inspect.Time.Frame
-local commandSystemWatchdogQuiet	= Command.System.Watchdog.Quiet
-
-local stringFind	= string.find
 
 ---------- local function block ---------
 

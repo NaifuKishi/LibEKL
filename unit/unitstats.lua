@@ -3,7 +3,7 @@ local addonInfo, privateVars = ...
 ---------- init namespace ---------
 
 if not LibEKL then LibEKL = {} end
-if not LibEKL.stat then LibEKL.stat = {} end
+if not LibEKL.Stat then LibEKL.Stat = {} end
 
 local lang        = privateVars.langTexts
 local data        = privateVars.data
@@ -31,18 +31,18 @@ local function regularUpdateFocus(self)
 
 end
 
-function LibEKL.stat.init()
+function LibEKL.Stat.Init()
 
 	if LibEKL.Events.CheckEvents ("LibEKL.Stat", true) == false then return nil end
 
 end
 
-function LibEKL.stat.subscribe (stat)
+function LibEKL.Stat.Subscribe (stat)
 
 	if stat == "focus" then
 		LibEKL.Events.AddInsecure(regularUpdateFocus, 10)
 		LibEKL.eventHandlers["LibEKL.Stat"]["Focus"], LibEKL.Events["LibEKL.Stat"]["Focus"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Stat.Focus")
-		Command.Event.Attach(Event.Ability.New.Cooldown.Begin, cooldownBegin, "LibEKL.stat.Ability.New.Cooldown.Begin")
+		Command.Event.Attach(Event.Ability.New.Cooldown.Begin, cooldownBegin, "LibEKL.Stat.Ability.New.Cooldown.Begin")
 	end
 
 end
