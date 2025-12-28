@@ -51,8 +51,7 @@ local function _uiDialog(name, parent)
 	dialog:SetCloseable(true)
 	dialog:SetStrata('main')
 	dialog:SetTitle("")
-	dialog:SetPoint("CENTER", UIParent, "CENTER")
-	
+		
 	message:SetPoint("CENTER", dialog:GetContent(), "CENTER", 0, -30)
 	message:SetFontColor(1, 1, 1, 1)
 	message:SetFontSize(16)
@@ -112,11 +111,13 @@ local function _uiDialog(name, parent)
 	
 	function dialog:SetWidth(width)
 		oSetWidth(self, width)
+		dialog:SetPoint("TOPLEFT", UIParent, "TOPLEFT", (LibEKL.ui.getBoundRight() / 2 ) - (dialog:GetWidth() / 2), (LibEKL.ui.getBoundBottom() / 2 ) - (dialog:GetHeight() / 2))
 		message:SetWidth( width - 40)
 	end
 	
 	function dialog:SetHeight(height)
 		oSetHeight(self, height)
+		dialog:SetPoint("TOPLEFT", UIParent, "TOPLEFT", (LibEKL.ui.getBoundRight() / 2 ) - (dialog:GetWidth() / 2), (LibEKL.ui.getBoundBottom() / 2 ) - (dialog:GetHeight() / 2))
 		message:SetHeight( height - 120)
 	end
 
@@ -166,4 +167,4 @@ local function _uiDialog(name, parent)
 	
 end
 
-uiFunctions.NKDIALOGMETRO = _uiDialog
+uiFunctions.NKDIALOG = _uiDialog

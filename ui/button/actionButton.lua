@@ -13,7 +13,7 @@ local inspectSystemSecure	= Inspect.System.Secure
 
 ---------- addon internalFunc function block ---------
 
-local function _uiActionButtonMetro(name, parent)
+local function _uiActionButton(name, parent)
 
 	--if LibEKL.internalFunc.checkEvents (name, true) == false then return nil end 
 
@@ -183,4 +183,4 @@ local function _uiActionButtonMetro(name, parent)
 	
 end
 
-uiFunctions.NKACTIONBUTTONMETRO = _uiActionButtonMetro
+uiFunctions.NKACTIONBUTTON = _uiActionButton

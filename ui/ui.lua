@@ -156,14 +156,14 @@ function LibEKL.ui.showWithinBound (element, target)
 
 	local from, to, x, y
 
-	if element:GetTop() + element:GetHeight() > LibEKL.ui.getBoundBottom() then
+	if target:GetTop() + element:GetHeight() > LibEKL.ui.getBoundBottom() then
 		if element:GetLeft() + element:GetWidth() > LibEKL.ui.getBoundRight() then
 			from, to, x, y = "BOTTOMRIGHT", "TOPLEFT", -5, -5
 		else
-			from, to, x, y = "BOTTOMLEFT", "TOPRIGHT", 5, -5
+			from, to, x, y = "BOTTOMLEFT", "BOTTOMLEFT", 5, -5
 		end
 	else
-		if element:GetLeft() + element:GetWidth() > LibEKL.ui.getBoundRight() then
+		if target:GetLeft() + element:GetWidth() > LibEKL.ui.getBoundRight() then
 			from, to, x, y = "BOTTOMRIGHT", "TOPLEFT", -5, -5
 		else
 			from, to, x, y = "TOPLEFT", "BOTTOMLEFT", -5, 5
@@ -406,7 +406,7 @@ function LibEKL.ui.confirmDialog (message, yesFunc, noFunc)
 	
 		local name = "LibEKLConfirmDialog." .. (#uiElements.messageDialog+1)
 	
-		thisDialog = LibEKL.uiCreateFrame("nkDialogMetro", name, privateVars.uiDialogContext)
+		thisDialog = LibEKL.uiCreateFrame("nkDialog", name, privateVars.uiDialogContext)
 		thisDialog:SetLayer(2)
 		thisDialog:SetWidth(500)
 		thisDialog:SetHeight(250)
@@ -453,7 +453,7 @@ function LibEKL.ui.messageDialog (message, okFunc)
 		
 		local name = "LibEKLMessageDialog." .. LibEKL.tools.uuid ()
 	
-		thisDialog = LibEKL.uiCreateFrame("nkDialogMetro", name, privateVars.uiDialogContext)
+		thisDialog = LibEKL.uiCreateFrame("nkDialog", name, privateVars.uiDialogContext)
 		thisDialog:SetLayer(2)
 		thisDialog:SetWidth(500)
 		thisDialog:SetHeight(250)
@@ -472,6 +472,8 @@ function LibEKL.ui.messageDialog (message, okFunc)
 			okFunc()
 		end, thisDialog:GetName() .. ".CenterButtonClicked")
 	end
+
+	return thisDialog
 	
 end
 

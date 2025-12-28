@@ -36,7 +36,7 @@ RunOnStartup = {
   "ui/ui.lua",
   "ui/button/button.lua",
   "ui/button/clickButton.lua",  
-  "ui/button/actionButtonMetro.lua",
+  "ui/button/actionButton.lua",
 
   "ui/default/canvas.lua",
   "ui/default/frame.lua",
@@ -49,11 +49,11 @@ RunOnStartup = {
   "ui/form/textfield.lua",
   "ui/pane/scrollbox.lua",
   "ui/pane/scrollpane.lua",
-  "ui/pane/tabPaneMetro.lua",
+  "ui/pane/tabPane.lua",
   "ui/tools/progressBar.lua",
   "ui/tooltip/itemTooltip.lua",
   "ui/tooltip/tooltip.lua",
-  "ui/window/dialogMetro.lua",
+  "ui/window/dialog.lua",
   "ui/window/window.lua",
   
   "unit/unit.lua",

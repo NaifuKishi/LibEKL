@@ -141,7 +141,7 @@ end
 
 ---------- addon internalFunc function block ---------
 
-local function _uiTabpaneMetro(name, parent) 
+local function _uiTabpane(name, parent) 
 
 	local tabPane = LibEKL.uiCreateFrame("nkFrame", name, parent)
 	
@@ -393,4 +393,4 @@ local function _uiTabpaneMetro(name, parent)
 	
 end
 
-uiFunctions.NKTABPANEMETRO = _uiTabpaneMetro
+uiFunctions.NKTABPANE = _uiTabpane
