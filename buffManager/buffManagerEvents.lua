@@ -25,12 +25,24 @@ local stringFind	= string.find
 local stringUpper	= string.upper
 local stringFormat	= string.format
 
----------- local function block ---------
+local LibEKLUnitGetUnitDetail
+local LibEKLUnitGetUnitTypes
+local LibEKLToolsTableIsMember
+local LibEKLUnitGetUnitDetail
 
+-- Checks if a buff is subscribed to by any addon.
+-- @param unit The unit ID associated with the buff.
+-- @param buffDetails Details of the buff to check.
+-- @param combatLogFlag Flag indicating if this is from combat logs.
+-- @return true if the buff is subscribed, false otherwise, and a table of addon subscriptions.
 local function isSubscribed(unit, buffDetails, combatLogFlag)
 
 	local debugId  
 	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "isSubscribed") end
+
+	if not LibEKLUnitGetUnitTypes then LibEKLUnitGetUnitTypes = LibEKL.Unit.getUnitTypes end
+	if not LibEKLToolsTableIsMember then LibEKLToolsTableIsMember = LibEKL.Tools.Table.IsMember end
+	if not LibEKLUnitGetUnitDetail then LibEKLUnitGetUnitDetail = LibEKL.Unit.GetUnitDetail end
 
 	local thisType, thisTypeR = "BUFFS", "buff"
 	if buffDetails.debuff then thisType, thisTypeR = "DEBUFFS", "debuff" end
@@ -38,29 +50,32 @@ local function isSubscribed(unit, buffDetails, combatLogFlag)
 	local addonSubscriptions = {}
 	local hasSubscribed = false
 
-	for addon, sDetails in pairs(dataBuffManager.subscriptions) do
+	local unitTypes = LibEKLUnitGetUnitTypes(unit)
 
-		if sDetails[thisType] ~= nil then
-		
-			if sDetails[thisType]["*"] ~= nil then
-				local subscription = sDetails[thisType]["*"]
-				if subscription.target == "*" or subscription.target == buffDetails.caster or LibEKL.tools.table.isMember(LibEKL.Unit.getUnitTypes(unit), subscription.target) then
+	for addon, sDetails in pairs(buffManagerData.subscriptions) do
+		local subDetails = sDetails[thisType]
+
+		if subDetails ~= nil then		
+			if subDetails["*"] ~= nil then
+				local subscription = subDetails["*"]
+				if subscription.target == "*" or subscription.target == buffDetails.caster or LibEKLToolsTableIsMember(unitTypes, subscription.target) then
 					addonSubscriptions[addon] = { buffType = thisTypeR, subscription = subscription }
 					hasSubscribed = true
 				end
 			else
-				local subscription = sDetails[thisType][buffDetails.id]
-				if subscription == nil then subscription = sDetails[thisType][buffDetails.type] end
-				if subscription == nil then subscription = sDetails[thisType][buffDetails.name] end
+				local subscription = subDetails[buffDetails.id]
+
+				if subscription == nil then subscription = subDetails[buffDetails.type] end
+				if subscription == nil then subscription = subDetails[buffDetails.name] end
 
 				if subscription ~= nil and subscription.caster == buffDetails.caster then
 
-					if LibEKL.tools.table.isMember(LibEKL.Unit.getUnitTypes(unit), subscription.target) then
+					if LibEKLToolsTableIsMember(unitTypes, subscription.target) then
 						addonSubscriptions[addon] = { buffType = thisTypeR, subscription = subscription }
 						hasSubscribed = true
 					else
 						if stringFind(subscription.target, 'addonType') ~= nil then
-							local unitDetails = LibEKL.Unit.GetUnitDetail (unit)
+							local unitDetails = LibEKLUnitGetUnitDetail (unit)
 							
 							if subscription.target == 'addonType' .. unitDetails.type then
 								addonSubscriptions[addon] = { buffType = thisTypeR, subscription = subscription }
@@ -79,6 +94,9 @@ local function isSubscribed(unit, buffDetails, combatLogFlag)
 
 end
 
+-- Checks for buff changes on a combat unit.
+-- @param unitId The ID of the unit to check.
+-- @return none
 local function checkCombatUnit(unitId)
 
 	local debugId  
@@ -130,15 +148,17 @@ local function checkCombatUnit(unitId)
 	
 end
 
--- ********** Buff Manager events **********
-
+-- Handles buff addition events.
+-- @param _ Unused parameter.
+-- @param unit The unit ID associated with the buff.
+-- @param buffs Table of buff IDs that were added.
 function buffManagerEvents.buffAdd (_, unit, buffs)
 
 	local debugId  
 	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "buffAdd") end
 
 	if buffManagerData.trackedUnits[unit] ~= true then 
-		LibEKL.BuffManager.initUnitBuffs(unit) 
+		LibEKL.BuffManager.InitUnitBuffs(unit) 
 		
 		if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "buffAdd", debugId) end
 		
@@ -146,7 +166,6 @@ function buffManagerEvents.buffAdd (_, unit, buffs)
 	end
 
 	local adds, hasAdds = {}, false
-	
 	local buffInfo = inspectBuffDetail(unit, buffs)
 	
 	for buffId, buffDetails in pairs(buffInfo) do
@@ -196,13 +215,17 @@ function buffManagerEvents.buffAdd (_, unit, buffs)
 	
 end
 
-local function buffManagerEvents.buffRemove (_, unit, buffs)
+-- Handles buff removal events.
+-- @param _ Unused parameter.
+-- @param unit The unit ID associated with the buff.
+-- @param buffs Table of buff IDs that were removed.
+function buffManagerEvents.buffRemove (_, unit, buffs)
 
 	local debugId  
 	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "buffRemove") end
 
 	if buffManagerData.trackedUnits[unit] ~= true then 
-		LibEKL.BuffManager.initUnitBuffs(unit)
+		LibEKL.BuffManager.InitUnitBuffs(unit)
 		
 		if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "buffRemove", debugId) end
 		
@@ -254,13 +277,18 @@ local function buffManagerEvents.buffRemove (_, unit, buffs)
 	
 end
 
-local function buffManagerEvents.buffChange (_, unit, buffs, combatLogFlag)
+-- Handles buff change events.
+-- @param _ Unused parameter.
+-- @param unit The unit ID associated with the buff.
+-- @param buffs Table of buff IDs that changed.
+-- @param combatLogFlag Flag indicating if this is from combat logs.
+function buffManagerEvents.buffChange (_, unit, buffs, combatLogFlag)
 
 	local debugId  
 	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "buffChange") end
 
 	if buffManagerData.trackedUnits[unit] ~= true then 
-		LibEKL.BuffManager.initUnitBuffs(unit)
+		LibEKL.BuffManager.InitUnitBuffs(unit)
 		
 		if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "buffChange", debugId) end
 		
@@ -301,7 +329,7 @@ local function buffManagerEvents.buffChange (_, unit, buffs, combatLogFlag)
 				buffDetails.start = buffManagerData.buffCache1st[unit][buffDetails.id].start
 				
 				buffManagerData.buffCache1st[unit][buffDetails.id] = buffDetails
-				buffManagerData.buffCache1st[unit][local buffDetails.id].lastChange = inspectTimeReal()
+				buffManagerData.buffCache1st[unit][buffDetails.id].lastChange = inspectTimeReal()
 				
 				buffManagerData.buffCache2nd[unit][buffDetails.id] = buffDetails
 				
@@ -328,7 +356,11 @@ local function buffManagerEvents.buffChange (_, unit, buffs, combatLogFlag)
 	
 end
 
-local function buffManagerEvents.combatDeath(_, info)
+-- Handles combat death events.
+-- @param _ Unused parameter.
+-- @param info Table containing combat death information.
+-- @return none
+function buffManagerEvents.combatDeath(_, info)
 
 	if buffManagerData.bdList[info.target] == nil then return end
 	
@@ -348,26 +380,25 @@ local function buffManagerEvents.combatDeath(_, info)
 	
 end
 
-local function buffManagerEvents.combatDamage(_, info)
+-- Handles combat damage events.
+-- @param _ Unused parameter.
+-- @param info Table containing combat damage information.
+function buffManagerEvents.combatDamage(_, info)
 
 	local debugId  
 	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "combatDamage") end
 
 	-- !!!!! Hier liegt das Problem bei grossen Gruppen. Es wird für Target und Caster heftigst gepollt
+
+	if not LibEKLUnitGetUnitDetail then LibEKLUnitGetUnitDetail = LibEKLUnitGetUnitDetail end
 	
 	if info.target ~= nil then
-		local details = LibEKL.Unit.GetUnitDetail(info.target)
+		local details = LibEKLUnitGetUnitDetail(info.target)
 		if details ~= nil and details.player ~= true then
 			if buffManagerData.combatUnits["*"] ~= nil or buffManagerData.combatUnits[details.type] ~= nil then checkCombatUnit(info.target) end
 		end
 	end
 	
-	-- if info.caster ~= nil then
-		-- local details = LibEKL.Unit.GetUnitDetail(info.caster)
-		-- if details ~= nil and details.player ~= true then
-			-- checkCombatUnit(info.caster)
-		-- end
-	-- end
 	
 	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "combatDamage", debugId) end
 

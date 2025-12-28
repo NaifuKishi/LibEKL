@@ -58,7 +58,7 @@ local stringMatch	= string.match
 
 local _unitCache = {}
 local _idCache = {}
-local buffManagerData.subscriptions = {}
+local _subscriptions = {}
 local _unitManager = false
 local _isRaid = false
 local _isGroup = false
@@ -314,9 +314,9 @@ local function unitChange (unitId, unitType)
 		processUnitChange(unitType, unitId)
 	end
 	
-	if buffManagerData.subscriptions[unitType] == nil then return end
+	if _subscriptions[unitType] == nil then return end
 	
-	for addon, _ in pairs(buffManagerData.subscriptions[unitType]) do
+	for addon, _ in pairs(_subscriptions[unitType]) do
 		LibEKL.eventHandlers["LibEKL.Unit"]["Change"](unitId, unitType)
 		
 		if debugUI then debugUI:Update() end
@@ -481,7 +481,7 @@ function LibEKL.Unit.getCallingText (calling) return lang.callings[calling] end
 ]]
 function LibEKL.Unit.init()
 
-	buffManagerData.subscriptions[inspectAddonCurrent()] = {} -- probably useless
+	_subscriptions[inspectAddonCurrent()] = {} -- probably useless
 
 	if _unitManager == true then return end
 
@@ -540,10 +540,10 @@ end
 ]]
 function LibEKL.Unit.subscribe(sType)
 
-	if buffManagerData.subscriptions == nil then buffManagerData.subscriptions = {} end
-	if buffManagerData.subscriptions[sType] == nil then buffManagerData.subscriptions[sType] = {} end
+	if _subscriptions == nil then _subscriptions = {} end
+	if _subscriptions[sType] == nil then _subscriptions[sType] = {} end
 
-	buffManagerData.subscriptions[sType][inspectAddonCurrent()] = true
+	_subscriptions[sType][inspectAddonCurrent()] = true
 	
 	if sType == 'player.target' then
 		local targetID = inspectUnitLookup('player.target')
@@ -572,7 +572,7 @@ end
 
 function LibEKL.Unit.unsubscribe(sType)
 
-	if buffManagerData.subscriptions[sType] ~= nil then
+	if _subscriptions[sType] ~= nil then
 		subscriptions[sType][inspectAddonCurrent()] = nil
 	end
 
@@ -618,13 +618,13 @@ end
         - Returns nil if no units match the specified type
         - The table may contain multiple unit IDs for the same type
 ]]
-function LibEKL.Unit.getUnitIDByType (unitType) 
+function LibEKL.Unit.GetUnitIDByType (unitType) 
 
 	if _idCache[unitType] == nil then
 		local flag, details = pcall (inspectUnitDetail, unitType)
 		if flag and details ~= nil then
 			--if details.type == unitType then 
-				setIDCache(unitType, details.id, true, 'LibEKL.Unit.getUnitIDByType')
+				setIDCache(unitType, details.id, true, 'LibEKL.Unit.GetUnitIDByType')
 				_unitCache[details.id] = details
 				_unitCache[details.id].lastUpdate = inspectTimeReal()
 			--end
@@ -718,10 +718,10 @@ function LibEKL.Unit.UpdateGroupUnit()
 	local unitInfo = {}
 	local callEvent = false
 
-	for unitType, value in pairs (buffManagerData.subscriptions) do
+	for unitType, value in pairs (_subscriptions) do
 		if value[addon] == true then
 			if stringFind(unitType, "group") then
-				local unitID = LibEKL.Unit.getUnitIDByType (unitType) 				
+				local unitID = LibEKL.Unit.GetUnitIDByType (unitType) 				
 				if unitID then
 					for key, thisUnit in pairs(unitID) do
 						unitInfo[thisUnit] = unitType

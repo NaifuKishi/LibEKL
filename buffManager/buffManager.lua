@@ -17,10 +17,16 @@ local buffManagerEvents = privateVars.buffManagerEvents
 
 -- Cache frequently used functions and values
 
+local inspectBuffList		= Inspect.Buff.List
+local inspectBuffDetail		= Inspect.Buff.Detail
+local inspectTimeReal		= Inspect.Time.Real
 local inspectAddonCurrent	= Inspect.Addon.Current
 
-local stringUpper	= string.upper
 local stringFind	= string.find
+local stringUpper	= string.upper
+local stringFormat	= string.format
+
+local LibEKLUnitGetUnitIDByType
 
 -- Initialize variables
 
@@ -36,10 +42,13 @@ buffManagerData.bdByType		= {}
 buffManagerData.combatCheck		= {}
 buffManagerData.subscriptions	= {}
 
-function LibEKL.BuffManager.init()
+
+-- Initializes the buff manager and sets up event handlers.
+-- @return none
+function LibEKL.BuffManager.Init()
 
 	local debugId  
-	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.init") end
+	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.Init") end
 
 	if LibEKL.events.checkEvents ("LibEKL.BuffManager", true) == false then return nil end
 
@@ -61,14 +70,21 @@ function LibEKL.BuffManager.init()
 
 	buffManagerData.managerInit = true
 	
-	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.init", debugId) end
+	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.Init", debugId) end
 
 end
 
-function LibEKL.BuffManager.subscribe(sType, sId, castBy, sTarget, sStack)
+-- Subscribes to buff events for a specific type, ID, caster, target, and stack.
+-- @param sType The type of buff to subscribe to ('BUFF' or 'DEBUFF').
+-- @param sId The ID of the buff to subscribe to.
+-- @param castBy The caster of the buff (can be a unit ID or '*' for any caster).
+-- @param sTarget The target of the buff (can be a unit ID, '*' for any target, or an addon type).
+-- @param sStack The stack count of the buff (can be a number or '*' for any stack count).
+-- @return none
+function LibEKL.BuffManager.Subscribe(sType, sId, castBy, sTarget, sStack)
 
 	local debugId  
-	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.subscribe") end
+	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.Subscribe") end
 
 	sType = stringUpper(sType)
 
@@ -101,7 +117,7 @@ function LibEKL.BuffManager.subscribe(sType, sId, castBy, sTarget, sStack)
 		for unitId, thisList in pairs(buffManagerData.buffCache1st) do
 		
 			if buffManagerData.trackedUnits[unitId] ~= true then
-				LibEKL.BuffManager.initUnitBuffs(unitId) 
+				LibEKL.BuffManager.InitUnitBuffs(unitId) 
 			else
 				if list[unitId] == nil then list[unitId] = {} end
 				
@@ -112,12 +128,12 @@ function LibEKL.BuffManager.subscribe(sType, sId, castBy, sTarget, sStack)
 			end
 		end
 	else
-		local unitIdList = LibEKL.Unit.getUnitIDByType(sTarget)
+		local unitIdList = LibEKL.Unit.GetUnitIDByType(sTarget)
 		if unitIdList ~= nil then
 		
 			for _, unitId in pairs(unitIdList) do
 				if buffManagerData.trackedUnits[unitId] ~= true then 
-					LibEKL.BuffManager.initUnitBuffs(unitId) 
+					LibEKL.BuffManager.InitUnitBuffs(unitId) 
 				else
 					if list[unitId] == nil then list[unitId] = {} end
 				
@@ -135,18 +151,22 @@ function LibEKL.BuffManager.subscribe(sType, sId, castBy, sTarget, sStack)
 	
 	if runEvent then 
 		for unitId, buffList in pairs(list) do
-			buffAdd (_, unitId, buffList) 
+			buffManagerEvents.buffAdd (_, unitId, buffList) 
 		end
 	end
 	
-	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.subscribe", debugId) end
+	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.Subscribe", debugId) end
 	
 end
 
-function LibEKL.BuffManager.unsubscribe(sType, sId)
+-- Unsubscribes from buff events for a specific type and ID.
+-- @param sType The type of buff to unsubscribe from ('BUFFS' or 'DEBUFFS').
+-- @param sId The ID of the buff to unsubscribe from.
+-- @return none
+function LibEKL.BuffManager.Unsubscribe(sType, sId)
 
 	local debugId  
-	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.unsubscribe") end
+	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.Unsubscribe") end
 
 	if buffManagerData.subscriptions[inspectAddonCurrent()] ~= nil and buffManagerData.subscriptions[inspectAddonCurrent()][sType] ~= nil and buffManagerData.subscriptions[inspectAddonCurrent()][sType][sId] ~= nil then
 	
@@ -155,32 +175,37 @@ function LibEKL.BuffManager.unsubscribe(sType, sId)
 			local sTarget = LibEKL.strings.right (thisSubscription.target, "addonType", 1, true)
 			
 			if buffManagerData.combatUnits[sTarget] ~= nil then 
-				buffManagerData.combatUnits[sTarget] = LibEKL.tools.table.removeValue(buffManagerData.combatUnits[sTarget], stringFormat("%s-%s", sType, sId))
+				buffManagerData.combatUnits[sTarget] = LibEKL.Tools.Table.removeValue(buffManagerData.combatUnits[sTarget], stringFormat("%s-%s", sType, sId))
 				if #buffManagerData.combatUnits[sTarget] == 0 then buffManagerData.combatUnits[sTarget] = nil end
 			end
 		elseif thisSubscription.target == "*" then
 			
 			if buffManagerData.combatUnits["*"] ~= nil then 
-				buffManagerData.combatUnits["*"] = LibEKL.tools.table.removeValue(buffManagerData.combatUnits["*"], stringFormat("%s-%s", sType, sId))
+				buffManagerData.combatUnits["*"] = LibEKL.Tools.Table.removeValue(buffManagerData.combatUnits["*"], stringFormat("%s-%s", sType, sId))
 				if #buffManagerData.combatUnits["*"] == 0 then buffManagerData.combatUnits["*"] = nil end
 			end
-			
 		end
 	
 		buffManagerData.subscriptions[inspectAddonCurrent()][sType][sId] = nil
 	end
 	
-	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.unsubscribe", debugId) end
+	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.Unsubscribe", debugId) end
 
 end
 
+-- Retrieves detailed information about a specific buff on a unit.
+-- @param unit The unit ID to check for the buff.
+-- @param buffId The ID of the buff to retrieve details for.
+-- @return A table containing buff details if found, or nil if the buff is not found.
 function LibEKL.BuffManager.GetBuffDetails(unit, buffId)
 
 	local debugId  
 	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.GetBuffDetails") end
 
+	if not LibEKLUnitGetUnitIDByType then LibEKLUnitGetUnitIDByType = LibEKL.Unit.GetUnitIDByType end
+
 	if buffManagerData.buffCache1st[unit] == nil then 
-		unit = LibEKL.Unit.getUnitIDByType(unit)
+		unit = LibEKLUnitGetUnitIDByType(unit)
 		if unit == nil then 
 			if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.GetBuffDetails", debugId) end
 			return
@@ -222,6 +247,10 @@ function LibEKL.BuffManager.GetBuffDetails(unit, buffId)
 
 end
 
+-- Retrieves detailed information about a specific buff from the second-level cache.
+-- @param unit The unit ID to check for the buff.
+-- @param buffId The ID of the buff to retrieve details for.
+-- @return A table containing buff details if found, or nil if the buff is not found.
 function LibEKL.BuffManager.GetCachedBuffDetails(unit, buffId)
 
 	local debugId  
@@ -248,10 +277,13 @@ function LibEKL.BuffManager.GetCachedBuffDetails(unit, buffId)
 
 end
 
-function LibEKL.BuffManager.initUnitBuffs(unit)
+-- Initializes buff tracking for a specific unit.
+-- @param unit The unit ID to initialize buff tracking for.
+-- @return true if new buffs were found and added, false otherwise.
+function LibEKL.BuffManager.InitUnitBuffs(unit)
 
 	local debugId  
-	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.initUnitBuffs") end
+	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.InitUnitBuffs") end
 
 	buffManagerData.trackedUnits[unit] = true
 
@@ -270,14 +302,17 @@ function LibEKL.BuffManager.initUnitBuffs(unit)
 	
 	end
 	
-	if hasNewBuffs then buffAdd(_, unit, newBuffList) end
+	if hasNewBuffs then buffManagerEvents.buffAdd(_, unit, newBuffList) end
 	
-	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.initUnitBuffs", debugId) end
+	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.InitUnitBuffs", debugId) end
 	
 	return hasNewBuffs
 
 end
 
+-- Retrieves the list of active buffs for a specific unit.
+-- @param unit The unit ID to retrieve buff list for.
+-- @return A table containing the active buffs for the unit, or nil if no buffs are found.
 function LibEKL.BuffManager.GetUnitBuffList (unit) 
 
 	local debugId  
@@ -289,13 +324,17 @@ function LibEKL.BuffManager.GetUnitBuffList (unit)
 
 end
 
-function LibEKL.BuffManager.isBuffActive(unit, id) 
+-- Checks if a specific buff is active on a unit.
+-- @param unit The unit ID to check for the buff.
+-- @param id The ID of the buff to check.
+-- @return true if the buff is active, false otherwise.
+function LibEKL.BuffManager.IsBuffActive(unit, id) 
 
 	local debugId  
-	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.isBuffActive") end
+	if nkDebug then debugId = nkDebug.traceStart (addonInfo.identifier, "LibEKL.BuffManager.IsBuffActive") end
 
 	if buffManagerData.buffCache1st[unit] == nil then 
-		local list = LibEKL.Unit.getUnitIDByType(unit)
+		local list = LibEKL.Unit.GetUnitIDByType(unit)
 		if list == nil then return false end
 		unit = list[1] -- nicht sauber. muss ich später mal angehen da es durchaus sein kann das mehrere units gefunden werden
 	end
@@ -325,28 +364,28 @@ function LibEKL.BuffManager.isBuffActive(unit, id)
 					end
 				end
 			else
-				if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.isBuffActive", debugId) end
+				if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.IsBuffActive", debugId) end
 				return false
 			end
 		else
-			if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.isBuffActive", debugId) end
+			if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.IsBuffActive", debugId) end
 			return false
 		end
 	end
 	
 	if buffManagerData.buffCache1st[unit][id] ~= nil then
-		if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.isBuffActive", debugId) end
+		if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.IsBuffActive", debugId) end
 		return true
 	end
 	
 	local realID = getRealIDByType(unit, id)
 	
 	if realID == nil or buffManagerData.buffCache1st[unit][realID] == nil then
-		if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.isBuffActive", debugId) end
+		if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.IsBuffActive", debugId) end
 		return false
 	end
 	
-	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.isBuffActive", debugId) end
+	if nkDebug then debugId = nkDebug.traceEnd (addonInfo.identifier, "LibEKL.BuffManager.IsBuffActive", debugId) end
 	
 	return true
 

@@ -13,7 +13,22 @@ local data        		= privateVars.data
 local buffManagerData	= privateVars.buffManagerData
 local buffManagerEvents = privateVars.buffManagerEvents
 
+local inspectBuffList		= Inspect.Buff.List
+local inspectBuffDetail		= Inspect.Buff.Detail
+local inspectTimeReal		= Inspect.Time.Real
+local inspectAddonCurrent	= Inspect.Addon.Current
 
+local stringFind	= string.find
+local stringUpper	= string.upper
+local stringFormat	= string.format
+
+local LibEKLUnitGetUnitIDByType
+local LibEKLToolsTableIsMember
+
+-- Retrieves the buff type by its real ID.
+-- @param unit The unit ID associated with the buff.
+-- @param buffId The real ID of the buff.
+-- @return The buff type if found, nil otherwise.
 local function getTypeByRealID (unit, buffId)
 
 	local debugId  
@@ -32,7 +47,10 @@ local function getTypeByRealID (unit, buffId)
 
 end
 
-
+-- Retrieves the real ID of a buff by its type.
+-- @param unit The unit ID associated with the buff.
+-- @param buffType The type of the buff.
+-- @return The real ID of the buff if found, nil otherwise.
 local function getRealIDByType (unit, buffType)
 
 	if buffManagerData.bdByType[unit] == nil then return nil end
@@ -53,7 +71,8 @@ local function getRealIDByType (unit, buffType)
 
 end
 
-
+-- Processes the list of buffs and debuffs to check for updates.
+-- @return true if updates were found, false otherwise, and a table of updates.
 local function processBuffDebuffList()
 
 	local debugId  
@@ -68,37 +87,13 @@ local function processBuffDebuffList()
 
 		for buffId, _ in pairs(buffList) do
 		
-			if buffManagerData.buffCache1st[unit][buffId].remaining ~= nil then
-		
-				--if isSubscribed(unit, buffManagerData.buffCache1st[unit][buffId]) then
+			local thisBuff = buffManagerData.buffCache1st[unit][buffId]
 
-					-- if buffManagerData.buffCache1st[unit][buffId].lastChange == nil then -- we do one reinitialization do better sync the remaining time
-						
-						-- local flag, buffDetails = pcall (inspectBuffDetail, unit, buffId)
-						-- if flag and buffDetails ~= nil then
-							-- buffManagerData.buffCache1st[unit][buffId] = buffDetails
-							-- buffManagerData.buffCache1st[unit][buffId].lastChange = _curTime
-						-- end
-						
-						-- local thisBuffType = getTypeByRealID (unit, buffId)
-						-- if thisBuffType ~= nil then
-							-- if updateList[unit] == nil then updateList[unit] = {} end
-							-- table.insert(updateList[unit], thisBuffType)
-							-- updatesFound = true
-						-- end
-						
-						
-					--elseif buffManagerData.buffCache1st[unit][buffId].remaining <= 1 or _curTime - buffManagerData.buffCache1st[unit][buffId].lastChange >= 1 then
-					if buffManagerData.buffCache1st[unit][buffId].remaining <= 1 or _curTime - buffManagerData.buffCache1st[unit][buffId].lastChange >= 1 then
-					
-						--local diff = _curTime - buffManagerData.buffCache1st[unit][buffId].start
-					
-						--buffManagerData.buffCache1st[unit][buffId].remaining = buffManagerData.buffCache1st[unit][buffId].remaining - diff
-						buffManagerData.buffCache1st[unit][buffId].remaining = buffManagerData.buffCache1st[unit][buffId].duration - (_curTime - buffManagerData.buffCache1st[unit][buffId].start)
-						if buffManagerData.buffCache1st[unit][buffId].remaining < 0 then buffManagerData.buffCache1st[unit][buffId].remaining = 0 end
-					
-						buffManagerData.buffCache1st[unit][buffId].lastChange = _curTime
-						
+			if thisBuff.remaining ~= nil then
+					if thisBuff.remaining <= 1 or _curTime - thisBuff.lastChange >= 1 then
+						thisBuff.remaining = thisBuff.duration - (_curTime - thisBuff.start)
+						if thisBuff.remaining < 0 then thisBuff.remaining = 0 end					
+						thisBuff.lastChange = _curTime						
 						local thisBuffType = getTypeByRealID (unit, buffId)
 						if thisBuffType ~= nil then
 							if updateList[unit] == nil then updateList[unit] = {} end
@@ -117,11 +112,17 @@ local function processBuffDebuffList()
 
 end
 
+-- Processes buff and debuff updates.
+-- @param updateList Table containing units and buff types that need updating.
+-- @return true if updates were found, false otherwise, and tables of updates and stops.
 local function processBuffDebuffUpdates (updateList)
 
 	local debugId  
 	if nkDebug then debugId = nkDebug.traceStart (inspectAddonCurrent(), "processBuffDebuffUpdates") end
 	
+	if not LibEKLUnitGetUnitIDByType then LibEKLUnitGetUnitIDByType = LibEKL.Unit.GetUnitIDByType end
+	if not LibEKLToolsTableIsMember then LibEKLToolsTableIsMember = LibEKL.Tools.Table.IsMember end
+
 	local updates, hasUpdates = {}, false
 	local stop, hasStop = {}, false
 
@@ -134,13 +135,13 @@ local function processBuffDebuffUpdates (updateList)
 			
 			for buffId, sDetails in pairs(sList) do
 			
-				local unitId = LibEKL.Unit.getUnitIDByType(sDetails.target)
+				local unitId = LibEKLUnitGetUnitIDByType(sDetails.target)
 				
 				if unitId ~= nil then
 				
 					for _, thisUnitId in pairs(unitId) do
 				
-						if updateList[thisUnitId] ~= nil and LibEKL.tools.table.isMember(updateList[thisUnitId], buffId) then
+						if updateList[thisUnitId] ~= nil and LibEKLToolsTableIsMember(updateList[thisUnitId], buffId) then
 							local buffDetails = LibEKL.BuffManager.GetBuffDetails(thisUnitId, buffId)
 							
 							if buffDetails ~= nil then
@@ -174,12 +175,7 @@ local function processBuffDebuffUpdates (updateList)
 
 end
 
----------- library public function block ---------
-
-
-
----------- addon internalFunc function block ---------
-
+-- Processes buffs for all units.
 function internalFunc.processBuffs ()
 
 	local debugId  

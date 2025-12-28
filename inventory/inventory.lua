@@ -23,7 +23,7 @@ local commandSystemWatchdogQuiet	= Command.System.Watchdog.Quiet
 
 local stringFind	= string.find
 
-local LibEKLUnitGetPlayerDetails		= LibEKL.Unit.getPlayerDetails
+local LibEKLUnitGetPlayerDetails
 
 ---------- init local variables ---------
 
@@ -282,6 +282,8 @@ end
 ---------- library public function block ---------
 
 function LibEKL.inventory.init (updateFlag, showDebugUI)
+
+	if not LibEKLUnitGetPlayerDetails then LibEKLUnitGetPlayerDetails = LibEKL.Unit.getPlayerDetails end -- required to not mess up loading of addons
 
 	if not _invManager then
 	

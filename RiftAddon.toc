@@ -28,6 +28,8 @@ RunOnStartup = {
 
   "events/events.lua",
 
+  "inventory/inventory.lua",
+
   "manager/managerV2.lua",
 
   "map/location.lua",
@@ -69,8 +71,6 @@ RunOnStartup = {
   "unit/unit.lua",
   "unit/unitstats.lua",
   
-  "inventory/inventory.lua", -- requires unit to be loaded first
- 
   "version/version.lua"
 }
 
