@@ -16,7 +16,7 @@ local function _uiDialog(name, parent)
 
 	--if LibEKL.internalFunc.checkEvents (name, false) == false then return nil end
 
-	local dialog = LibEKL.uiCreateFrame("nkWindowMetro", name, parent)
+	local dialog = LibEKL.uiCreateFrame("nkwindow", name, parent)
 	local message = LibEKL.uiCreateFrame ('nkText', name .. "message", dialog)
 	local leftButton = LibEKL.uiCreateFrame ('nkButton', name .. "leftButton", dialog)
 	local centerButton = LibEKL.uiCreateFrame ('nkButton', name .. "centerButton", dialog)

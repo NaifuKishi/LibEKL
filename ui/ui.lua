@@ -163,7 +163,11 @@ function LibEKL.ui.showWithinBound (element, target)
 			from, to, x, y = "BOTTOMLEFT", "TOPRIGHT", 5, -5
 		end
 	else
-		from, to, x, y = "TOPLEFT", "BOTTOMLEFT", -5, 5
+		if element:GetLeft() + element:GetWidth() > LibEKL.ui.getBoundRight() then
+			from, to, x, y = "BOTTOMRIGHT", "TOPLEFT", -5, -5
+		else
+			from, to, x, y = "TOPLEFT", "BOTTOMLEFT", -5, 5
+		end		
 	end
 	
 	if from ~= nil then
@@ -195,7 +199,7 @@ function LibEKL.ui.reloadDialog (title)
 	
 	local name = "LibEKL.reloadDialog"
 	
-	uiElements.reloadDialog = LibEKL.uiCreateFrame("nkWindowMetro", name, privateVars.uiContextSecure)
+	uiElements.reloadDialog = LibEKL.uiCreateFrame("nkwindow", name, privateVars.uiContextSecure)
 	uiElements.reloadDialog:SetSecureMode('restricted')
 	uiElements.reloadDialog:GetContent():SetSecureMode('restricted')
 	uiElements.reloadDialog:SetTitle(title)
@@ -290,8 +294,8 @@ function LibEKL.ui.attachGenericTooltip (target, title, text)
 			else
 				uiElements.genericTooltip:SetTitle("")
 			end
-			uiElements.genericTooltip:SetLines({{ text = text, wordwrap = true, minWidth = 200 }})
-							
+
+			uiElements.genericTooltip:SetLines({{ text = text, wordwrap = true, minWidth = 200 }})							
 			uiElements.genericTooltip:SetPoint("TOPLEFT", target, "BOTTOMRIGHT", 5, 5)
 
 			LibEKL.ui.showWithinBound (uiElements.genericTooltip, target)

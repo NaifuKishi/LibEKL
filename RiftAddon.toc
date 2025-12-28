@@ -35,6 +35,7 @@ RunOnStartup = {
 
   "ui/ui.lua",
   "ui/button/button.lua",
+  "ui/button/clickButton.lua",  
   "ui/button/actionButtonMetro.lua",
 
   "ui/default/canvas.lua",
@@ -53,8 +54,7 @@ RunOnStartup = {
   "ui/tooltip/itemTooltip.lua",
   "ui/tooltip/tooltip.lua",
   "ui/window/dialogMetro.lua",
-  "ui/window/windowElement.lua",
-  "ui/window/windowMetro.lua",
+  "ui/window/window.lua",
   
   "unit/unit.lua",
   "unit/unitstats.lua",
