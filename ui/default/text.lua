@@ -15,7 +15,7 @@ local internalFunc  = privateVars.internalFunc
 
 local function _uiText(name, parent) 
 
-	if LibEKL.events.checkEvents (name, true) == false then return nil end
+	if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 	
 	data.textCount = data.textCount + 1
 	local thisName = "LibEKL.Text." .. data.textCount

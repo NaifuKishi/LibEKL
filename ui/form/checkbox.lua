@@ -356,7 +356,7 @@ local function _uiCheckbox(name, parent)
 	  
 	end
 		
-	LibEKL.eventHandlers[name]["CheckboxChanged"], LibEKL.events[name]["CheckboxChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "CheckboxChanged")	
+	LibEKL.eventHandlers[name]["CheckboxChanged"], LibEKL.Events[name]["CheckboxChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "CheckboxChanged")	
 	
 	return checkBox
 	

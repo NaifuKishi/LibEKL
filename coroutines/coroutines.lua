@@ -23,10 +23,10 @@ function LibEKL.Coroutines.Add(info) table.insert(_coRoutines, info) end
 ---------- addon internalFunc function block ---------
 
 -- Processes the coroutines.
-function internalFunc.CoroutinesProcess()
+function internalFunc.coRoutinesProcess()
 
     local debugId
-    if nkDebug then debugId = nkDebug.traceStart(inspectAddonCurrent(), "LibEKL internalFunc.CoroutinesProcess") end
+    if nkDebug then debugId = nkDebug.traceStart(inspectAddonCurrent(), "LibEKL internalFunc.coroutinesProcess") end
 
     if #_coRoutines == 0 then return end
 
@@ -71,6 +71,6 @@ function internalFunc.CoroutinesProcess()
         end
     end
 
-    if nkDebug then nkDebug.traceEnd(inspectAddonCurrent(), "LibEKL internalFunc.CoroutinesProcess", debugId) end
+    if nkDebug then nkDebug.traceEnd(inspectAddonCurrent(), "LibEKL internalFunc.coroutinesProcess", debugId) end
 
 end

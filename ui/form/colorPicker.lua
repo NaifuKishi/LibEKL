@@ -168,7 +168,7 @@ local function buildinternalFuncColorPicker ()
 		colorPixel:SetBackgroundColor(r, g, b, 1)
 	end	
 	
-	LibEKL.eventHandlers['LibEKL.defaultColorPicker']["ColorChanged"], LibEKL.events['LibEKL.defaultColorPicker']["ColorChanged"] = Utility.Event.Create(addonInfo.identifier, 'LibEKL.defaultColorPicker.ColorChanged')	
+	LibEKL.eventHandlers['LibEKL.defaultColorPicker']["ColorChanged"], LibEKL.Events['LibEKL.defaultColorPicker']["ColorChanged"] = Utility.Event.Create(addonInfo.identifier, 'LibEKL.defaultColorPicker.ColorChanged')	
 
 end
 
@@ -272,9 +272,9 @@ local function _uiColorPicker(name, parent)
 			_uiGlobalColorPicker:SetPoint("TOPLEFT", colorDisplay, "TOPRIGHT", 10 ,0)
 			_uiGlobalColorPicker:SetColor(colorR, colorG, colorB, colorA)
 			
-			Command.Event.Detach(LibEKL.events['LibEKL.defaultColorPicker'].ColorChanged, nil, "LibEKL.defaultColorPicker.ColorChanged")
+			Command.Event.Detach(LibEKL.Events['LibEKL.defaultColorPicker'].ColorChanged, nil, "LibEKL.defaultColorPicker.ColorChanged")
 			
-			Command.Event.Attach(LibEKL.events['LibEKL.defaultColorPicker'].ColorChanged, function (_, r, g, b, a)				
+			Command.Event.Attach(LibEKL.Events['LibEKL.defaultColorPicker'].ColorChanged, function (_, r, g, b, a)				
 				colorR, colorG, colorB, colorA = r, g, b, a 		
 				_uiGlobalColorPicker:SetVisible(false)
 				colorDisplayInner:SetBackgroundColor(r, g, b, 1)
@@ -284,7 +284,7 @@ local function _uiColorPicker(name, parent)
 		
 	end, name .. '.colorDisplay.Left.Click')
 	
-	LibEKL.eventHandlers[name]["ColorChanged"], LibEKL.events[name]["ColorChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "ColorChanged")	
+	LibEKL.eventHandlers[name]["ColorChanged"], LibEKL.Events[name]["ColorChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "ColorChanged")	
 
 	return colorPicker
 	

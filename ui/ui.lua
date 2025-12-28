@@ -183,7 +183,7 @@ end
 function LibEKL.ui.reloadDialog (title)
 
 	if uiElements.reloadDialog ~= nil then
-		LibEKL.events.addInsecure(function() 
+		LibEKL.Events.AddInsecure(function() 
 			uiElements.reloadDialog:SetTitle(title)
 			uiElements.reloadDialog:SetTitleAlign('center')
 			uiElements.reloadDialog:SetVisible(true)
@@ -237,7 +237,7 @@ function LibEKL.ui.attachItemTooltip (target, itemId, callBack)
 		uiElements.itemTooltip = LibEKL.uiCreateFrame('nkItemTooltip', name, privateVars.uiTooltipContext)
 		uiElements.itemTooltip:SetVisible(false)    
 		
-		LibEKL.eventHandlers[name]["Visible"], LibEKL.events[name]["Visible"] = Utility.Event.Create(addonInfo.identifier, name .. "Visible")
+		LibEKL.eventHandlers[name]["Visible"], LibEKL.Events[name]["Visible"] = Utility.Event.Create(addonInfo.identifier, name .. "Visible")
 	end
 
 	if itemId == nil then
@@ -418,15 +418,15 @@ function LibEKL.ui.confirmDialog (message, yesFunc, noFunc)
 	thisDialog:SetMessage(message)
 	thisDialog:SetVisible(true)
 
-	Command.Event.Detach(LibEKL.events[thisDialog:GetName()].LeftButtonClicked, nil, thisDialog:GetName() .. ".LeftButtonClicked") -- detach event if was previously used
+	Command.Event.Detach(LibEKL.Events[thisDialog:GetName()].LeftButtonClicked, nil, thisDialog:GetName() .. ".LeftButtonClicked") -- detach event if was previously used
 	
-	Command.Event.Attach(LibEKL.events[thisDialog:GetName()].LeftButtonClicked, function ()
+	Command.Event.Attach(LibEKL.Events[thisDialog:GetName()].LeftButtonClicked, function ()
 		if yesFunc ~= nil then yesFunc() end
 	end, thisDialog:GetName() .. ".LeftButtonClicked")
 	
-	Command.Event.Detach(LibEKL.events[thisDialog:GetName()].RightButtonClicked, nil, thisDialog:GetName() .. ".RightButtonClicked") -- detach event if was previously used
+	Command.Event.Detach(LibEKL.Events[thisDialog:GetName()].RightButtonClicked, nil, thisDialog:GetName() .. ".RightButtonClicked") -- detach event if was previously used
 	
-	Command.Event.Attach(LibEKL.events[thisDialog:GetName()].RightButtonClicked, function ()
+	Command.Event.Attach(LibEKL.Events[thisDialog:GetName()].RightButtonClicked, function ()
 		if noFunc ~= nil then noFunc() end
 	end, thisDialog:GetName() .. ".RightButtonClicked")
 
@@ -465,10 +465,10 @@ function LibEKL.ui.messageDialog (message, okFunc)
 	thisDialog:SetMessage(message)
 	thisDialog:SetVisible(true)
 	
-	Command.Event.Detach(LibEKL.events[thisDialog:GetName()].CenterButtonClicked, nil, thisDialog:GetName() .. ".CenterButtonClicked") -- detach event if was previously used
+	Command.Event.Detach(LibEKL.Events[thisDialog:GetName()].CenterButtonClicked, nil, thisDialog:GetName() .. ".CenterButtonClicked") -- detach event if was previously used
 	
 	if okFunc ~= nil then
-		Command.Event.Attach(LibEKL.events[thisDialog:GetName()].CenterButtonClicked, function ()
+		Command.Event.Attach(LibEKL.Events[thisDialog:GetName()].CenterButtonClicked, function ()
 			okFunc()
 		end, thisDialog:GetName() .. ".CenterButtonClicked")
 	end

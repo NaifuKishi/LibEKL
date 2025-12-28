@@ -71,7 +71,7 @@ local function _uiWindow(name, parent)
   closeIcon:SetWidth(12)
   closeIcon:SetLayer(2)
   
-  Command.Event.Attach(LibEKL.events[name .. ".closeIcon"].Clicked, function (_, newValue)		
+  Command.Event.Attach(LibEKL.Events[name .. ".closeIcon"].Clicked, function (_, newValue)		
 		window:SetVisible(false)
     LibEKL.eventHandlers[name]["Closed"]()
 	end, name .. ".closeIcon.Clicked")
@@ -200,10 +200,10 @@ local function _uiWindow(name, parent)
   function window:SetTitleFont (addonId, fontName) LibEKL.ui.setFont(title, addonId, fontName) end
   function window:SetTitleFontSize (fontSize) title:SetFontSize(fontSize) end  
     
-  LibEKL.eventHandlers[name]["Moved"], LibEKL.events[name]["Moved"] = Utility.Event.Create(addonInfo.identifier, name .. "Moved") 
-  LibEKL.eventHandlers[name]["Closed"], LibEKL.events[name]["Closed"] = Utility.Event.Create(addonInfo.identifier, name .. "Closed")
-  LibEKL.eventHandlers[name]["Dragable"], LibEKL.events[name]["Dragable"] = Utility.Event.Create(addonInfo.identifier, name .. "Dragable")
-  LibEKL.eventHandlers[name]["Shown"], LibEKL.events[name]["Shown"] = Utility.Event.Create(addonInfo.identifier, name .. "Shown")
+  LibEKL.eventHandlers[name]["Moved"], LibEKL.Events[name]["Moved"] = Utility.Event.Create(addonInfo.identifier, name .. "Moved") 
+  LibEKL.eventHandlers[name]["Closed"], LibEKL.Events[name]["Closed"] = Utility.Event.Create(addonInfo.identifier, name .. "Closed")
+  LibEKL.eventHandlers[name]["Dragable"], LibEKL.Events[name]["Dragable"] = Utility.Event.Create(addonInfo.identifier, name .. "Dragable")
+  LibEKL.eventHandlers[name]["Shown"], LibEKL.Events[name]["Shown"] = Utility.Event.Create(addonInfo.identifier, name .. "Shown")
     
   return window
 end

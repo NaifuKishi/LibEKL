@@ -13,7 +13,7 @@ local internalFunc  = privateVars.internalFunc
 
 local function _uiClickButton(name, parent) 
 
-	if LibEKL.events.checkEvents (name, true) == false then return nil end
+	if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 
 	local color
 	local toggled = false
@@ -61,7 +61,7 @@ local function _uiClickButton(name, parent)
 		iconText:SetFontColor(color.r, color.g, color.b, 1)
 	end
 
-	LibEKL.eventHandlers[name]["Clicked"], LibEKL.events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
+	LibEKL.eventHandlers[name]["Clicked"], LibEKL.Events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
 	
 	return icon
 	

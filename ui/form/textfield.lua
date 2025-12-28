@@ -154,11 +154,11 @@ local function _uiTextfield(name, parent)
 	function textField:SetCursor(newCursor) textFieldEdit:SetCursor(newCursor) end
 	function textField:SetTabTarget(newTarget) tabTarget = newTarget end
 	
-	LibEKL.eventHandlers[name]["TextfieldChanged"], LibEKL.events[name]["TextfieldChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "TextfieldChanged")
-	LibEKL.eventHandlers[name]["Enter"], LibEKL.events[name]["Enter"] = Utility.Event.Create(addonInfo.identifier, name .. "Enter")
-	LibEKL.eventHandlers[name]["Tabbed"], LibEKL.events[name]["Tabbed"] = Utility.Event.Create(addonInfo.identifier, name .. "Tabbed")
-	LibEKL.eventHandlers[name]["KeyDown"], LibEKL.events[name]["KeyDown"] = Utility.Event.Create(addonInfo.identifier, name .. "KeyDown")
-	LibEKL.eventHandlers[name]["FokusLoss"], LibEKL.events[name]["FokusLoss"] = Utility.Event.Create(addonInfo.identifier, name .. "FokusLoss")
+	LibEKL.eventHandlers[name]["TextfieldChanged"], LibEKL.Events[name]["TextfieldChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "TextfieldChanged")
+	LibEKL.eventHandlers[name]["Enter"], LibEKL.Events[name]["Enter"] = Utility.Event.Create(addonInfo.identifier, name .. "Enter")
+	LibEKL.eventHandlers[name]["Tabbed"], LibEKL.Events[name]["Tabbed"] = Utility.Event.Create(addonInfo.identifier, name .. "Tabbed")
+	LibEKL.eventHandlers[name]["KeyDown"], LibEKL.Events[name]["KeyDown"] = Utility.Event.Create(addonInfo.identifier, name .. "KeyDown")
+	LibEKL.eventHandlers[name]["FokusLoss"], LibEKL.Events[name]["FokusLoss"] = Utility.Event.Create(addonInfo.identifier, name .. "FokusLoss")
 	
 	return textField
 		

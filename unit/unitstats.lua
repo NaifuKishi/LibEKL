@@ -33,21 +33,21 @@ end
 
 function LibEKL.stat.init()
 
-	if LibEKL.events.checkEvents ("LibEKL.Stat", true) == false then return nil end
+	if LibEKL.Events.CheckEvents ("LibEKL.Stat", true) == false then return nil end
 
 end
 
 function LibEKL.stat.subscribe (stat)
 
 	if stat == "focus" then
-		LibEKL.events.addInsecure(regularUpdateFocus, 10)
-		LibEKL.eventHandlers["LibEKL.Stat"]["Focus"], LibEKL.events["LibEKL.Stat"]["Focus"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Stat.Focus")
+		LibEKL.Events.AddInsecure(regularUpdateFocus, 10)
+		LibEKL.eventHandlers["LibEKL.Stat"]["Focus"], LibEKL.Events["LibEKL.Stat"]["Focus"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Stat.Focus")
 		Command.Event.Attach(Event.Ability.New.Cooldown.Begin, cooldownBegin, "LibEKL.stat.Ability.New.Cooldown.Begin")
 	end
 
 end
 
---LibEKL.events.addPeriodic(func, period, tries)
+--LibEKL.Events.AddPeriodic(func, period, tries)
 
 
 

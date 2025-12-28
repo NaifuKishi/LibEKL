@@ -162,7 +162,7 @@ local function _uiCombobox(name, parent)
 	
 	local eventName = name .. '.selFrameSlider'
 	
-	Command.Event.Attach(LibEKL.events[eventName].ScrollboxChanged, function ()
+	Command.Event.Attach(LibEKL.Events[eventName].ScrollboxChanged, function ()
 		combo:SetValue('counter', math.floor(selFrameSlider:GetValue('value')))
 		combo:ShowValues()
 	end, name .. 'selFrameSlider.ScrollboxChanged')
@@ -590,7 +590,7 @@ local function _uiCombobox(name, parent)
 		display:SetVisible(flag)
 	end
 	
-	LibEKL.eventHandlers[name]["ComboChanged"], LibEKL.events[name]["ComboChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "ComboChanged")
+	LibEKL.eventHandlers[name]["ComboChanged"], LibEKL.Events[name]["ComboChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "ComboChanged")
 	
 	return combo
 	

@@ -112,9 +112,9 @@ local function _uiButton(name, parent)
 		LibEKL.eventHandlers[name]["MouseOut"]()
 	end, name .. ".Mouse.Cursor.Out")
 
-	LibEKL.eventHandlers[name]["MouseIn"], LibEKL.events[name]["MouseIn"] = Utility.Event.Create(addonInfo.identifier, name .. "MouseIn")
-	LibEKL.eventHandlers[name]["MouseOut"], LibEKL.events[name]["MouseOut"] = Utility.Event.Create(addonInfo.identifier, name .. "MouseOut")
-	LibEKL.eventHandlers[name]["Clicked"], LibEKL.events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
+	LibEKL.eventHandlers[name]["MouseIn"], LibEKL.Events[name]["MouseIn"] = Utility.Event.Create(addonInfo.identifier, name .. "MouseIn")
+	LibEKL.eventHandlers[name]["MouseOut"], LibEKL.Events[name]["MouseOut"] = Utility.Event.Create(addonInfo.identifier, name .. "MouseOut")
+	LibEKL.eventHandlers[name]["Clicked"], LibEKL.Events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
 
 	--button:Redraw()
 	

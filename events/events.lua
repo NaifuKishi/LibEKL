@@ -5,7 +5,7 @@ local addonInfo, privateVars = ...
 if not LibEKL then LibEKL = {} end
 
 if not LibEKL.eventHandlers then LibEKL.eventHandlers = {} end
-if not LibEKL.events then LibEKL.events = {} end
+if not LibEKL.Events then LibEKL.Events = {} end
 
 local internalFunc	= privateVars.internalFunc
 local data       	= privateVars.data
@@ -34,18 +34,18 @@ local function processPeriodic()
 
 	local remainingEvents = false
 
-	local _curTime = inspectTimeFrame()
+	local currentTime = inspectTimeFrame()
 	
-	for k, v in pairs(_periodicEvents) do
+	for k, eventDetails in pairs(_periodicEvents) do
 
-		if v ~= false then
-			if _curTime - v.timer > v.period then
-				v.timer = _curTime
-				if v.func() == true then _periodicEvents[k] = false end
+		if eventDetails ~= false then -- event will be set to false to stop further processing
+			if currentTime - eventDetails.timer > eventDetails.period then
+				eventDetails.timer = currentTime
+				if eventDetails.func() == true then _periodicEvents[k] = false end
 				
-				if _periodicEvents[k] ~= false and v.tries ~= nil then
-					_periodicEvents[k].currentTries = _periodicEvents[k].currentTries + 1
-					if _periodicEvents[k].currentTries >= _periodicEvents[k].tries then
+				if eventDetails ~= false and eventDetails.tries ~= nil then
+					_eventDetails.currentTries = _eventDetails.currentTries + 1
+					if eventDetails.currentTries >= eventDetails.tries then
 						_periodicEvents[k] = false
 					end
 				end
@@ -72,6 +72,8 @@ local function processInsecure()
 
 	local remainingEvents = false
 
+	local currentTime = inspectTimeFrame()
+
 	for k, v in pairs(_insecureEvents) do
 
 		if v ~= false then
@@ -80,7 +82,7 @@ local function processInsecure()
 				v.func()
 				_insecureEvents[k] = false
 			else
-				if inspectTimeFrame() - v.timer > v.period then
+				if currentTime - v.timer > v.period then
 					v.func()
 					_insecureEvents[k] = false
 				else
@@ -104,7 +106,7 @@ local function updateHandler()
 
 	-- run always
 
-	internalFunc.CoroutinesProcess()
+	internalFunc.coRoutinesProcess()
 	--internalFunc.processFX()
 	processPeriodic()
 		
@@ -176,48 +178,39 @@ end
 
 ---------- library public function block ---------
 
-function LibEKL.events.addPeriodic(func, period, tries) -- period is in seconds
-	
+function LibEKL.Events.AddPeriodic(func, period, tries) -- period is in seconds	
 	local uuid = LibEKL.Tools.UUID ()
-	_periodicEvents[uuid] = {func = func, timer = inspectTimeFrame(), period = (period or 0), tries = (tries or 1), currentTries = 0 }
-		
-	return uui
-	
+	_periodicEvents[uuid] = {func = func, timer = inspectTimeFrame(), period = (period or 0), tries = (tries or 1), currentTries = 0 }		
+	return uuid
 end
 
-function LibEKL.events.addInsecure(func, timer, period)
-
-  local uuid = LibEKL.Tools.UUID ()
+function LibEKL.Events.AddInsecure(func, timer, period)
+	local uuid = LibEKL.Tools.UUID ()
 	_insecureEvents[uuid] = {func = func, timer = timer, period = period }
 	return uuid
-
 end
 
-function LibEKL.events.removeInsecure(id) _insecureEvents[id] = false end
+function LibEKL.Events.RemoveInsecure(id) _insecureEvents[id] = false end
 
-function LibEKL.events.checkEvents (name, init) -- radial muss umgebaut werden, dann kann diese function internalFunc gemacht werden
-
+function LibEKL.Events.CheckEvents (name, init) -- radial muss umgebaut werden, dann kann diese function internalFunc gemacht werden
 	if LibEKL.eventHandlers[name] == nil and init ~= false then
 		LibEKL.eventHandlers[name] = {}
-		LibEKL.events[name] = {}
+		LibEKL.Events[name] = {}
 	elseif init ~= false then
 		LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("Duplicate name '%s' found!", name), 1)
 		return false
 	end
 	
 	return true
-
 end
 
 ---------- addon internalFunc function block ---------
 
 function internalFunc.deRegisterEvents (name)
-  
   if LibEKL.eventHandlers[name] ~= nil then
     LibEKL.eventHandlers[name] = nil
-    LibEKL.events[name] = nil
+    LibEKL.Events[name] = nil
   end
-
 end
 
 -------------------- EVENTS --------------------

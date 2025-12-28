@@ -15,7 +15,7 @@ local internalFunc	= privateVars.internalFunc
 
 local function _uiTexture(name, parent) 
 
-	if LibEKL.events.checkEvents (name, true) == false then return nil end
+	if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 	
 	data.textureCount = data.textureCount + 1
 	local thisName = "LibEKL.Texture." .. data.textureCount

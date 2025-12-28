@@ -6,7 +6,7 @@ if not LibEKL then LibEKL = {} else return end
 if not LibEKL.manager then LibEKL.ui = {} end
 
 if not LibEKL.eventHandlers then LibEKL.eventHandlers = {} end
-if not LibEKL.events then LibEKL.events = {} end
+if not LibEKL.Events then LibEKL.Events = {} end
 if not LibEKL.internal then LibEKL.internal = {} end -- sobald nkRadial umgebaut ist das hier komplett auf internal umbauen
 
 privateVars.internalFunc = {}
@@ -26,7 +26,7 @@ local function settingsHandler(_, addon)
 	
 	if _libInit == true then return end
 	
-	if LibEKL.events.checkEvents ("EKL.internal", true) == false then return nil end
+	if LibEKL.Events.CheckEvents ("EKL.internal", true) == false then return nil end
 
     LibEKL.ui.setupBoundCheck()	
 	

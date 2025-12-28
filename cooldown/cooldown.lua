@@ -3,7 +3,7 @@ local addonInfo, privateVars = ...
 ---------- init namespace ---------
 
 if not LibEKL then LibEKL = {} end
-if not LibEKL.cdManager then LibEKL.cdManager = {} end
+if not LibEKL.Cooldowns then LibEKL.Cooldowns = {} end
 
 local internalFunc	= privateVars.internalFunc
 local data        	= privateVars.data
@@ -96,32 +96,32 @@ end
 
 ---------- library public function block ---------
 
-function LibEKL.cdManager.GetCooldowns()
+function LibEKL.Cooldowns.GetCooldowns()
 
 	return _cdSubscriptions
 
 end
 
-function LibEKL.cdManager.init()
+function LibEKL.Cooldowns.Init()
 
   _cdSubscriptions[inspectAddonCurrent()] = { ITEM = {}, ABILITY = {} }
 
   if _cdManager == true then return end
   
-  if LibEKL.events.checkEvents ("LibEKL.CDManager", true) == false then return nil end
+  if LibEKL.Events.CheckEvents ("LibEKL.CDManager", true) == false then return nil end
   
-  Command.Event.Attach(Event.Ability.New.Cooldown.Begin , processAbilityCooldown, "LibEKL.cdManager.Ability.New.Cooldown.Begin")
-  Command.Event.Attach(Event.Ability.New.Cooldown.End , processAbilityCooldown, "LibEKL.cdManager.Ability.New.Cooldown.End")
+  Command.Event.Attach(Event.Ability.New.Cooldown.Begin , processAbilityCooldown, "LibEKL.Cooldowns.Ability.New.Cooldown.Begin")
+  Command.Event.Attach(Event.Ability.New.Cooldown.End , processAbilityCooldown, "LibEKL.Cooldowns.Ability.New.Cooldown.End")
   
-  LibEKL.eventHandlers["LibEKL.CDManager"]["Start"], LibEKL.events["LibEKL.CDManager"]["Start"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.CDManager.Start")
-  LibEKL.eventHandlers["LibEKL.CDManager"]["Update"], LibEKL.events["LibEKL.CDManager"]["Update"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.CDManager.Update")
-  LibEKL.eventHandlers["LibEKL.CDManager"]["Stop"], LibEKL.events["LibEKL.CDManager"]["Stop"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.CDManager.Stop")
+  LibEKL.eventHandlers["LibEKL.CDManager"]["Start"], LibEKL.Events["LibEKL.CDManager"]["Start"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.CDManager.Start")
+  LibEKL.eventHandlers["LibEKL.CDManager"]["Update"], LibEKL.Events["LibEKL.CDManager"]["Update"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.CDManager.Update")
+  LibEKL.eventHandlers["LibEKL.CDManager"]["Stop"], LibEKL.Events["LibEKL.CDManager"]["Stop"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.CDManager.Stop")
   
   _cdManager = true
 
 end
 
-function LibEKL.cdManager.subscribe(sType, id)
+function LibEKL.Cooldowns.Subscribe(sType, id)
 
 	sType = stringUpper(sType)
 
@@ -156,7 +156,7 @@ function LibEKL.cdManager.subscribe(sType, id)
 
 end
 
-function LibEKL.cdManager.unsubscribe(type, id)
+function LibEKL.Cooldowns.Unsubscribe(type, id)
 
 	if _cdSubscriptions[inspectAddonCurrent()] ~= nil and _cdSubscriptions[inspectAddonCurrent()][type] ~= nil and _cdSubscriptions[inspectAddonCurrent()][type][id] ~= nil then
 		_cdSubscriptions[inspectAddonCurrent()][type][id] = nil
@@ -164,9 +164,9 @@ function LibEKL.cdManager.unsubscribe(type, id)
 
 end
 
-function LibEKL.cdManager.getAllCooldowns (cdType) return _cdStore[stringUpper(cdType)] end
+function LibEKL.Cooldowns.GetAllCooldowns (cdType) return _cdStore[stringUpper(cdType)] end
 
-function LibEKL.cdManager.isCooldownActive(cdType, id) 
+function LibEKL.Cooldowns.isCooldownActive(cdType, id) 
 
 	if _cdStore[stringUpper(cdType)] == nil then return false end
 
@@ -178,7 +178,7 @@ function LibEKL.cdManager.isCooldownActive(cdType, id)
 	
 end
 
-function LibEKL.cdManager.getCooldownDetails(cdType, id) 
+function LibEKL.Cooldowns.GetCooldownDetails(cdType, id) 
 
 	if _cdStore[stringUpper(cdType)] ~= nil then
 		return _cdStore[stringUpper(cdType)][id] 
@@ -188,7 +188,7 @@ function LibEKL.cdManager.getCooldownDetails(cdType, id)
 	
 end
 
-function LibEKL.cdManager.setGCD(newGCD) _gcd = newGCD end
+function LibEKL.Cooldowns.SetGCD(newGCD) _gcd = newGCD end
 
 ---------- addon internalFunc function block ---------
 
@@ -203,30 +203,33 @@ function internalFunc.processAbilityCooldowns ()
 	local adds, hasAdds = {}, false
 	local stops, hasStops = {}, false
 	
-	for key, details in pairs (_cdStore.ABILITY) do
+	local currentTimeFrame = inspectTimeFrame()
+	local currentTimeReal = inspectTimeReal()
 
-		if _cdStore.ABILITY[key].lastChange == nil then
-			local flag, details = inspectAbilityNewDetail(key)
+	for abilityKey, abilityDetails in pairs (_cdStore.ABILITY) do
+
+		if abilityDetails.lastChange == nil then
+			local flag, details = inspectAbilityNewDetail(abilityKey)
 			
 			if flag and details ~= nil then
-				_cdStore.ABILITY[key].remaining = details.currentCooldownRemaining
-				_cdStore.ABILITY[key].duration = details.currentCooldownDuration
-				_cdStore.ABILITY[key].begin = details.currentCooldownBegin
+				abilityDetails.remaining = details.currentCooldownRemaining
+				abilityDetails.duration = details.currentCooldownDuration
+				abilityDetails.begin = details.currentCooldownBegin
 			else
-				_cdStore.ABILITY[key].remaining = _cdStore.ABILITY[key].duration - (inspectTimeFrame() - _cdStore.ABILITY[key].begin)
+				abilityDetails.remaining = abilityDetails.duration - (currentTimeFrame - abilityDetails.begin)
 			end
 		else
-			_cdStore.ABILITY[key].remaining = _cdStore.ABILITY[key].duration - (inspectTimeFrame() - _cdStore.ABILITY[key].begin)
+			abilityDetails.remaining = abilityDetails.duration - (currentTimeFrame - abilityDetails.begin)
 		end
 		
-		local flag, addonList = isSubscribed("ABILITY", key)
+		local flag, addonList = isSubscribed("ABILITY", abilityKey)
 		
 		if flag then
-			if _cdStore.ABILITY[key].remaining <= 1 or _cdStore.ABILITY[key].lastChange == nil or inspectTimeReal() - _cdStore.ABILITY[key].lastChange >= 1 then
+			if abilityDetails.remaining <= 1 or abilityDetails.lastChange == nil or currentTimeReal - abilityDetails.lastChange >= 1 then
 				for _, addon in pairs(addonList) do
 					if updates[addon] == nil then updates[addon] = {} end
-					updates[addon][key] = _cdStore.ABILITY[key]
-					_cdStore.ABILITY[key].lastChange = inspectTimeReal()
+					updates[addon][abilityKey] = abilityDetails
+					abilityDetails.lastChange = currentTimeReal
 					hasUpdates = true
 				end
 			end
@@ -260,35 +263,36 @@ function internalFunc.processItemCooldowns ()
 	
 	local temp = {}
 	
-	for addon, details in pairs (_cdSubscriptions) do
+	for addon, itemDetails in pairs (_cdSubscriptions) do
 		
-		for thisKey, _ in pairs(details.ITEM) do
+		for thisKey, _ in pairs(itemDetails.ITEM) do
 
 			if temp[thisKey] == nil then
 			
-				if _cdStore.ITEM[thisKey] == nil then
+				local thisItem = _cdStore.ITEM[thisKey]
+
+				if thisItem == nil then
 					local flag, details = pcall(inspectItemDetail, thisKey)
 
 					if flag and details ~= nil and details.cooldownRemaining ~= nil then
-						_cdStore.ITEM[thisKey] = { type = "ITEM", duration = details.cooldownDuration, begin = details.cooldownBegin, remaining = details.cooldownRemaining, lastChange = inspectTimeReal() }
+						thisItem = { type = "ITEM", duration = details.cooldownDuration, begin = details.cooldownBegin, remaining = details.cooldownRemaining, lastChange = inspectTimeReal() }
 						if adds[addon] == nil then adds[addon] = {} end
-						adds[addon][thisKey] = _cdStore.ITEM[thisKey]
+						adds[addon][thisKey] = thisItem
 						hasAdds = true
 					end
 					
 				else
-				
-					_cdStore.ITEM[thisKey].remaining = _cdStore.ITEM[thisKey].duration - (inspectTimeFrame() - _cdStore.ITEM[thisKey].begin)
+					thisItem.remaining = _thisItem.duration - (inspectTimeFrame() - thisItem.begin)
 					
-					if _cdStore.ITEM[thisKey].remaining <= 0 then
+					if thisItem.remaining <= 0 then
 						if stops[addon] == nil then stops[addon] = {} end
 						stops[addon][thisKey] = { type = "ITEM" }
 						hasStops = true
-						_cdStore.ITEM[thisKey] = nil
-					elseif _cdStore.ITEM[thisKey].remaining <= 1 or curTime - _cdStore.ITEM[thisKey].lastChange >= 1 then
-						_cdStore.ITEM[thisKey].lastChange = inspectTimeReal()
+						thisItem = nil
+					elseif thisItem.remaining <= 1 or curTime - thisItem.lastChange >= 1 then
+						thisItem.lastChange = inspectTimeReal()
 						if updates[addon] == nil then updates[addon] = {} end
-						updates[addon][thisKey] = _cdStore.ITEM[thisKey]
+						updates[addon][thisKey] = _thisItem
 						hasUpdates = true
 					end
 					

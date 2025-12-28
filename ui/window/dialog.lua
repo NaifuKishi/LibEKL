@@ -159,9 +159,9 @@ local function _uiDialog(name, parent)
 		centerButton:SetEffectGlow(effect)
 	end
 
-	LibEKL.eventHandlers[name]["LeftButtonClicked"], LibEKL.events[name]["LeftButtonClicked"] = Utility.Event.Create(addonInfo.identifier, name .. "LeftButtonClicked")
-	LibEKL.eventHandlers[name]["RightButtonClicked"], LibEKL.events[name]["RightButtonClicked"] = Utility.Event.Create(addonInfo.identifier, name .. "RightButtonClicked")
-	LibEKL.eventHandlers[name]["CenterButtonClicked"], LibEKL.events[name]["CenterButtonClicked"] = Utility.Event.Create(addonInfo.identifier, name .. "CenterButtonClicked")
+	LibEKL.eventHandlers[name]["LeftButtonClicked"], LibEKL.Events[name]["LeftButtonClicked"] = Utility.Event.Create(addonInfo.identifier, name .. "LeftButtonClicked")
+	LibEKL.eventHandlers[name]["RightButtonClicked"], LibEKL.Events[name]["RightButtonClicked"] = Utility.Event.Create(addonInfo.identifier, name .. "RightButtonClicked")
+	LibEKL.eventHandlers[name]["CenterButtonClicked"], LibEKL.Events[name]["CenterButtonClicked"] = Utility.Event.Create(addonInfo.identifier, name .. "CenterButtonClicked")
 	
 	return dialog
 	

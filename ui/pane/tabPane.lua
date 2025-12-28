@@ -133,7 +133,7 @@ local function tabHeader (name, parent)
     tabButton:SetSelected(selected)
   end
   
-  LibEKL.eventHandlers[name]["Clicked"], LibEKL.events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
+  LibEKL.eventHandlers[name]["Clicked"], LibEKL.Events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
   
   return tabButton
 
@@ -228,7 +228,7 @@ local function _uiTabpane(name, parent)
 
 		if fontInfo.fontName then tabButton:SetFont(fontInfo.addonInfo, fontInfo.fontName) end
 		
-		Command.Event.Attach(LibEKL.events[stepButtonName].Clicked, function ()
+		Command.Event.Attach(LibEKL.Events[stepButtonName].Clicked, function ()
 			tabButtons[activePane]:SetSelected(false)
 			tabPane:SwitchToPane(paneNo)
     	end, stepButtonName .. '.Clicked')
@@ -387,7 +387,7 @@ local function _uiTabpane(name, parent)
 	
 	function tabPane:GetActivePane() return activePane end
 	
-	LibEKL.eventHandlers[name]["TabPaneChanged"], LibEKL.events[name]["TabPaneChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "TabPaneChanged")
+	LibEKL.eventHandlers[name]["TabPaneChanged"], LibEKL.Events[name]["TabPaneChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "TabPaneChanged")
 
 	return tabPane
 	

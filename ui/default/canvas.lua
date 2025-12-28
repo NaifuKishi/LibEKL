@@ -15,7 +15,7 @@ local internalFunc  = privateVars.internalFunc
 
 local function _uiCanvas(name, parent) 
 
-	if LibEKL.events.checkEvents (name, true) == false then return nil end
+	if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 
 	data.canvasCount = data.canvasCount + 1
 	local thisName = "LibEKL.Canvas." .. data.canvasCount

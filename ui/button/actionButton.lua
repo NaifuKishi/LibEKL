@@ -173,11 +173,11 @@ local function _uiActionButton(name, parent)
 		LibEKL.eventHandlers[name]["MouseOut"]()
 	end, name .. "button.Cursor.Out")
 
-	LibEKL.eventHandlers[name]["Clicked"], LibEKL.events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
-	LibEKL.eventHandlers[name]["RightClicked"], LibEKL.events[name]["RightClicked"] = Utility.Event.Create(addonInfo.identifier, name .. "RightClicked")
-	LibEKL.eventHandlers[name]["Moved"], LibEKL.events[name]["Moved"] = Utility.Event.Create(addonInfo.identifier, name .. "Moved")
-	LibEKL.eventHandlers[name]["MouseIn"], LibEKL.events[name]["MouseIn"] = Utility.Event.Create(addonInfo.identifier, name .. "MouseIn")
-	LibEKL.eventHandlers[name]["MouseOut"], LibEKL.events[name]["MouseOut"] = Utility.Event.Create(addonInfo.identifier, name .. "MouseOut")
+	LibEKL.eventHandlers[name]["Clicked"], LibEKL.Events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
+	LibEKL.eventHandlers[name]["RightClicked"], LibEKL.Events[name]["RightClicked"] = Utility.Event.Create(addonInfo.identifier, name .. "RightClicked")
+	LibEKL.eventHandlers[name]["Moved"], LibEKL.Events[name]["Moved"] = Utility.Event.Create(addonInfo.identifier, name .. "Moved")
+	LibEKL.eventHandlers[name]["MouseIn"], LibEKL.Events[name]["MouseIn"] = Utility.Event.Create(addonInfo.identifier, name .. "MouseIn")
+	LibEKL.eventHandlers[name]["MouseOut"], LibEKL.Events[name]["MouseOut"] = Utility.Event.Create(addonInfo.identifier, name .. "MouseOut")
 		
 	return button
 	

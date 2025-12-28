@@ -167,7 +167,7 @@ local function _uiScrollbox(name, parent)
     scrollLaneInner:SetBackgroundColor(innerColor.r, innerColor.g, innerColor.b, innerColor.a)
   end
 			
-	LibEKL.eventHandlers[name]["ScrollboxChanged"], LibEKL.events[name]["ScrollboxChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "ScrollboxChanged")
+	LibEKL.eventHandlers[name]["ScrollboxChanged"], LibEKL.Events[name]["ScrollboxChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "ScrollboxChanged")
 	
 	return scrollBox
 	

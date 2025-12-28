@@ -485,16 +485,16 @@ function LibEKL.Unit.init()
 
 	if _unitManager == true then return end
 
-	if LibEKL.events.checkEvents ("LibEKL.Unit", true) == false then return nil end
+	if LibEKL.Events.CheckEvents ("LibEKL.Unit", true) == false then return nil end
 
 	Command.Event.Attach(Event.Unit.Availability.Full, unitAvailableHandler, "LibEKL.Unit.Availability.Full")
 	Command.Event.Attach(Event.Unit.Availability.None, unitUnAvailableHandler, "LibEKL.Unit.Availability.None")
 	
-	LibEKL.eventHandlers["LibEKL.Unit"]["PlayerAvailable"], LibEKL.events["LibEKL.Unit"]["PlayerAvailable"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.PlayerAvailable")
-	LibEKL.eventHandlers["LibEKL.Unit"]["GroupStatus"], LibEKL.events["LibEKL.Unit"]["GroupStatus"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.GroupStatus")
-	LibEKL.eventHandlers["LibEKL.Unit"]["Available"], LibEKL.events["LibEKL.Unit"]["Available"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.Available")
-	LibEKL.eventHandlers["LibEKL.Unit"]["Unavailable"], LibEKL.events["LibEKL.Unit"]["Unavailable"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.Unavailable")
-	LibEKL.eventHandlers["LibEKL.Unit"]["Change"], LibEKL.events["LibEKL.Unit"]["Change"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.Change")
+	LibEKL.eventHandlers["LibEKL.Unit"]["PlayerAvailable"], LibEKL.Events["LibEKL.Unit"]["PlayerAvailable"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.PlayerAvailable")
+	LibEKL.eventHandlers["LibEKL.Unit"]["GroupStatus"], LibEKL.Events["LibEKL.Unit"]["GroupStatus"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.GroupStatus")
+	LibEKL.eventHandlers["LibEKL.Unit"]["Available"], LibEKL.Events["LibEKL.Unit"]["Available"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.Available")
+	LibEKL.eventHandlers["LibEKL.Unit"]["Unavailable"], LibEKL.Events["LibEKL.Unit"]["Unavailable"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.Unavailable")
+	LibEKL.eventHandlers["LibEKL.Unit"]["Change"], LibEKL.Events["LibEKL.Unit"]["Change"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Unit.Change")
 	
 	Command.Event.Attach(Event.Combat.Damage, combatDamage, "LibEKL.Combat.Damage")
 	

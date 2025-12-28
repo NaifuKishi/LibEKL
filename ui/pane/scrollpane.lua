@@ -13,7 +13,7 @@ local internalFunc      = privateVars.internalFunc
 
 local function _uiScrollpane(name, parent)
 
-	if LibEKL.events.checkEvents (name, true) == false then return nil end
+	if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 
 	local elementColor, innerColor, highlightColor
 	
@@ -36,7 +36,7 @@ local function _uiScrollpane(name, parent)
 	
 	local eventName = name .. '.scrollbox'
 	
-	Command.Event.Attach(LibEKL.events[eventName].ScrollboxChanged, function ()
+	Command.Event.Attach(LibEKL.Events[eventName].ScrollboxChanged, function ()
 		local newValue = math.floor(scrollLane:GetValue('value'))
 		scrollPane:SetPosition (-(newValue))		
 	end, name .. 'scrollbox.ScrollboxChanged')

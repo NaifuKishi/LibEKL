@@ -278,7 +278,7 @@ local function _uiSlider(name, parent)
 		precision = newPrecision
 	end
 			
-	LibEKL.eventHandlers[name]["SliderChanged"], LibEKL.events[name]["SliderChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "SliderChanged")
+	LibEKL.eventHandlers[name]["SliderChanged"], LibEKL.Events[name]["SliderChanged"] = Utility.Event.Create(addonInfo.identifier, name .. "SliderChanged")
 	
 	return slider
 	
