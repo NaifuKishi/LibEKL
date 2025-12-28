@@ -85,7 +85,7 @@ local function _uiProgressBar(name, parent)
 	
 	function progressBar:SetValue(newValue)
 		if newValue < range[1] or newValue > range[2] then
-			LibEKL.tools.error.display ("LibEKL", string.format("pogressBar [%s] value out of range %d-%d",name, range[1], range[2]), 2)
+			LibEKL.Tools.Error.Display ("LibEKL", string.format("pogressBar [%s] value out of range %d-%d",name, range[1], range[2]), 2)
 			return
 		end
 		

@@ -3,23 +3,24 @@ local addonInfo, privateVars = ...
 ---------- init namespace ---------
 
 if not LibEKL then LibEKL = {} end
-if not LibEKL.tools then LibEKL.tools = {} end
+if not LibEKL.Tools then LibEKL.Tools = {} end
 
-function LibEKL.tools.uuid ()
+local mathRandom = math.random
+local stringGSub = string.gsub
+local stringFormat = string.format
 
-	local random = math.random
+-- Generates a UUID (Universally Unique Identifier).
+-- @return A string representing a UUID.
+function LibEKL.Tools.UUID()
 
-	local function uuid()
-		
-		local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-		
-		return string.gsub(template, '[xy]', function (c)
-			local v = (c == 'x') and random(0, 0xf) or random(8, 0xb)
-			return string.format('%x', v)
-		end)
-		
-	end
+    local function generateUuid()
+        local template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
 
-	return uuid()
+        return stringGSub(template, '[xy]', function(c)
+            local v = (c == 'x') and mathRandom(0, 0xf) or mathRandom(8, 0xb)
+            return stringFormat('%x', v)
+        end)
+    end
 
+    return generateUuid()
 end

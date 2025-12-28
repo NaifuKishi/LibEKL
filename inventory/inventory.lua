@@ -68,7 +68,7 @@ local function buildDebugUI ()
 			end
 		end
 
-		local sortedSlots = LibEKL.tools.table.getSortedKeys (slotText)
+		local sortedSlots = LibEKL.Tools.Table.GetSortedKeys (slotText)
 
 		local from, object, to = "TOPLEFT", debugUI, "TOPLEFT"
 
@@ -308,7 +308,7 @@ end
 function LibEKL.inventory.updateDB ()
 
 	if not _invManager then 
-		LibEKL.tools.error.display ("LibEKL", "Inventory manager not initialzed", 1)
+		LibEKL.Tools.Error.Display ("LibEKL", "Inventory manager not initialzed", 1)
 	else
 		getInventory()
 	end
@@ -391,7 +391,7 @@ end
 function LibEKL.inventory.querySlotById (id)
 
 	if not _invManager then 
-		LibEKL.tools.error.display ("LibEKL", "Inventory manager not initialzed", 1)
+		LibEKL.Tools.Error.Display ("LibEKL", "Inventory manager not initialzed", 1)
 		return
 	end
 	
@@ -414,7 +414,7 @@ end
 function LibEKL.inventory.querySlotByType (typeId)
 
 	if _invManager == false then 
-		LibEKL.tools.error.display ("LibEKL", "Inventory manager not initialzed", 1)
+		LibEKL.Tools.Error.Display ("LibEKL", "Inventory manager not initialzed", 1)
 		return
 	end
 	
@@ -432,7 +432,7 @@ end
 function LibEKL.inventory.queryQtyById (key)
 
 	if not _invManager then 
-		LibEKL.tools.error.display ("LibEKL", "Inventory manager not initialzed", 1)
+		LibEKL.Tools.Error.Display ("LibEKL", "Inventory manager not initialzed", 1)
 		return
 	end
 	
@@ -456,7 +456,7 @@ end
 function LibEKL.inventory.queryByCategory (category)
 
 	if not _invManager then 
-		LibEKL.tools.error.display ("LibEKL", "Inventory manager not initialzed", 1)
+		LibEKL.Tools.Error.Display ("LibEKL", "Inventory manager not initialzed", 1)
 		return
 	end
 
@@ -472,7 +472,7 @@ function LibEKL.inventory.queryByCategory (category)
 			if err and details then
 				retValues[id] = details
 			else
-				LibEKL.tools.error.display ("LibEKL", "Getting item information for " .. id .. " failed", 1)				
+				LibEKL.Tools.Error.Display ("LibEKL", "Getting item information for " .. id .. " failed", 1)				
 			end
 		end
 			
@@ -531,7 +531,7 @@ end
 function LibEKL.inventory.getBagItems()
 
     if not _invManager then
-        LibEKL.tools.error.display("LibEKL", "Inventory manager not initialized", 1)
+        LibEKL.Tools.Error.Display("LibEKL", "Inventory manager not initialized", 1)
         return
     end
 
@@ -562,7 +562,7 @@ end
 function LibEKL.inventory.getBagSlots()
 
 	if not _invManager then
-        LibEKL.tools.error.display("LibEKL", "Inventory manager not initialized", 1)
+        LibEKL.Tools.Error.Display("LibEKL", "Inventory manager not initialized", 1)
         return
     end
 

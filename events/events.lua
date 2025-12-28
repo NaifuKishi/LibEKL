@@ -178,7 +178,7 @@ end
 
 function LibEKL.events.addPeriodic(func, period, tries) -- period is in seconds
 	
-	local uuid = LibEKL.tools.uuid ()
+	local uuid = LibEKL.Tools.UUID ()
 	_periodicEvents[uuid] = {func = func, timer = inspectTimeFrame(), period = (period or 0), tries = (tries or 1), currentTries = 0 }
 		
 	return uui
@@ -187,7 +187,7 @@ end
 
 function LibEKL.events.addInsecure(func, timer, period)
 
-  local uuid = LibEKL.tools.uuid ()
+  local uuid = LibEKL.Tools.UUID ()
 	_insecureEvents[uuid] = {func = func, timer = timer, period = period }
 	return uuid
 
@@ -201,7 +201,7 @@ function LibEKL.events.checkEvents (name, init) -- radial muss umgebaut werden, 
 		LibEKL.eventHandlers[name] = {}
 		LibEKL.events[name] = {}
 	elseif init ~= false then
-		LibEKL.tools.error.display (addonInfo.identifier, stringFormat("Duplicate name '%s' found!", name), 1)
+		LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("Duplicate name '%s' found!", name), 1)
 		return false
 	end
 	

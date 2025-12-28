@@ -40,11 +40,11 @@ local function _uiActionButton(name, parent)
                 {xProportional = 1, yProportional = 0}, {xProportional = 0, yProportional = 0}}
 	local stroke
 	
-	--local stroke = LibEKL.tools.table.copy (LibEKL.art.GetThemeColor('elementMainColor'))
+	--local stroke = LibEKL.Tools.Table.Copy (LibEKL.art.GetThemeColor('elementMainColor'))
 	--stroke.thickness = 1
 	
 	local fill
-	--local fill = LibEKL.tools.table.copy (LibEKL.art.GetThemeColor("elementSubColor2"))	
+	--local fill = LibEKL.Tools.Table.Copy (LibEKL.art.GetThemeColor("elementSubColor2"))	
 	--fill.type = "solid"
 
 	--button:SetShape(path, fill, stroke)

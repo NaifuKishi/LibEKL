@@ -30,7 +30,14 @@ RunOnStartup = {
 
   "strings/strings.lua",
 
-  "tools/tools.lua",
+  "tools/color.lua",
+  "tools/date_time.lua",
+  "tools/error.lua",
+  "tools/lang.lua",
+  "tools/math.lua",
+  "tools/performance.lua",
+  "tools/settings.lua",
+  "tools/table.lua",
   "tools/uuid.lua",
 
   "ui/ui.lua",

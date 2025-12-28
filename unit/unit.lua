@@ -93,11 +93,11 @@ local function buildDebugUI ()
 	function frame:Update()
 		local thisText, thisText2 = "", ""
 
-		local sortedKeys = LibEKL.tools.table.getSortedKeys (_idCache)
+		local sortedKeys = LibEKL.Tools.Table.GetSortedKeys (_idCache)
 		
 		for _, key in pairs(sortedKeys) do
 			local units = _idCache[key]
-			thisText = stringFormat("%s%s: %s\n", thisText, key, LibEKL.tools.table.serialize(units))
+			thisText = stringFormat("%s%s: %s\n", thisText, key, LibEKL.Tools.Table.Serialize(units))
 		end
 
 		text:SetText(thisText)
@@ -115,13 +115,13 @@ local function setIDCache(key, value, flag, source)
 	
 	if flag == false then
 		if _idCache[key] == nil then return end
-		LibEKL.tools.table.removeValue (_idCache[key], value)
+		LibEKL.Tools.Table.RemoveValue (_idCache[key], value)
 	else
 		if _idCache[key] == nil then
 			_idCache[key] = {}
 		end
 		
-		if not LibEKL.tools.table.isMember (_idCache[key], value) then
+		if not LibEKL.Tools.Table.IsMember (_idCache[key], value) then
 			table.insert(_idCache[key], value)
 		end
 		
@@ -655,7 +655,7 @@ function LibEKL.unit.getUnitTypes (unitID)
 	local retValues = {}
 
 	for unitType, list in pairs (_idCache) do
-		if LibEKL.tools.table.isMember(list, unitID) then
+		if LibEKL.Tools.Table.IsMember(list, unitID) then
 			table.insert(retValues, unitType) 
 		end
 	end

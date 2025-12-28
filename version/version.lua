@@ -25,7 +25,7 @@ local blacklist = {"5.03v01.R"}
 
 local function fctCheckVersion(myVersion, reportedVersion)
 
-    if LibEKL.tools.table.isMember(blacklist, reportedVersion) then return true end
+    if LibEKL.Tools.Table.IsMember(blacklist, reportedVersion) then return true end
 
     -- Split the version strings into arrays of numbers
     local myVersionArray = LibEKL.strings.split(myVersion, '%.')
@@ -102,7 +102,7 @@ local function _fctProcessMessage(_, from, type, channel, identifier, data)
     local reportTable = {}
     for k, v in pairs (LibEKLSetup.addonVersions) do reportTable[k] = v.latestVersion end
   
-    local msgString = "info=" .. LibEKL.tools.table.serialize (reportTable)    
+    local msgString = "info=" .. LibEKL.Tools.Table.Serialize (reportTable)    
     Command.Message.Send(from, "LibEKL.version", msgString, function() end)
     
   elseif stringFind(data, "info=") == 1 then

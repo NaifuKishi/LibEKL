@@ -340,7 +340,7 @@ function LibEKL.ui.attachAbilityTooltip (target, abilityId)
 			if err == false or abilityDetails == nil then
 				err, abilityDetails = pcall (InspectAbilityDetail, abilityId)
 				if err == false or abilityDetails == nil then
-					LibEKL.tools.error.display (addonInfo.identifier, "LibEKL.ui.attachAbilityTooltip: unable to get details of ability with id " .. abilityId)	
+					LibEKL.Tools.Error.Display (addonInfo.identifier, "LibEKL.ui.attachAbilityTooltip: unable to get details of ability with id " .. abilityId)	
 					LibEKL.ui.attachAbilityTooltip (target, nil)
 					return
 				end
@@ -451,7 +451,7 @@ function LibEKL.ui.messageDialog (message, okFunc)
 			privateVars.uiDialogContext:SetStrata ('topmost')
 		end
 		
-		local name = "LibEKLMessageDialog." .. LibEKL.tools.uuid ()
+		local name = "LibEKLMessageDialog." .. LibEKL.Tools.UUID ()
 	
 		thisDialog = LibEKL.uiCreateFrame("nkDialog", name, privateVars.uiDialogContext)
 		thisDialog:SetLayer(2)
@@ -482,7 +482,7 @@ end
 function LibEKL.uiCreateFrame (frameType, name, parent)
 
 	if frameType == nil or name == nil or parent == nil then
-		LibEKL.tools.error.display (addonInfo.identifier, stringFormat("LibEKL.uiCreateFrame - invalid number of parameters\nexpecting: type of frame (string), name of frame (string), parent of frame (object)\nreceived: %s, %s, %s", frameType, name, parent))
+		LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("LibEKL.uiCreateFrame - invalid number of parameters\nexpecting: type of frame (string), name of frame (string), parent of frame (object)\nreceived: %s, %s, %s", frameType, name, parent))
 		return
 	end
 
@@ -510,7 +510,7 @@ function LibEKL.uiCreateFrame (frameType, name, parent)
 	else
 		local func = uiFunctions[checkFrameType]
 		if func == nil then
-			LibEKL.tools.error.display (addonInfo.identifier, stringFormat("LibEKL.uiCreateFrame - unknown frame type [%s]", frameType))
+			LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("LibEKL.uiCreateFrame - unknown frame type [%s]", frameType))
 		else
 			uiObject = func(name, parent)
 		end

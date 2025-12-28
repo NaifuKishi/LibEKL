@@ -35,7 +35,7 @@ function internalFunc.coroutinesProcess ()
 				
 				if _coRoutines[idx].timeStamp == nil then _coRoutines[idx].timeStamp = inspectTimeReal() end
 				
-				if LibEKL.tools.math.round((inspectTimeReal() - _coRoutines[idx].timeStamp), 1) < _coRoutines[idx].delay then 
+				if LibEKL.Tools.Math.Round((inspectTimeReal() - _coRoutines[idx].timeStamp), 1) < _coRoutines[idx].delay then 
 					go = false
 				else
 					_coRoutines[idx].delay = nil						
@@ -47,9 +47,9 @@ function internalFunc.coroutinesProcess ()
 				
 				if status == false then
 					if type(value) == 'function' then
-						LibEKL.tools.error.display ("LibEKL", 'error in coroutine within supplied function', 1)
+						LibEKL.Tools.Error.Display ("LibEKL", 'error in coroutine within supplied function', 1)
 					else
-						LibEKL.tools.error.display ("LibEKL", 'error in coroutine: ' .. value, 1)
+						LibEKL.Tools.Error.Display ("LibEKL", 'error in coroutine: ' .. value, 1)
 					end 
 					_coRoutines[idx].active = false
 				elseif value == nil or value >= _coRoutines[idx].counter or status == false then

@@ -313,7 +313,7 @@ local function _uiItemTooltip(name, parent)
 		  itemTypeText = LibEKL.items.getRessource ('itemTypeTranslation', riftSlot)
 			
 			if itemTypeText == nil then
-				LibEKL.tools.error.display (addonInfo.toc.Identifier, string.format("itemTooltip could not get item type for rift slot %s", riftSlot), 2)
+				LibEKL.Tools.Error.Display (addonInfo.toc.Identifier, string.format("itemTooltip could not get item type for rift slot %s", riftSlot), 2)
 				itemCat:SetVisible(false)
 				itemType:SetVisible(false)
 			else
@@ -454,7 +454,7 @@ local function _uiItemTooltip(name, parent)
 		
 		if itemLibDetails ~= nil then
 		
-			local useText = itemLibDetails['use' .. LibEKL.tools.lang.getLanguageShort () ]
+			local useText = itemLibDetails['use' .. LibEKL.Tools.Lang.GetLanguageShort () ]
 		
 			if useText ~= nil then
 				use:SetText (string.format(lang.use, useText))
@@ -467,7 +467,7 @@ local function _uiItemTooltip(name, parent)
 				use:SetVisible(false)
 			end
 			
-			local equipText = itemLibDetails['equip' .. LibEKL.tools.lang.getLanguageShort () ]
+			local equipText = itemLibDetails['equip' .. LibEKL.Tools.Lang.GetLanguageShort () ]
 			
 			if equipText ~= nil then
 				equip:SetText (string.format(lang.equip, equipText))
@@ -486,7 +486,7 @@ local function _uiItemTooltip(name, parent)
 		
 		if itemLibDetails ~= nil then
 		
-			local setText = itemLibDetails['itemSet' .. LibEKL.tools.lang.getLanguageShort () ]
+			local setText = itemLibDetails['itemSet' .. LibEKL.Tools.Lang.GetLanguageShort () ]
 		
 			if setText ~= nil then
 				local text = setText
@@ -496,9 +496,9 @@ local function _uiItemTooltip(name, parent)
 				if setBoni ~= nil then
 					for idx = 1, #setBoni, 1 do
 						text = text .. "\n" .. setBoni[idx][1] .. ": "
-						if LibEKL.tools.lang.getLanguageShort () == "DE" then
+						if LibEKL.Tools.Lang.GetLanguageShort () == "DE" then
 							text = text .. setBoni[idx][2]
-						elseif LibEKL.tools.lang.getLanguageShort () == "FR" then
+						elseif LibEKL.Tools.Lang.GetLanguageShort () == "FR" then
 							text = text .. setBoni[idx][4]
 						else
 							text = text .. setBoni[idx][3]
@@ -561,7 +561,7 @@ local function _uiItemTooltip(name, parent)
 		if itemLibDetails ~= nil and itemLibDetails.rfl ~= nil then
 		  local levelText = lang.factionList[tonumber(itemLibDetails.rfl)]
 			if levelText == nil then
-			   LibEKL.tools.error.display ("LibEKL", "Unknown faction level: " .. itemLibDetails.rfl, 1) 
+			   LibEKL.Tools.Error.Display ("LibEKL", "Unknown faction level: " .. itemLibDetails.rfl, 1) 
 			end
 			local factionText = itemLibDetails.rf
          
@@ -569,7 +569,7 @@ local function _uiItemTooltip(name, parent)
   			if lang.factionNames[factionText] ~= nil then			 
   			  factionText = lang.factionNames[factionText]
   			else
-  			  LibEKL.tools.error.display ("LibEKL", "Unknown faction: " .. itemLibDetails.rf, 1) 
+  			  LibEKL.Tools.Error.Display ("LibEKL", "Unknown faction: " .. itemLibDetails.rf, 1) 
   			end
   	  end
 			local text = string.format(lang.requiredFaction, factionText, levelText)

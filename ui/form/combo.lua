@@ -205,7 +205,7 @@ local function _uiCombobox(name, parent)
 	function combo:SetSelection(selection, sort)
 		
 		if selection == nil or #selection == 0 then
-			LibEKL.tools.error.display (addonInfo.identifier, string.format("_uiCombobox - invalid number of parameters\nexpecting: selection (table)\nreceived: %s", LibEKL.tools.table.serialize (selection))) 
+			LibEKL.Tools.Error.Display (addonInfo.identifier, string.format("_uiCombobox - invalid number of parameters\nexpecting: selection (table)\nreceived: %s", LibEKL.Tools.Table.Serialize (selection))) 
 			return 
 		end
 		

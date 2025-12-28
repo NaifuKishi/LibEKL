@@ -49,7 +49,7 @@ local function isSubscribed(unit, buffDetails, combatLogFlag)
 		
 			if sDetails[thisType]["*"] ~= nil then
 				local subscription = sDetails[thisType]["*"]
-				if subscription.target == "*" or subscription.target == buffDetails.caster or LibEKL.tools.table.isMember(LibEKL.unit.getUnitTypes(unit), subscription.target) then
+				if subscription.target == "*" or subscription.target == buffDetails.caster or LibEKL.Tools.Table.IsMember(LibEKL.unit.getUnitTypes(unit), subscription.target) then
 					addonSubscriptions[addon] = { buffType = thisTypeR, subscription = subscription }
 					hasSubscribed = true
 				end
@@ -60,7 +60,7 @@ local function isSubscribed(unit, buffDetails, combatLogFlag)
 
 				if subscription ~= nil and subscription.caster == buffDetails.caster then
 
-					if LibEKL.tools.table.isMember(LibEKL.unit.getUnitTypes(unit), subscription.target) then
+					if LibEKL.Tools.Table.IsMember(LibEKL.unit.getUnitTypes(unit), subscription.target) then
 						addonSubscriptions[addon] = { buffType = thisTypeR, subscription = subscription }
 						hasSubscribed = true
 					else
@@ -500,7 +500,7 @@ local function processBuffDebuffUpdates (updateList)
 				
 					for _, thisUnitId in pairs(unitId) do
 				
-						if updateList[thisUnitId] ~= nil and LibEKL.tools.table.isMember(updateList[thisUnitId], buffId) then
+						if updateList[thisUnitId] ~= nil and LibEKL.Tools.Table.IsMember(updateList[thisUnitId], buffId) then
 							local buffDetails = LibEKL.BuffManager.GetBuffDetails(thisUnitId, buffId)
 							
 							if buffDetails ~= nil then
@@ -655,13 +655,13 @@ function LibEKL.BuffManager.unsubscribe(sType, sId)
 			local sTarget = LibEKL.strings.right (thisSubscription.target, "addonType", 1, true)
 			
 			if _combatUnits[sTarget] ~= nil then 
-				_combatUnits[sTarget] = LibEKL.tools.table.removeValue(_combatUnits[sTarget], stringFormat("%s-%s", sType, sId))
+				_combatUnits[sTarget] = LibEKL.Tools.Table.RemoveValue(_combatUnits[sTarget], stringFormat("%s-%s", sType, sId))
 				if #_combatUnits[sTarget] == 0 then _combatUnits[sTarget] = nil end
 			end
 		elseif thisSubscription.target == "*" then
 			
 			if _combatUnits["*"] ~= nil then 
-				_combatUnits["*"] = LibEKL.tools.table.removeValue(_combatUnits["*"], stringFormat("%s-%s", sType, sId))
+				_combatUnits["*"] = LibEKL.Tools.Table.RemoveValue(_combatUnits["*"], stringFormat("%s-%s", sType, sId))
 				if #_combatUnits["*"] == 0 then _combatUnits["*"] = nil end
 			end
 			

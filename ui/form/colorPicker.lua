@@ -40,9 +40,9 @@ local function buildColorPicker(parent, handler, pixelSize)
 					y = count * pixelSize
 					count = count + 1
 					
-					local r, g, b = LibEKL.tools.color.HSV2RGB(h, s, v)
+					local r, g, b = LibEKL.Tools.Color.HSV2RGB(h, s, v)
 	
-					local pixel = select(2, table.remove(parent.pixels)) or LibEKL.uiCreateFrame ('nkFrame', 'LibEKL.colorPicker.Pixel.' .. LibEKL.tools.uuid(), parent)
+					local pixel = select(2, table.remove(parent.pixels)) or LibEKL.uiCreateFrame ('nkFrame', 'LibEKL.colorPicker.Pixel.' .. LibEKL.Tools.UUID(), parent)
 					
 					pixel:ClearAll()
 					pixel:SetMouseMasking("full")
@@ -76,7 +76,7 @@ local function buildColorPicker(parent, handler, pixelSize)
 			pixel:SetMouseMasking("full")
 			pixel:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
 			
-			local r, g, b = LibEKL.tools.color.HSV2RGB(h/360, s/100, v/100)
+			local r, g, b = LibEKL.Tools.Color.HSV2RGB(h/360, s/100, v/100)
 			pixel:SetBackgroundColor(r, g, b)
 			pixel:SetWidth(pixelSize)
 			pixel:SetHeight(pixelSize)

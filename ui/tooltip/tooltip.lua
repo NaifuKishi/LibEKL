@@ -200,7 +200,7 @@ local function _uiTooltip(name, parent)
 			separator:SetVisible(false)	
 			tooltip:SetHeight(title:GetHeight()+10)
 		else
-			local key, value = LibEKL.tools.table.getFirstElement(lines)
+			local key, value = LibEKL.Tools.Table.GetFirstElement(lines)
 			if value:GetVisible() == false then
 				separator:SetVisible(false)
 				tooltip:SetHeight(title:GetHeight()+10)
