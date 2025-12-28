@@ -18,10 +18,6 @@ RunOnStartup = {
   "locales/localizationEN.lua",
   "locales/localizationRU.lua",
   
-  "buffManager/buffManager.lua",
-  "buffManager/buffManagerEvents.lua",
-  "buffManager/buffManagerProcessing.lua",
-
   "cooldown/cooldown.lua",
 
   "coroutines/coroutines.lua",

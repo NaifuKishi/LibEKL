@@ -149,7 +149,7 @@ local function updateHandler()
 		 end
 		 
 		 if thisWatchDog >= 0.1 and _eventsP1Index == 3 then
-			internalFunc.processBuffs()
+			--internalFunc.processBuffs()
 			_eventsP1Index = 1
 		 end
 	
