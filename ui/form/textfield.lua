@@ -15,8 +15,8 @@ local function _uiTextfield(name, parent)
 
 	local borderColor, focusColor, innerColor
 
-	local textField = LibEKL.uiCreateFrame ('nkFrame', name, parent)
-	local textFieldInner = LibEKL.uiCreateFrame ('nkFrame', name .. ".inner", textField)
+	local textField = LibEKL.UICreateFrame ('nkFrame', name, parent)
+	local textFieldInner = LibEKL.UICreateFrame ('nkFrame', name .. ".inner", textField)
 	local textFieldEdit = UI.CreateFrame ('RiftTextfield', name .. ".edit", textFieldInner)
 
 	local properties = {}

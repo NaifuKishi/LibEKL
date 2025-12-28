@@ -23,9 +23,9 @@ local function _uiProgressBar(name, parent)
 	
 	local range = {0, 100}
 
-	local progressBar = LibEKL.uiCreateFrame ('nkCanvas', name, parent)
-	local inner = LibEKL.uiCreateFrame ('nkFrame', name ..'.inner', progressBar)	
-	local label = LibEKL.uiCreateFrame ('nkText', name .. '.label', inner)
+	local progressBar = LibEKL.UICreateFrame ('nkCanvas', name, parent)
+	local inner = LibEKL.UICreateFrame ('nkFrame', name ..'.inner', progressBar)	
+	local label = LibEKL.UICreateFrame ('nkText', name .. '.label', inner)
 	
 	inner:SetPoint("TOPLEFT", progressBar, "TOPLEFT", 1, 1)
 	inner:SetBackgroundColor(fillColor[1], fillColor[2], fillColor[3], fillColor[4])

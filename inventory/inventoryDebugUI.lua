@@ -34,7 +34,7 @@ local function buildDebugUI ()
 
 	local name = "LibEKL.Inventory.debugUI"
 
-	debugUI = LibEKL.uiCreateFrame("nkFrame", name, privateVars.uiContext)
+	debugUI = LibEKL.UICreateFrame("nkFrame", name, privateVars.uiContext)
 	debugUI:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
 	debugUI:SetBackgroundColor(0, 0, 0, 1)
 	debugUI:SetWidth(250)
@@ -54,7 +54,7 @@ local function buildDebugUI ()
 		for k, v in pairs(inventory.bySlot) do	
 			if not LibEKL.strings.startsWith(k, "sibg.") and not LibEKL.strings.startsWith(k, "seqp.") and not LibEKL.strings.startsWith(k, "sqst.") then
 				if slotText[k] == nil then
-					local thisSlot = LibEKL.uiCreateFrame("nkText", name .. "." .. k, debugUI)				
+					local thisSlot = LibEKL.UICreateFrame("nkText", name .. "." .. k, debugUI)				
 					slotText[k] = { text = thisSlot, details = v }
 				else
 					slotText[k].details = v

@@ -23,10 +23,10 @@ local function _uiScrollpane(name, parent)
 	
 	local scrollPane = UI.CreateFrame('Mask', name, parent)
 	
-	local content = LibEKL.uiCreateFrame ('nkFrame', name .. '.content', scrollPane)
+	local content = LibEKL.UICreateFrame ('nkFrame', name .. '.content', scrollPane)
 	content:SetPoint("TOPLEFT", scrollPane, "TOPLEFT")
 	
-	local scrollLane = LibEKL.uiCreateFrame("nkScrollbox", name .. ".scrollbox", scrollPane)
+	local scrollLane = LibEKL.UICreateFrame("nkScrollbox", name .. ".scrollbox", scrollPane)
 	
 	scrollLane:SetPoint("TOPRIGHT", scrollPane, "TOPRIGHT")
 	--scrollLane:SetColor(elementColor)

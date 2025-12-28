@@ -42,7 +42,7 @@ local function buildColorPicker(parent, handler, pixelSize)
 					
 					local r, g, b = LibEKL.Tools.Color.HSV2RGB(h, s, v)
 	
-					local pixel = select(2, table.remove(parent.pixels)) or LibEKL.uiCreateFrame ('nkFrame', 'LibEKL.colorPicker.Pixel.' .. LibEKL.Tools.UUID(), parent)
+					local pixel = select(2, table.remove(parent.pixels)) or LibEKL.UICreateFrame ('nkFrame', 'LibEKL.colorPicker.Pixel.' .. LibEKL.Tools.UUID(), parent)
 					
 					pixel:ClearAll()
 					pixel:SetMouseMasking("full")
@@ -71,7 +71,7 @@ local function buildColorPicker(parent, handler, pixelSize)
 			y = count * pixelSize
 			count = count + 1
 	
-			local pixel = select(2, table.remove(parent.pixels)) or LibEKL.uiCreateFrame ('nkFrame', 'LibEKL.colorPicker.Pixel2.' .. count, parent)
+			local pixel = select(2, table.remove(parent.pixels)) or LibEKL.UICreateFrame ('nkFrame', 'LibEKL.colorPicker.Pixel2.' .. count, parent)
 			pixel:ClearAll()
 			pixel:SetMouseMasking("full")
 			pixel:SetPoint("TOPLEFT", parent, "TOPLEFT", x, y)
@@ -107,13 +107,13 @@ local function buildinternalFuncColorPicker ()
 
 	local colorR, colorG, colorB, colorA
 
-	_uiGlobalColorPicker = LibEKL.uiCreateFrame ('nkFrame', 'LibEKL.defaultColorPicker', uiContext)
+	_uiGlobalColorPicker = LibEKL.UICreateFrame ('nkFrame', 'LibEKL.defaultColorPicker', uiContext)
 	
 	local picker = _uiGlobalColorPicker
 	picker:SetBackgroundColor(0, 0, 0, 1)
 	
 	local width, height
-	local inner = LibEKL.uiCreateFrame ('nkFrame', 'LibEKL.defaultColorPicker.inner', picker)
+	local inner = LibEKL.UICreateFrame ('nkFrame', 'LibEKL.defaultColorPicker.inner', picker)
 	inner:SetPoint("TOPLEFT", picker, "TOPLEFT", 1, 1)
 	inner:SetPoint("BOTTOMRIGHT", picker, "BOTTOMRIGHT", -1, -1)
 	
@@ -122,7 +122,7 @@ local function buildinternalFuncColorPicker ()
 		LibEKL.eventHandlers['LibEKL.defaultColorPicker']["ColorChanged"]( r, g, b, 1 )
 	end, 8)
 	
-	local copyText = LibEKL.uiCreateFrame ('nkText', 'LibEKL.defaultColorPicker.copyText', picker)
+	local copyText = LibEKL.UICreateFrame ('nkText', 'LibEKL.defaultColorPicker.copyText', picker)
 	copyText:SetPoint("BOTTOMLEFT", picker, "BOTTOMLEFT", 2, -2)
 	copyText:SetFontSize(10)
 	copyText:SetFontColor (1,1,1,1)
@@ -132,7 +132,7 @@ local function buildinternalFuncColorPicker ()
 		_colorPickerCache = { colorR, colorG, colorB, colorA }
 	end, 'LibEKL.defaultColorPicker.copyText.Left.Click')
 		
-	local pasteText = LibEKL.uiCreateFrame ('nkText', 'LibEKL.defaultColorPicker.pasteText', picker)
+	local pasteText = LibEKL.UICreateFrame ('nkText', 'LibEKL.defaultColorPicker.pasteText', picker)
 	pasteText:SetPoint("CENTERLEFT", copyText, "CENTERRIGHT", 5, 0)
 	pasteText:SetFontSize(10)
 	pasteText:SetFontColor (1,1,1,1)
@@ -146,13 +146,13 @@ local function buildinternalFuncColorPicker ()
 		LibEKL.eventHandlers['LibEKL.defaultColorPicker']["ColorChanged"]( colorR, colorG, colorB, 1 )
 	end, 'LibEKL.defaultColorPicker.pasteText.Left.Click')
 	
-	colorPixel = LibEKL.uiCreateFrame ('nkFrame', "LibEKL.defaultColorPicker.colorPixel", picker)
+	colorPixel = LibEKL.UICreateFrame ('nkFrame', "LibEKL.defaultColorPicker.colorPixel", picker)
 	colorPixel:SetPoint("BOTTOMRIGHT", picker, "BOTTOMRIGHT", -2, -6)
 	colorPixel:SetWidth(10)
 	colorPixel:SetHeight(10)
 	colorPixel:SetBackgroundColor(0,0,0,1)
 	
-	local colorText = LibEKL.uiCreateFrame ('nkText', 'LibEKL.defaultColorPicker.colorText', picker)
+	local colorText = LibEKL.UICreateFrame ('nkText', 'LibEKL.defaultColorPicker.colorText', picker)
 	colorText:SetPoint("CENTERRIGHT", colorPixel, "CENTERLEFT", -5, 1)
 	colorText:SetFontSize(10)
 	colorText:SetFontColor (1,1,1,1)
@@ -178,8 +178,8 @@ local function _uiColorPicker(name, parent)
 
 	--if LibEKL.internalFunc.checkEvents (name, true) == false then return nil end
 	
-	local colorPicker = LibEKL.uiCreateFrame ('nkFrame', name, parent)	
-	local label = LibEKL.uiCreateFrame ('nkText', name .. '.label', colorPicker)
+	local colorPicker = LibEKL.UICreateFrame ('nkFrame', name, parent)	
+	local label = LibEKL.UICreateFrame ('nkText', name .. '.label', colorPicker)
 	
 	local labelColor
 	--local labelColor = LibEKL.art.GetThemeColor("labelColor")
@@ -190,12 +190,12 @@ local function _uiColorPicker(name, parent)
 	label:SetHeight(18)
 	label:SetFontSize(13)
 	
-	local colorDisplay = LibEKL.uiCreateFrame ('nkFrame', name .. '.colorDisplay', colorPicker)
+	local colorDisplay = LibEKL.UICreateFrame ('nkFrame', name .. '.colorDisplay', colorPicker)
 	colorDisplay:SetLayer(1)
 	colorDisplay:SetPoint("CENTERLEFT", label, "CENTERRIGHT")	
 	colorDisplay:SetBackgroundColor(0,0,0,1)
 	
-	local colorDisplayInner = LibEKL.uiCreateFrame ('nkFrame', name .. '.colorDisplayInner', colorDisplay)
+	local colorDisplayInner = LibEKL.UICreateFrame ('nkFrame', name .. '.colorDisplayInner', colorDisplay)
 	colorDisplayInner:SetPoint("TOPLEFT", colorDisplay, "TOPLEFT", 1, 1)
 	colorDisplayInner:SetPoint("BOTTOMRIGHT", colorPicker, "BOTTOMRIGHT", -1, -1)
 	
@@ -240,7 +240,7 @@ local function _uiColorPicker(name, parent)
 	end
 	
 	function colorPicker:SetText(text) label:SetText(text) end	
-	function colorPicker:SetFont(addonInfo, font) LibEKL.ui.setFont(label, addonInfo, font) end
+	function colorPicker:SetFont(addonInfo, font) LibEKL.UI.SetFont(label, addonInfo, font) end
 	
 	local oSetWidth, oSetHeight = colorPicker.SetWidth, colorPicker.SetHeight
 	

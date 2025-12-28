@@ -71,12 +71,12 @@ local function _uiSlider(name, parent)
 	local labelText = nil
 	local labelHTML = false
 
-	local slider = LibEKL.uiCreateFrame ('nkFrame', name, parent)
+	local slider = LibEKL.UICreateFrame ('nkFrame', name, parent)
 	
-	local sliderLabel = LibEKL.uiCreateFrame ('nkText', name .. '.label', slider)
-	local sliderLane = LibEKL.uiCreateFrame ('nkFrame', name .. '.lane', slider)
-	local sliderLaneInner = LibEKL.uiCreateFrame ('nkFrame', name .. '.inner', sliderLane)
-	local sliderPos = LibEKL.uiCreateFrame ('nkFrame', name .. '.pos', sliderLaneInner)
+	local sliderLabel = LibEKL.UICreateFrame ('nkText', name .. '.label', slider)
+	local sliderLane = LibEKL.UICreateFrame ('nkFrame', name .. '.lane', slider)
+	local sliderLaneInner = LibEKL.UICreateFrame ('nkFrame', name .. '.inner', sliderLane)
+	local sliderPos = LibEKL.UICreateFrame ('nkFrame', name .. '.pos', sliderLaneInner)
 
 	local properties = {}
 
@@ -251,7 +251,7 @@ local function _uiSlider(name, parent)
 	end	
 
 	function slider:SetFont(addonId, font)
-		LibEKL.ui.setFont(sliderLabel, addonId, font)
+		LibEKL.UI.SetFont(sliderLabel, addonId, font)
 	end
 	
 	function slider:SetFontSize(fontSize)

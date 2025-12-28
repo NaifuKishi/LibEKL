@@ -3,12 +3,12 @@ local addonInfo, privateVars = ...
 ---------- init namespace ---------
 
 if not LibEKL then LibEKL = {} end
-if not LibEKL.ui then LibEKL.ui = {} end
+if not LibEKL.UI then LibEKL.UI = {} end
 
 if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 if not privateVars.uiNames then privateVars.uiNames = {} end
 
-if privateVars.uiContext == nil then privateVars.uiContext = UI.CreateContext("LibEKL.ui") end
+if privateVars.uiContext == nil then privateVars.uiContext = UI.CreateContext("LibEKL.UI") end
 
 if not privateVars.uiElements then privateVars.uiElements = {} end
 
@@ -127,9 +127,9 @@ end
 
 -- generic ui functions to handle screen size and bounds
 
-function LibEKL.ui.setupBoundCheck()
+function LibEKL.UI.setupBoundCheck()
 
-	local testFrameH = LibEKL.uiCreateFrame ('nkFrame', "LibEKL.ui.boundTestFrameH", uiContext)
+	local testFrameH = LibEKL.UICreateFrame ('nkFrame', "LibEKL.UI.boundTestFrameH", uiContext)
 	testFrameH:SetBackgroundColor(0, 0, 0, 0)
 	testFrameH:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
 	testFrameH:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", 0, 1)
@@ -138,7 +138,7 @@ function LibEKL.ui.setupBoundCheck()
 		data.uiBoundLeft, data.uiBoundTop, data.uiBoundRight, data.uiBoundBottom = UIParent:GetBounds()
 	end, testFrameH:GetName() .. ".UI.Layout.Size")
 
-	local testFrameV = LibEKL.uiCreateFrame("nkFrame", "boundTestFrameV", uiContext)
+	local testFrameV = LibEKL.UICreateFrame("nkFrame", "boundTestFrameV", uiContext)
 	testFrameV:SetBackgroundColor(0, 0, 0, 0)
 	testFrameV:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
 	testFrameV:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 1, 0)
@@ -149,21 +149,21 @@ function LibEKL.ui.setupBoundCheck()
 	
 end
 
-function LibEKL.ui.getBoundBottom() return data.uiBoundBottom end
-function LibEKL.ui.getBoundRight() return data.uiBoundRight end
+function LibEKL.UI.getBoundBottom() return data.uiBoundBottom end
+function LibEKL.UI.getBoundRight() return data.uiBoundRight end
 
-function LibEKL.ui.showWithinBound (element, target)
+function LibEKL.UI.showWithinBound (element, target)
 
 	local from, to, x, y
 
-	if target:GetTop() + element:GetHeight() > LibEKL.ui.getBoundBottom() then
-		if element:GetLeft() + element:GetWidth() > LibEKL.ui.getBoundRight() then
+	if target:GetTop() + element:GetHeight() > LibEKL.UI.getBoundBottom() then
+		if element:GetLeft() + element:GetWidth() > LibEKL.UI.getBoundRight() then
 			from, to, x, y = "BOTTOMRIGHT", "TOPLEFT", -5, -5
 		else
 			from, to, x, y = "BOTTOMLEFT", "BOTTOMLEFT", 5, -5
 		end
 	else
-		if target:GetLeft() + element:GetWidth() > LibEKL.ui.getBoundRight() then
+		if target:GetLeft() + element:GetWidth() > LibEKL.UI.getBoundRight() then
 			from, to, x, y = "BOTTOMRIGHT", "TOPLEFT", -5, -5
 		else
 			from, to, x, y = "TOPLEFT", "BOTTOMLEFT", -5, 5
@@ -180,7 +180,7 @@ function LibEKL.ui.showWithinBound (element, target)
 
 end
 
-function LibEKL.ui.reloadDialog (title)
+function LibEKL.UI.reloadDialog (title)
 
 	if uiElements.reloadDialog ~= nil then
 		LibEKL.Events.AddInsecure(function() 
@@ -192,14 +192,14 @@ function LibEKL.ui.reloadDialog (title)
 	end
 	
 	if privateVars.uiContextSecure == nil then 
-		privateVars.uiContextSecure = UI.CreateContext("LibEKL.ui.secure") 
+		privateVars.uiContextSecure = UI.CreateContext("LibEKL.UI.secure") 
 		privateVars.uiContextSecure:SetStrata ('topmost')
 		privateVars.uiContextSecure:SetSecureMode('restricted')
 	end
 	
 	local name = "LibEKL.reloadDialog"
 	
-	uiElements.reloadDialog = LibEKL.uiCreateFrame("nkwindow", name, privateVars.uiContextSecure)
+	uiElements.reloadDialog = LibEKL.UICreateFrame("nkwindow", name, privateVars.uiContextSecure)
 	uiElements.reloadDialog:SetSecureMode('restricted')
 	uiElements.reloadDialog:GetContent():SetSecureMode('restricted')
 	uiElements.reloadDialog:SetTitle(title)
@@ -209,13 +209,13 @@ function LibEKL.ui.reloadDialog (title)
 	uiElements.reloadDialog:SetCloseable(false)
 	uiElements.reloadDialog:SetPoint("CENTERTOP", UIParent, "CENTERTOP", 0, 50)
 	
-	local msg = LibEKL.uiCreateFrame("nkText", name .. ".msg", uiElements.reloadDialog:GetContent())
+	local msg = LibEKL.UICreateFrame("nkText", name .. ".msg", uiElements.reloadDialog:GetContent())
 	msg:SetText(privateVars.langTexts.msgReload)
 	msg:SetPoint("CENTERTOP", uiElements.reloadDialog:GetContent(), "CENTERTOP", 0, 10)
 	msg:SetFontSize(16)
 	msg:SetFontColor(1,1,1,1)
 	
-	local button = LibEKL.uiCreateFrame("nkButton", name .. ".button", uiElements.reloadDialog:GetContent())
+	local button = LibEKL.UICreateFrame("nkButton", name .. ".button", uiElements.reloadDialog:GetContent())
 	button:SetPoint("CENTERTOP", msg, "CENTERBOTTOM", 0, 20)
 	button:SetText(privateVars.langTexts.reloadButton)
 	button:SetMacro("/reloadui")
@@ -224,17 +224,17 @@ end
 
 -------- tooltips
 
-function LibEKL.ui.attachItemTooltip (target, itemId, callBack)
+function LibEKL.UI.attachItemTooltip (target, itemId, callBack)
 
 	local name = "LibEKL.itemTooltip"
 
 	if privateVars.uiTooltipContext == nil then
-		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.ui.tooltip")
+		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.UI.tooltip")
 		privateVars.uiTooltipContext:SetStrata ('topmost')
 	end
 	
 	if uiElements.itemTooltip == nil then	
-		uiElements.itemTooltip = LibEKL.uiCreateFrame('nkItemTooltip', name, privateVars.uiTooltipContext)
+		uiElements.itemTooltip = LibEKL.UICreateFrame('nkItemTooltip', name, privateVars.uiTooltipContext)
 		uiElements.itemTooltip:SetVisible(false)    
 		
 		LibEKL.eventHandlers[name]["Visible"], LibEKL.Events[name]["Visible"] = Utility.Event.Create(addonInfo.identifier, name .. "Visible")
@@ -251,7 +251,7 @@ function LibEKL.ui.attachItemTooltip (target, itemId, callBack)
 			uiElements.itemTooltip:SetVisible(true)			
 			
 			uiElements.itemTooltip:SetPoint("TOPLEFT", target, "BOTTOMRIGHT", 5, 5)
-			LibEKL.ui.showWithinBound (uiElements.itemTooltip, target)
+			LibEKL.UI.showWithinBound (uiElements.itemTooltip, target)
 			
 			if callBack ~= nil then callBack(target, itemId) end
 			
@@ -268,15 +268,15 @@ function LibEKL.ui.attachItemTooltip (target, itemId, callBack)
 	
 end
 
-function LibEKL.ui.attachGenericTooltip (target, title, text)
+function LibEKL.UI.attachGenericTooltip (target, title, text)
 
 	if privateVars.uiTooltipContext == nil then
-		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.ui.tooltip")
+		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.UI.tooltip")
 		privateVars.uiTooltipContext:SetStrata ('topmost')
 	end
 	
 	if uiElements.genericTooltip == nil then
-		uiElements.genericTooltip = LibEKL.uiCreateFrame('nkTooltip', 'LibEKL.genericTooltip', privateVars.uiTooltipContext)
+		uiElements.genericTooltip = LibEKL.UICreateFrame('nkTooltip', 'LibEKL.genericTooltip', privateVars.uiTooltipContext)
 		uiElements.genericTooltip:SetVisible(false)    
 	end
 
@@ -298,7 +298,7 @@ function LibEKL.ui.attachGenericTooltip (target, title, text)
 			uiElements.genericTooltip:SetLines({{ text = text, wordwrap = true, minWidth = 200 }})							
 			uiElements.genericTooltip:SetPoint("TOPLEFT", target, "BOTTOMRIGHT", 5, 5)
 
-			LibEKL.ui.showWithinBound (uiElements.genericTooltip, target)
+			LibEKL.UI.showWithinBound (uiElements.genericTooltip, target)
 			
 			uiElements.genericTooltip:SetVisible(true)			
 		end, target:GetName() .. ".Mouse.Cursor.In")
@@ -310,22 +310,22 @@ function LibEKL.ui.attachGenericTooltip (target, title, text)
 
 end
 
-function LibEKL.ui.genericTooltipSetFont (addonId, fontName)
+function LibEKL.UI.genericTooltipSetFont (addonId, fontName)
 	if privateVars.uiTooltipContext == nil then return end
 	if uiElements.genericTooltip == nil then return end
 
 	uiElements.genericTooltip:SetFont (addonId, fontName)
 end
 
-function LibEKL.ui.attachAbilityTooltip (target, abilityId)
+function LibEKL.UI.attachAbilityTooltip (target, abilityId)
 
 	if privateVars.uiTooltipContext == nil then
-		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.ui.tooltip")
+		privateVars.uiTooltipContext = UI.CreateContext("LibEKL.UI.tooltip")
 		privateVars.uiTooltipContext:SetStrata ('topmost')
 	end
 	
 	if uiElements.abilityTooltip == nil then	
-		uiElements.abilityTooltip = LibEKL.uiCreateFrame('nkTooltip', 'LibEKL.abilityTooltip', privateVars.uiTooltipContext)
+		uiElements.abilityTooltip = LibEKL.UICreateFrame('nkTooltip', 'LibEKL.abilityTooltip', privateVars.uiTooltipContext)
 		uiElements.abilityTooltip:SetVisible(false)    
 	end
 
@@ -340,8 +340,8 @@ function LibEKL.ui.attachAbilityTooltip (target, abilityId)
 			if err == false or abilityDetails == nil then
 				err, abilityDetails = pcall (InspectAbilityDetail, abilityId)
 				if err == false or abilityDetails == nil then
-					LibEKL.Tools.Error.Display (addonInfo.identifier, "LibEKL.ui.attachAbilityTooltip: unable to get details of ability with id " .. abilityId)	
-					LibEKL.ui.attachAbilityTooltip (target, nil)
+					LibEKL.Tools.Error.Display (addonInfo.identifier, "LibEKL.UI.attachAbilityTooltip: unable to get details of ability with id " .. abilityId)	
+					LibEKL.UI.attachAbilityTooltip (target, nil)
 					return
 				end
 			end
@@ -351,7 +351,7 @@ function LibEKL.ui.attachAbilityTooltip (target, abilityId)
 			uiElements.abilityTooltip:SetLines({{ text = abilityDetails.description, wordwrap = true, minWidth = 200  }})
 						
 			uiElements.abilityTooltip:SetPoint("TOPLEFT", target, "BOTTOMRIGHT", 5, 5)
-			LibEKL.ui.showWithinBound (uiElements.abilityTooltip, target)
+			LibEKL.UI.showWithinBound (uiElements.abilityTooltip, target)
 			
 			uiElements.abilityTooltip:SetVisible(true)			
 		end, target:GetName() .. ".Mouse.Cursor.In")
@@ -362,7 +362,7 @@ function LibEKL.ui.attachAbilityTooltip (target, abilityId)
 	end
 end
 
-function LibEKL.ui.abilityTooltipSetFont (addonId, fontName)
+function LibEKL.UI.abilityTooltipSetFont (addonId, fontName)
 	if privateVars.uiTooltipContext == nil then return end
 	if uiElements.abilityTooltip == nil then return end
 
@@ -371,7 +371,7 @@ end
 
 -------- font management
 
-function LibEKL.ui.registerFont (addonId, name, path)
+function LibEKL.UI.registerFont (addonId, name, path)
 
 	if _fonts[addonId] == nil then _fonts[addonId] = {} end
 
@@ -379,7 +379,7 @@ function LibEKL.ui.registerFont (addonId, name, path)
 
 end
 
-function LibEKL.ui.setFont (uiElement, addonId, name)
+function LibEKL.UI.SetFont (uiElement, addonId, name)
 
 	uiElement:SetFont(addonId, _fonts[addonId][name])
 
@@ -387,7 +387,7 @@ end
 
 --------- dialogs
 
-function LibEKL.ui.confirmDialog (message, yesFunc, noFunc)
+function LibEKL.UI.confirmDialog (message, yesFunc, noFunc)
 
 	local thisDialog
 
@@ -400,13 +400,13 @@ function LibEKL.ui.confirmDialog (message, yesFunc, noFunc)
 
 	if thisDialog == nil then
 		if privateVars.uiDialogContext == nil then 
-			privateVars.uiDialogContext = UI.CreateContext("LibEKL.ui.dialog") 
+			privateVars.uiDialogContext = UI.CreateContext("LibEKL.UI.dialog") 
 			privateVars.uiDialogContext:SetStrata ('topmost')
 		end
 	
 		local name = "LibEKLConfirmDialog." .. (#uiElements.messageDialog+1)
 	
-		thisDialog = LibEKL.uiCreateFrame("nkDialog", name, privateVars.uiDialogContext)
+		thisDialog = LibEKL.UICreateFrame("nkDialog", name, privateVars.uiDialogContext)
 		thisDialog:SetLayer(2)
 		thisDialog:SetWidth(500)
 		thisDialog:SetHeight(250)
@@ -434,7 +434,7 @@ function LibEKL.ui.confirmDialog (message, yesFunc, noFunc)
 	    
 end
 
-function LibEKL.ui.messageDialog (message, okFunc)
+function LibEKL.UI.messageDialog (message, okFunc)
 
 	local thisDialog
 
@@ -447,13 +447,13 @@ function LibEKL.ui.messageDialog (message, okFunc)
 	
 	if thisDialog == nil then
 		if privateVars.uiDialogContext == nil then 
-			privateVars.uiDialogContext = UI.CreateContext("LibEKL.ui.dialog") 
+			privateVars.uiDialogContext = UI.CreateContext("LibEKL.UI.dialog") 
 			privateVars.uiDialogContext:SetStrata ('topmost')
 		end
 		
 		local name = "LibEKLMessageDialog." .. LibEKL.Tools.UUID ()
 	
-		thisDialog = LibEKL.uiCreateFrame("nkDialog", name, privateVars.uiDialogContext)
+		thisDialog = LibEKL.UICreateFrame("nkDialog", name, privateVars.uiDialogContext)
 		thisDialog:SetLayer(2)
 		thisDialog:SetWidth(500)
 		thisDialog:SetHeight(250)
@@ -479,10 +479,10 @@ end
 
 -------- ui element creation
 
-function LibEKL.uiCreateFrame (frameType, name, parent)
+function LibEKL.UICreateFrame (frameType, name, parent)
 
 	if frameType == nil or name == nil or parent == nil then
-		LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("LibEKL.uiCreateFrame - invalid number of parameters\nexpecting: type of frame (string), name of frame (string), parent of frame (object)\nreceived: %s, %s, %s", frameType, name, parent))
+		LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("LibEKL.UICreateFrame - invalid number of parameters\nexpecting: type of frame (string), name of frame (string), parent of frame (object)\nreceived: %s, %s, %s", frameType, name, parent))
 		return
 	end
 
@@ -510,7 +510,7 @@ function LibEKL.uiCreateFrame (frameType, name, parent)
 	else
 		local func = uiFunctions[checkFrameType]
 		if func == nil then
-			LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("LibEKL.uiCreateFrame - unknown frame type [%s]", frameType))
+			LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("LibEKL.UICreateFrame - unknown frame type [%s]", frameType))
 		else
 			uiObject = func(name, parent)
 		end
@@ -520,9 +520,9 @@ function LibEKL.uiCreateFrame (frameType, name, parent)
 
 end
 
-LibEKL.ui.registerFont(addonInfo.id, "Montserrat", "fonts/Montserrat-Regular.ttf")
-LibEKL.ui.registerFont(addonInfo.id, "MontserratSemiBold", "fonts/Montserrat-SemiBold.ttf")
-LibEKL.ui.registerFont(addonInfo.id, "MontserratBold", "fonts/Montserrat-Bold.ttf")
-LibEKL.ui.registerFont(addonInfo.id, "FiraMonoBold", "fonts/FiraMono-Bold.ttf")
-LibEKL.ui.registerFont(addonInfo.id, "FiraMonoMedium", "fonts/FiraMono-Medium.ttf")
-LibEKL.ui.registerFont(addonInfo.id, "FiraMono", "fonts/FiraMono-Regular.ttf")
+LibEKL.UI.registerFont(addonInfo.id, "Montserrat", "fonts/Montserrat-Regular.ttf")
+LibEKL.UI.registerFont(addonInfo.id, "MontserratSemiBold", "fonts/Montserrat-SemiBold.ttf")
+LibEKL.UI.registerFont(addonInfo.id, "MontserratBold", "fonts/Montserrat-Bold.ttf")
+LibEKL.UI.registerFont(addonInfo.id, "FiraMonoBold", "fonts/FiraMono-Bold.ttf")
+LibEKL.UI.registerFont(addonInfo.id, "FiraMonoMedium", "fonts/FiraMono-Medium.ttf")
+LibEKL.UI.registerFont(addonInfo.id, "FiraMono", "fonts/FiraMono-Regular.ttf")

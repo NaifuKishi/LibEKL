@@ -40,9 +40,9 @@ local function tabHeader (name, parent)
                    {xProportional = 1, yProportional = 1 },
                    {xProportional = 0, yProportional = 1 } }
     
-  local tabButton = LibEKL.uiCreateFrame("nkCanvas", name, parent)  
-  local label = LibEKL.uiCreateFrame("nkText", name .. ".label", tabButton)
-  local selectedLine = LibEKL.uiCreateFrame("nkFrame", name .. ".selectedLine", tabButton)
+  local tabButton = LibEKL.UICreateFrame("nkCanvas", name, parent)  
+  local label = LibEKL.UICreateFrame("nkText", name .. ".label", tabButton)
+  local selectedLine = LibEKL.UICreateFrame("nkFrame", name .. ".selectedLine", tabButton)
       
   --tabButton:SetShape(path, uiFrameFill, uiFrameStroke)
   tabButton:SetHeight(headerTabHeight)
@@ -65,7 +65,7 @@ local function tabHeader (name, parent)
     label:SetText(text)
   end  
 
-  function tabButton:SetFont(addonInfo, font) LibEKL.ui.setFont(label, addonInfo, font) end
+  function tabButton:SetFont(addonInfo, font) LibEKL.UI.SetFont(label, addonInfo, font) end
   function tabButton:SetFontEffect (newEffect) label:SetEffectGlow(newEffect) end
   
 	function tabButton:SetSelected(flag)
@@ -143,13 +143,13 @@ end
 
 local function _uiTabpane(name, parent) 
 
-	local tabPane = LibEKL.uiCreateFrame("nkFrame", name, parent)
+	local tabPane = LibEKL.UICreateFrame("nkFrame", name, parent)
 	
 	if tabPane == nil then return nil end -- event check failed
 	
-	local uiFrame = LibEKL.uiCreateFrame("nkCanvas", name .. ".ui", tabPane)
-	local bodyFrame = LibEKL.uiCreateFrame("nkFrame", name .. ".body", uiFrame)
-	local helperLine = LibEKL.uiCreateFrame("nKFrame", name .. ".helperLine", tabPane)
+	local uiFrame = LibEKL.UICreateFrame("nkCanvas", name .. ".ui", tabPane)
+	local bodyFrame = LibEKL.UICreateFrame("nkFrame", name .. ".body", uiFrame)
+	local helperLine = LibEKL.UICreateFrame("nKFrame", name .. ".helperLine", tabPane)
   
 	local panes = {}
 	local tabButtons = {}
@@ -367,7 +367,7 @@ local function _uiTabpane(name, parent)
 	function tabPane:SetFont(addonInfo, fontName) 
 		fontInfo = { addonInfo = addonInfo, fontName = fontName}
 		--for k, v in pairs(tabButtons) do
-		--	LibEKL.ui.setFont(v, addonInfo, fontName)
+		--	LibEKL.UI.SetFont(v, addonInfo, fontName)
 		--end
 	end
 

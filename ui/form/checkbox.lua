@@ -71,14 +71,14 @@ local function _uiCheckbox(name, parent)
 	--local innerColor =  LibEKL.art.GetThemeColor("elementSubColor2")
   	--local labelColor = LibEKL.art.GetThemeColor("labelColor")
 
-	local checkBox = LibEKL.uiCreateFrame ('nkFrame', name, parent)
+	local checkBox = LibEKL.UICreateFrame ('nkFrame', name, parent)
 	
 	if checkBox == nil then return end
 	
-	local label = LibEKL.uiCreateFrame ('nkText', name .. '.label', checkBox)
-	local boxOuter = LibEKL.uiCreateFrame ('nkFrame', name .. '.boxOuter', checkBox)
-	local boxInner = LibEKL.uiCreateFrame ('nkFrame', name .. '.boxInner', boxOuter)
-	local boxMark = LibEKL.uiCreateFrame ('nkFrame', name .. '.boxMark', boxInner)
+	local label = LibEKL.UICreateFrame ('nkText', name .. '.label', checkBox)
+	local boxOuter = LibEKL.UICreateFrame ('nkFrame', name .. '.boxOuter', checkBox)
+	local boxInner = LibEKL.UICreateFrame ('nkFrame', name .. '.boxInner', boxOuter)
+	local boxMark = LibEKL.UICreateFrame ('nkFrame', name .. '.boxMark', boxInner)
 	local roundOuter, roundInner
 	
 	-- GARBAGE COLLECTOR ROUTINES
@@ -237,10 +237,10 @@ local function _uiCheckbox(name, parent)
 		boxInner:SetBackgroundColor(innerColor.r, innerColor.g, innerColor.b, innerColor.a)
 	end
 
-	function checkBox:SetFont(addonId, font) LibEKL.ui.setFont(label, addonId, font) end
+	function checkBox:SetFont(addonId, font) LibEKL.UI.SetFont(label, addonId, font) end
 	function checkBox:SetText(text) label:SetText(text) end	
 	function checkBox:SetEffectGlow(effect) label:SetEffectGlow(effect) end	
-	function checkBox:SetTextFont(addonInfo, fontName) LibEKL.ui.setFont(label, addonInfo, fontName) end
+	function checkBox:SetTextFont(addonInfo, fontName) LibEKL.UI.SetFont(label, addonInfo, fontName) end
 
 	function checkBox:GetText() return label:GetText() end
 	
@@ -301,8 +301,8 @@ local function _uiCheckbox(name, parent)
 			boxMark:SetVisible(false)
 			
 			if roundInner == nil then
-				roundOuter = LibEKL.uiCreateFrame ('nkCanvas', name .. '.roundOuter', checkBox)
-				roundInner = LibEKL.uiCreateFrame ('nkCanvas', name .. '.roundInner', roundOuter)
+				roundOuter = LibEKL.UICreateFrame ('nkCanvas', name .. '.roundOuter', checkBox)
+				roundInner = LibEKL.UICreateFrame ('nkCanvas', name .. '.roundInner', roundOuter)
 				
 				roundOuter:SetPoint("CENTERLEFT", label, "CENTERRIGHT")
 				roundInner:SetPoint("CENTER", roundOuter, "CENTER")

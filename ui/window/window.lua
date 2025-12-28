@@ -16,14 +16,14 @@ local inspectSystemSecure = Inspect.System.Secure
 
 local function _uiWindow(name, parent)
 
-  local window = LibEKL.uiCreateFrame("nkCanvas", name, parent)  
+  local window = LibEKL.UICreateFrame("nkCanvas", name, parent)  
   
   if window == nil then return nil end -- event check failed
   
-  local body = LibEKL.uiCreateFrame("nkFrame", name .. '.body', window)
-  local header = LibEKL.uiCreateFrame("nkFrame", name .. '.header', window)
-  local title = LibEKL.uiCreateFrame("nkText", name .. ".title", window)
-  local closeIcon = LibEKL.uiCreateFrame("nkClickButton", name .. ".closeIcon", window)
+  local body = LibEKL.UICreateFrame("nkFrame", name .. '.body', window)
+  local header = LibEKL.UICreateFrame("nkFrame", name .. '.header', window)
+  local title = LibEKL.UICreateFrame("nkText", name .. ".title", window)
+  local closeIcon = LibEKL.UICreateFrame("nkClickButton", name .. ".closeIcon", window)
    
   -- GARBAGE COLLECTOR ROUTINES
   
@@ -197,7 +197,7 @@ local function _uiWindow(name, parent)
     window:SetShape(windowPath, windowFill, windowStroke)
   end
 
-  function window:SetTitleFont (addonId, fontName) LibEKL.ui.setFont(title, addonId, fontName) end
+  function window:SetTitleFont (addonId, fontName) LibEKL.UI.SetFont(title, addonId, fontName) end
   function window:SetTitleFontSize (fontSize) title:SetFontSize(fontSize) end  
     
   LibEKL.eventHandlers[name]["Moved"], LibEKL.Events[name]["Moved"] = Utility.Event.Create(addonInfo.identifier, name .. "Moved") 

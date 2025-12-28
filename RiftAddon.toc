@@ -56,6 +56,8 @@ RunOnStartup = {
   "ui/form/combo.lua",
   "ui/form/slider.lua",
   "ui/form/textfield.lua",
+  "ui/menu/menu.lua",
+  "ui/menu/menuEntry.lua",
   "ui/pane/scrollbox.lua",
   "ui/pane/scrollpane.lua",
   "ui/pane/tabPane.lua",

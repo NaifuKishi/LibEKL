@@ -2,7 +2,7 @@ local addonInfo, privateVars = ...
 
 ---------- init namespace ---------
 
-if not EnKai then EnKai = {} end
+if not LibEKL then LibEKL = {} end
 
 if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 
@@ -13,9 +13,9 @@ local internal      = privateVars.internal
 
 local function _uiMenu(name, parent) 
 
-	----if EnKai.internal.checkEvents (name, true) == false then return nil end
+	----if LibEKL.internal.checkEvents (name, true) == false then return nil end
 
-	local menu = EnKai.uiCreateFrame ('nkCanvas', name, parent)
+	local menu = LibEKL.UICreateFrame ('nkCanvas', name, parent)
 		
 	local entries = {}
 	local properties = {}
@@ -51,7 +51,7 @@ local function _uiMenu(name, parent)
 	function menu:GetID() return objectID end
 	
 	function menu:AddEntry (newEntry)
-		local menuEntry = EnKai.uiCreateFrame('nkMenuEntry', name .. '.entry.' .. (#entries + 1), menu)
+		local menuEntry = LibEKL.UICreateFrame('nkMenuEntry', name .. '.entry.' .. (#entries + 1), menu)
 
 		menuEntry:SetFontSize(fontSize)
 		if fontInfo.fontName then menuEntry:SetFont(fontInfo.addonInfo, fontInfo.fontName) end
@@ -73,7 +73,7 @@ local function _uiMenu(name, parent)
 		end
 		
 		if newEntry.callBack ~= nil then		
-			Command.Event.Attach(EnKai.events[name .. '.entry.' .. (#entries + 1)].Clicked, function ()
+			Command.Event.Attach(LibEKL.Events[name .. '.entry.' .. (#entries + 1)].Clicked, function ()
 				newEntry.callBack()
 			end, name .. '.entry.' .. (#entries + 1) .. 'Clicked')
 		end
@@ -95,7 +95,7 @@ local function _uiMenu(name, parent)
 	
 	function menu:AddSeparator()
 	
-		local separator = EnKai.uiCreateFrame ('nkFrame', name .. '.separator' .. (#entries + 1), menu)
+		local separator = LibEKL.UICreateFrame ('nkFrame', name .. '.separator' .. (#entries + 1), menu)
 		separator:SetBackgroundColor(0, 0, 0, 0 )
 		separator:SetHeight(3)
 		separator:SetWidth(menu:GetWidth())
@@ -106,7 +106,7 @@ local function _uiMenu(name, parent)
 			separator:SetPoint("TOPLEFT", entries[#entries], "BOTTOMLEFT", -1 ,0)
 		end
 		
-		local line = EnKai.uiCreateFrame ('nkFrame', name .. '.separator' .. (#entries + 1) .. '.line', separator)
+		local line = LibEKL.UICreateFrame ('nkFrame', name .. '.separator' .. (#entries + 1) .. '.line', separator)
 		
 		line:SetBackgroundColor(labelColor[1], labelColor[2], labelColor[3], labelColor[4] )
 		line:SetPoint("CENTERLEFT", separator, "CENTERLEFT")

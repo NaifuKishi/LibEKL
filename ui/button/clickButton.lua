@@ -19,11 +19,11 @@ local function _uiClickButton(name, parent)
 	local toggled = false
 	local toggleable = false
 
-	local icon = LibEKL.uiCreateFrame("nkFrame", name .. '.icon', parent)
+	local icon = LibEKL.UICreateFrame("nkFrame", name .. '.icon', parent)
 	icon:SetWidth(16)
 	icon:SetHeight(16)
 	
-	local iconText = LibEKL.uiCreateFrame('nkText', name .. '.icon.text', icon)	
+	local iconText = LibEKL.UICreateFrame('nkText', name .. '.icon.text', icon)	
 	iconText:SetPoint("CENTER", icon, "CENTER")
 	iconText:SetFontSize(14)
 	iconText:SetTextFont(addonInfo.id, "MontserratSemiBold")
@@ -52,7 +52,7 @@ local function _uiClickButton(name, parent)
 	end, name .. ".icon.text.Mouse.Left.Down")	
 
 	function icon:SetText (newText) iconText:SetText(newText) end
-	function icon:SetTooltip (title, text) LibEKL.ui.attachGenericTooltip (iconText, title, text) end
+	function icon:SetTooltip (title, text) LibEKL.UI.attachGenericTooltip (iconText, title, text) end
 	function icon:SetToggleable (newFlag) toggleable = newFlag end
 	
 	function icon:SetColor (newColor) 

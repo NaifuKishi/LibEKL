@@ -2,7 +2,7 @@ local addonInfo, privateVars = ...
 
 ---------- init namespace ---------
 
-if not EnKai then EnKai = {} end
+if not LibEKL then LibEKL = {} end
 
 if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 
@@ -13,10 +13,10 @@ local internal      = privateVars.internal
 
 local function _uiMenuEntry(name, parent) 
 
-	--if EnKai.internal.checkEvents (name, true) == false then return nil end
+	--if LibEKL.internal.checkEvents (name, true) == false then return nil end
 
-	local menuEntry = EnKai.uiCreateFrame ('nkFrame', name, parent)	
-	local label = EnKai.uiCreateFrame ('nkText', name .. '.label', menuEntry)	
+	local menuEntry = LibEKL.UICreateFrame ('nkFrame', name, parent)	
+	local label = LibEKL.UICreateFrame ('nkText', name .. '.label', menuEntry)	
 	
 	local properties = {}
 
@@ -71,7 +71,9 @@ local function _uiMenuEntry(name, parent)
 		return nil		
 	end
 
-	function menuEntry:SetFont(addonInfo, fontName) label:SetTextFont(addonInfo, fontName) end
+	function menuEntry:SetFont(addonInfo, fontName) 
+		LibEKL.UI.SetFont(label, addonInfo, fontName) 
+	end
 	
 	local oSetWidth = menuEntry.SetWidth
 	
@@ -99,7 +101,7 @@ local function _uiMenuEntry(name, parent)
 	end
 			
 	menuEntry:EventAttach(Event.UI.Input.Mouse.Left.Click, function ()
-		EnKai.eventHandlers[name]["Clicked"]()
+		LibEKL.eventHandlers[name]["Clicked"]()
 	end, name .. ".Left.Click")	
 	
 	menuEntry:EventAttach(Event.UI.Input.Mouse.Cursor.In, function()
@@ -112,7 +114,7 @@ local function _uiMenuEntry(name, parent)
 		oSetBackgroundColor(menuEntry, backgroundColor[1], backgroundColor[2], backgroundColor[3], backgroundColor[4])
 	end, name .. ".Mouse.Cursor.Out")
 	
-	EnKai.eventHandlers[name]["Clicked"], EnKai.events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
+	LibEKL.eventHandlers[name]["Clicked"], LibEKL.Events[name]["Clicked"] = Utility.Event.Create(addonInfo.identifier, name .. "Clicked")
 	
 	return menuEntry
 	

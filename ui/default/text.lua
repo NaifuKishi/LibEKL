@@ -45,7 +45,7 @@ local function _uiText(name, parent)
 		end
 	end
 
-	function text:SetTextFont(addonInfo, fontName) LibEKL.ui.setFont(text, addonInfo, fontName) end
+	function text:SetTextFont(addonInfo, fontName) LibEKL.UI.SetFont(text, addonInfo, fontName) end
   
 	local oEventMacroSet = text.EventMacroSet
   

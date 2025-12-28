@@ -22,11 +22,11 @@ local function _uiTooltip(name, parent)
 	
 	local defaultWidth = 100
 
-	local tooltip = LibEKL.uiCreateFrame ('nkFrame', name, parent)
-	local tooltipInner = LibEKL.uiCreateFrame ('nkFrame', name .. 'Innner', tooltip)
-	local title = LibEKL.uiCreateFrame ('nkText', name .. 'Title', tooltipInner)
-	local subTitle = LibEKL.uiCreateFrame ('nkText', name .. 'subTitle', tooltipInner)
-	local separator = LibEKL.uiCreateFrame ('nkFrame', name .. 'separator', tooltipInner)
+	local tooltip = LibEKL.UICreateFrame ('nkFrame', name, parent)
+	local tooltipInner = LibEKL.UICreateFrame ('nkFrame', name .. 'Innner', tooltip)
+	local title = LibEKL.UICreateFrame ('nkText', name .. 'Title', tooltipInner)
+	local subTitle = LibEKL.UICreateFrame ('nkText', name .. 'subTitle', tooltipInner)
+	local separator = LibEKL.UICreateFrame ('nkFrame', name .. 'separator', tooltipInner)
 	
 	local lines = {}
 	local target = nil
@@ -72,12 +72,12 @@ local function _uiTooltip(name, parent)
 	function tooltip:SetFont (addonId, fontName)
 		font = { addonId = addonId, fontName = fontName}
 
-		LibEKL.ui.setFont(title, addonId, fontName)
-		LibEKL.ui.setFont(subTitle, addonId, fontName)
+		LibEKL.UI.SetFont(title, addonId, fontName)
+		LibEKL.UI.SetFont(subTitle, addonId, fontName)
 
 		for idx = 1, #lines, 1 do
 			local line = lines[idx]
-			LibEKL.ui.setFont(line, addonId, fontName)
+			LibEKL.UI.SetFont(line, addonId, fontName)
 		end
 	end
 
@@ -126,12 +126,12 @@ local function _uiTooltip(name, parent)
 		for idx = 1, #newLines, 1 do
 			local line = nil
 			if idx > #lines then
-				line = LibEKL.uiCreateFrame ('nkText', name .. 'line' .. idx, tooltipInner)
+				line = LibEKL.UICreateFrame ('nkText', name .. 'line' .. idx, tooltipInner)
 				line:SetFontColor(defaultLinesColor[1], defaultLinesColor[2], defaultLinesColor[3], defaultLinesColor[4])
 				line:SetFontSize(11)
 
 				if font ~= nil then
-					LibEKL.ui.setFont(line, font.addonId, font.fontName)
+					LibEKL.UI.SetFont(line, font.addonId, font.fontName)
 				end
 								
 				if idx == 1 then

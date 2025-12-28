@@ -26,28 +26,28 @@ local function _uiCombobox(name, parent)
 	local isActive = true
 	--local displayWidth = 100
 
-	local combo = LibEKL.uiCreateFrame ('nkFrame', name, parent)
-	local comboLabel = LibEKL.uiCreateFrame ('nkText', name .. '.comboLabel', combo)
+	local combo = LibEKL.UICreateFrame ('nkFrame', name, parent)
+	local comboLabel = LibEKL.UICreateFrame ('nkText', name .. '.comboLabel', combo)
 	
-	local display = LibEKL.uiCreateFrame ('nkFrame', name .. '.display', combo)
-	local displayInner = LibEKL.uiCreateFrame ('nkFrame', name .. '.displayInner', display)
-	local icon = LibEKL.uiCreateFrame ('nkTexture', name .. '.icon', displayInner)
-	local label = LibEKL.uiCreateFrame ('nkText', name .. '.label', displayInner)
+	local display = LibEKL.UICreateFrame ('nkFrame', name .. '.display', combo)
+	local displayInner = LibEKL.UICreateFrame ('nkFrame', name .. '.displayInner', display)
+	local icon = LibEKL.UICreateFrame ('nkTexture', name .. '.icon', displayInner)
+	local label = LibEKL.UICreateFrame ('nkText', name .. '.label', displayInner)
 	
-	local arrowBox = LibEKL.uiCreateFrame ('nkFrame', name .. '.arrowBox', displayInner)
-	local arrowBoxInner = LibEKL.uiCreateFrame ('nkFrame', name .. '.arrowBoxInner', arrowBox)
-	local arrowText = LibEKL.uiCreateFrame ('nkText', name .. '.arrowText', arrowBoxInner)
-	local selFrame = LibEKL.uiCreateFrame ('nkFrame', name .. '.selFrame', combo)
-	local selFrameInner = LibEKL.uiCreateFrame ('nkFrame', name .. '.selFrameInner', selFrame)
+	local arrowBox = LibEKL.UICreateFrame ('nkFrame', name .. '.arrowBox', displayInner)
+	local arrowBoxInner = LibEKL.UICreateFrame ('nkFrame', name .. '.arrowBoxInner', arrowBox)
+	local arrowText = LibEKL.UICreateFrame ('nkText', name .. '.arrowText', arrowBoxInner)
+	local selFrame = LibEKL.UICreateFrame ('nkFrame', name .. '.selFrame', combo)
+	local selFrameInner = LibEKL.UICreateFrame ('nkFrame', name .. '.selFrameInner', selFrame)
 	
-	local selFrameSlider = LibEKL.uiCreateFrame('nkScrollbox', name .. '.selFrameSlider', selFrame)
+	local selFrameSlider = LibEKL.UICreateFrame('nkScrollbox', name .. '.selFrameSlider', selFrame)
 	
 	local selItems = {}	
 	
 	for idx = 1, 5, 1 do
-		local selItemFrame = LibEKL.uiCreateFrame ('nkFrame', name .. 'selItemFrame' .. idx, selFrameInner)
-		local selItemLabel = LibEKL.uiCreateFrame ('nkText', name .. 'selItemLabel' .. idx, selItemFrame)
-		local selItemIcon = LibEKL.uiCreateFrame ('nkTexture', name .. 'selItemIcon' .. idx, selItemFrame)
+		local selItemFrame = LibEKL.UICreateFrame ('nkFrame', name .. 'selItemFrame' .. idx, selFrameInner)
+		local selItemLabel = LibEKL.UICreateFrame ('nkText', name .. 'selItemLabel' .. idx, selItemFrame)
+		local selItemIcon = LibEKL.UICreateFrame ('nkTexture', name .. 'selItemIcon' .. idx, selItemFrame)
 		
 		selItemFrame:EventAttach(Event.UI.Input.Mouse.Cursor.In, function ()
 			combo:RowHighlight(idx, true)
@@ -507,10 +507,10 @@ local function _uiCombobox(name, parent)
 	function combo:SetText(text) comboLabel:SetText(text) end
 	
 	function combo:SetFont(addonInfo, font)
-		LibEKL.ui.setFont(comboLabel, addonInfo, font)
-		LibEKL.ui.setFont(label, addonInfo, font)		
+		LibEKL.UI.SetFont(comboLabel, addonInfo, font)
+		LibEKL.UI.SetFont(label, addonInfo, font)		
 		for idx = 1, 5, 1 do
-			LibEKL.ui.setFont(selItems[idx].label, addonInfo, font)
+			LibEKL.UI.SetFont(selItems[idx].label, addonInfo, font)
 		end
 	end
 	

@@ -23,10 +23,10 @@ local function _uiScrollbox(name, parent)
 
 	local elementColor, innerColor, highlightColor
 
-	local scrollBox = LibEKL.uiCreateFrame ('nkFrame', name, parent)
-	local scrollLane = LibEKL.uiCreateFrame ('nkFrame', name .. 'lane', scrollBox)
-	local scrollLaneInner = LibEKL.uiCreateFrame ('nkFrame', name .. 'inner', scrollLane)
-	local scrollPos = LibEKL.uiCreateFrame ('nkFrame', name .. 'pos', scrollLaneInner)
+	local scrollBox = LibEKL.UICreateFrame ('nkFrame', name, parent)
+	local scrollLane = LibEKL.UICreateFrame ('nkFrame', name .. 'lane', scrollBox)
+	local scrollLaneInner = LibEKL.UICreateFrame ('nkFrame', name .. 'inner', scrollLane)
+	local scrollPos = LibEKL.UICreateFrame ('nkFrame', name .. 'pos', scrollLaneInner)
 
 	local properties = {}
 

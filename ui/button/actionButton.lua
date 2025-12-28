@@ -17,9 +17,9 @@ local function _uiActionButton(name, parent)
 
 	--if LibEKL.internalFunc.checkEvents (name, true) == false then return nil end 
 
-	local button = LibEKL.uiCreateFrame ('nkCanvas', name, parent)	
-	local texture = LibEKL.uiCreateFrame ('nkTexture', name .. '.texture', button)
-	local tint = LibEKL.uiCreateFrame ('nkFrame', name .. '.tint', button)
+	local button = LibEKL.UICreateFrame ('nkCanvas', name, parent)	
+	local texture = LibEKL.UICreateFrame ('nkTexture', name .. '.texture', button)
+	local tint = LibEKL.UICreateFrame ('nkFrame', name .. '.tint', button)
 	
 	local properties = {}
 	local value1, value2, value3, value4

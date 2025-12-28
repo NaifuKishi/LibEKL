@@ -15,8 +15,8 @@ local function _uiButton(name, parent)
 
 	--if LibEKL.internalFunc.checkEvents (name, true) == false then return nil end
 
-	local button = LibEKL.uiCreateFrame ('nkCanvas', name, parent)
-	local label = LibEKL.uiCreateFrame ('nkText', name .. 'label', button)
+	local button = LibEKL.UICreateFrame ('nkCanvas', name, parent)
+	local label = LibEKL.UICreateFrame ('nkText', name .. 'label', button)
 
 	local path = {  {xProportional = 0, yProportional = 0},
                   	{xProportional = 1, yProportional = 0},
@@ -42,7 +42,7 @@ local function _uiButton(name, parent)
 		label:SetText(newText)
 	end
 
-	function button:SetFont(addonInfo, fontName) LibEKL.ui.setFont(label, addonInfo, fontName) end
+	function button:SetFont(addonInfo, fontName) LibEKL.UI.SetFont(label, addonInfo, fontName) end
 	function button:SetEffectGlow(effect)
 		thisEffect = effect
 		label:SetEffectGlow(effect) 

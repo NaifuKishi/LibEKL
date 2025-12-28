@@ -3,7 +3,7 @@ local addonInfo, privateVars = ...
 ---------- init namespace ---------
 
 if not LibEKL then LibEKL = {} else return end
-if not LibEKL.manager then LibEKL.ui = {} end
+if not LibEKL.manager then LibEKL.UI = {} end
 
 if not LibEKL.eventHandlers then LibEKL.eventHandlers = {} end
 if not LibEKL.Events then LibEKL.Events = {} end
@@ -28,7 +28,7 @@ local function settingsHandler(_, addon)
 	
 	if LibEKL.Events.CheckEvents ("EKL.internal", true) == false then return nil end
 
-    LibEKL.ui.setupBoundCheck()	
+    LibEKL.UI.setupBoundCheck()	
 	
 	_libInit = true
 		

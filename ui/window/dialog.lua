@@ -16,11 +16,11 @@ local function _uiDialog(name, parent)
 
 	--if LibEKL.internalFunc.checkEvents (name, false) == false then return nil end
 
-	local dialog = LibEKL.uiCreateFrame("nkwindow", name, parent)
-	local message = LibEKL.uiCreateFrame ('nkText', name .. "message", dialog)
-	local leftButton = LibEKL.uiCreateFrame ('nkButton', name .. "leftButton", dialog)
-	local centerButton = LibEKL.uiCreateFrame ('nkButton', name .. "centerButton", dialog)
-	local rightButton = LibEKL.uiCreateFrame ('nkButton', name .. "rightButton", dialog)
+	local dialog = LibEKL.UICreateFrame("nkwindow", name, parent)
+	local message = LibEKL.UICreateFrame ('nkText', name .. "message", dialog)
+	local leftButton = LibEKL.UICreateFrame ('nkButton', name .. "leftButton", dialog)
+	local centerButton = LibEKL.UICreateFrame ('nkButton', name .. "centerButton", dialog)
+	local rightButton = LibEKL.UICreateFrame ('nkButton', name .. "rightButton", dialog)
 
 	local properties = {}
 
@@ -111,18 +111,18 @@ local function _uiDialog(name, parent)
 	
 	function dialog:SetWidth(width)
 		oSetWidth(self, width)
-		dialog:SetPoint("TOPLEFT", UIParent, "TOPLEFT", (LibEKL.ui.getBoundRight() / 2 ) - (dialog:GetWidth() / 2), (LibEKL.ui.getBoundBottom() / 2 ) - (dialog:GetHeight() / 2))
+		dialog:SetPoint("TOPLEFT", UIParent, "TOPLEFT", (LibEKL.UI.getBoundRight() / 2 ) - (dialog:GetWidth() / 2), (LibEKL.UI.getBoundBottom() / 2 ) - (dialog:GetHeight() / 2))
 		message:SetWidth( width - 40)
 	end
 	
 	function dialog:SetHeight(height)
 		oSetHeight(self, height)
-		dialog:SetPoint("TOPLEFT", UIParent, "TOPLEFT", (LibEKL.ui.getBoundRight() / 2 ) - (dialog:GetWidth() / 2), (LibEKL.ui.getBoundBottom() / 2 ) - (dialog:GetHeight() / 2))
+		dialog:SetPoint("TOPLEFT", UIParent, "TOPLEFT", (LibEKL.UI.getBoundRight() / 2 ) - (dialog:GetWidth() / 2), (LibEKL.UI.getBoundBottom() / 2 ) - (dialog:GetHeight() / 2))
 		message:SetHeight( height - 120)
 	end
 
 	function dialog:SetFont(addonID, font)
-		LibEKL.ui.setFont(message, addonID, font)
+		LibEKL.UI.SetFont(message, addonID, font)
 	end
 
 	function dialog:SetEffectGlow(effect)
