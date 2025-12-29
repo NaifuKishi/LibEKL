@@ -25,12 +25,12 @@ local frame = nil
 -- @return nil
 local function createFrame()
 
-    frame = LibEKL.UICreateFrame("nkFrame", "nkManagerFrame", _context)
-    frame:SetPoint("BOTTOMLEFT", UI.Native.MapMini, "BOTTOMLEFT")
+    frame = LibEKL.UICreateFrame("nkFrame", "nkManagerFrame", _context)    
     frame:SetWidth(UI.Native.MapMini:GetWidth())
     frame:SetHeight(42)
     frame:SetBackgroundColor(0, 0, 0, 0.5)
     frame:SetAlpha(0) 
+    frame:SetPoint("BOTTOMLEFT", UI.Native.MapMini, "BOTTOMLEFT")
 
     local function checkDisplay ()
       local x, y = inspectMouse().x, inspectMouse().y
