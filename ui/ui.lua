@@ -508,7 +508,7 @@ function LibEKL.UICreateFrame (frameType, name, parent)
 
 	if _freeElements[checkFrameType] ~= nil and #_freeElements[checkFrameType] > 0 then
 
-		if LibEKL.internal.checkEvents (name, true) == false then return nil end
+		if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 
 		uiObject = _freeElements[checkFrameType][1]    
 		uiObject:SetParent(parent)
