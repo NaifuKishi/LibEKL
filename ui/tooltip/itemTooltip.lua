@@ -219,7 +219,7 @@ local function _uiItemTooltip(name, parent)
 
 		local err, details = pcall (InspectItemDetail, itemID)
 
-		if err == true then tooltip:SetItemDetails(details, itemLibDetails, equipped, equipSlot) end
+		--if err == true then tooltip:SetItemDetails(details, itemLibDetails, equipped, equipSlot) end
 
 		local tooltipCoRoutine = coroutine.create(
 		   function ()
