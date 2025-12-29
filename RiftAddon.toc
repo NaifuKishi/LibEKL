@@ -3,7 +3,7 @@ Name = "EnKai Light Library"
 Description = "A light version of the EnKai library specifically with the stuff nkUI needs."
 
 Author = "NaifuKishi"
-Email = "naifukishi@gmail.com"
+Email = "naifukishi.lake186@passmail.net"
 
 Version = "1.0.0"
 Environment = "4.0"
