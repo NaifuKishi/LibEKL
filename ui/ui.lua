@@ -67,7 +67,7 @@ local function recycleElement (element, elementType)
 	  element:EventDetach(k, nil, v.label, v.priority, v.owner)
 	end
 	
-	element:_recycle()
+	element:recycle()
 	
 end
 
@@ -124,6 +124,22 @@ function internalFunc.uiGarbageCollector ()
 
 	if nkDebug then nkDebug.traceEnd (inspectAddonCurrent(), "LibEKL internal.uiGarbageCollector", debugId) end	
 end
+
+function internalFunc.uiAddToGarbageCollector (frameType, element)
+
+	local checkFrameType = stringUpper(frameType) 
+
+	if _gc[checkFrameType] == nil then _gc[checkFrameType] = {} end
+	if _gc[checkFrameType].normal == nil then _gc[checkFrameType].normal = {} end
+	if _gc[checkFrameType].restricted == nil then _gc[checkFrameType].restricted = {} end
+	
+	table.insert(_gc[checkFrameType][element:GetSecureMode()], element) 
+	if inspectSystemSecure() == false or element:GetSecureMode() == 'normal' then element:SetVisible(false) end
+	
+	LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"]()
+  
+end  
+
 
 -- generic ui functions to handle screen size and bounds
 
