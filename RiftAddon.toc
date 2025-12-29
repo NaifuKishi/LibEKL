@@ -27,7 +27,7 @@ RunOnStartup = {
   "inventory/inventory.lua",
   "inventory/inventoryEvents.lua",
 
-  "manager/managerV2.lua",
+  "manager/manager.lua",
 
   "map/location.lua",
 

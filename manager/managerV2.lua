@@ -3,14 +3,14 @@ local addonInfo, privateVars = ...
 ---------- init namespace ---------
 
 if not LibEKL then LibEKL = {} end
-if not LibEKL.managerV2 then LibEKL.managerV2 = {} end
+if not LibEKL.manager then LibEKL.manager = {} end
 
 local inspectMouse        = Inspect.Mouse
 local inspectSystemSecure = Inspect.System.Secure
 
 ---------- init local variables ---------
 				
-local _context = UI.CreateContext("nkManagerV2")
+local _context = UI.CreateContext("nkmanager")
 
 ---------- local function block ---------
 
@@ -22,7 +22,7 @@ local frame = nil
 -- Sets up mouse event handlers for showing/hiding the frame.
 -- @return nil
 local function createFrame()
-    frame = UI.CreateFrame("Frame", "nkManagerV2Frame", _context)
+    frame = UI.CreateFrame("Frame", "nkmanagerFrame", _context)
     frame:SetPoint("TOPLEFT", UI.Native.MapMini, "BOTTOMLEFT")
     frame:SetWidth(UI.Native.MapMini:GetWidth())
     frame:SetHeight(42)
@@ -49,7 +49,7 @@ local function createFrame()
         else
           frame:SetAlpha(0)
         end
-    end, "LibEKL.managerV2.UI.Input.Mouse.Cursor.Move")
+    end, "LibEKL.manager.UI.Input.Mouse.Cursor.Move")
 
     frame:EventAttach(Event.UI.Input.Mouse.Cursor.Out, function()
         if checkDisplay() then
@@ -57,7 +57,7 @@ local function createFrame()
         else
           frame:SetAlpha(0)
         end
-    end, "LibEKL.managerV2.UI.Input.Mouse.Cursor.Out")
+    end, "LibEKL.manager.UI.Input.Mouse.Cursor.Out")
 end
 
 -- Updates the frame by clearing existing buttons and adding new ones based on registered buttons.
@@ -122,7 +122,7 @@ end
 -- @param icon The icon to display.
 -- @param callBack The callback function to execute when the button is clicked.
 -- @return nil
-function LibEKL.managerV2.RegisterButton(name, iconSource, icon, callBack)
+function LibEKL.manager.RegisterButton(name, iconSource, icon, callBack)
     
     _buttons[name] = {icon = icon, iconSource = iconSource, callback = callBack}
     updateFrame()
@@ -132,13 +132,13 @@ end
 -- Unregisters a button from the manager UI.
 -- @param name The name of the button to unregister.
 -- @return nil
-function LibEKL.managerV2.UnregisterButton(name)
+function LibEKL.manager.UnregisterButton(name)
     _buttons[name] = nil
     updateFrame()
 end
 
 -- Gets the frame object of the manager UI.
 -- @return The frame object.
-function LibEKL.managerV2.GetFrame()
+function LibEKL.manager.GetFrame()
   return frame
 end
