@@ -8,9 +8,11 @@ if not LibEKL.manager then LibEKL.manager = {} end
 local inspectMouse        = Inspect.Mouse
 local inspectSystemSecure = Inspect.System.Secure
 
+local mathFloor = math.floor
+
 ---------- init local variables ---------
 				
-local _context = UI.CreateContext("nkmanager")
+local _context = UI.CreateContext("nkManager")
 
 ---------- local function block ---------
 
@@ -22,8 +24,9 @@ local frame = nil
 -- Sets up mouse event handlers for showing/hiding the frame.
 -- @return nil
 local function createFrame()
-    frame = UI.CreateFrame("Frame", "nkmanagerFrame", _context)
-    frame:SetPoint("TOPLEFT", UI.Native.MapMini, "BOTTOMLEFT")
+
+    frame = LibEKL.UICreateFrame("nkFrame", "nkManagerFrame", _context)
+    frame:SetPoint("BOTTOMLEFT", UI.Native.MapMini, "BOTTOMLEFT")
     frame:SetWidth(UI.Native.MapMini:GetWidth())
     frame:SetHeight(42)
     frame:SetBackgroundColor(0, 0, 0, 0.5)
@@ -75,7 +78,7 @@ local function updateFrame()
 		
     local from, object, to, x, y = "TOPLEFT", frame, "TOPLEFT", 5, 5
     local counter = 1
-    local maxCounter =math.floor(UI.Native.MapMini:GetWidth() / 37)    
+    local maxCounter = mathFloor(UI.Native.MapMini:GetWidth() / 37)    
     local height = 42
     local firstButton
 
