@@ -314,7 +314,7 @@ function LibEKL.Unit.UpdateGroupUnit()
 
 	if callEvent then 
 		if nkDebug then nkDebug.logEntry (addonInfo.identifier, "LibEKL.Unit.UpdateGroupUnit", "", unitInfo) end
-		unitAvailableHandler (_, unitInfo)
+		unitEvents.unitAvailableHandler (_, unitInfo)
 	end
 
 end
