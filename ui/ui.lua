@@ -215,26 +215,48 @@ function LibEKL.UI.reloadDialog (title)
 	
 	local name = "LibEKL.reloadDialog"
 	
-	uiElements.reloadDialog = LibEKL.UICreateFrame("nkwindow", name, privateVars.uiContextSecure)
+	uiElements.reloadDialog = LibEKL.UICreateFrame("nkWindow", name, privateVars.uiContextSecure)
+	uiElements.reloadDialog:ClearAll()
 	uiElements.reloadDialog:SetSecureMode('restricted')
 	uiElements.reloadDialog:GetContent():SetSecureMode('restricted')
 	uiElements.reloadDialog:SetTitle(title)
 	uiElements.reloadDialog:SetTitleAlign('center')
 	uiElements.reloadDialog:SetWidth(400)
-	uiElements.reloadDialog:SetHeight(125)
-	uiElements.reloadDialog:SetCloseable(false)
+	uiElements.reloadDialog:SetHeight(150)
+	uiElements.reloadDialog:SetCloseable(false)	
 	uiElements.reloadDialog:SetPoint("CENTERTOP", UIParent, "CENTERTOP", 0, 50)
+	uiElements.reloadDialog:SetTitleFont(addonInfo.id, "MontserratBold")
+    uiElements.reloadDialog:SetTitleFontSize(16)
+    uiElements.reloadDialog:SetTitleEffect ( {strength = 3})
+    uiElements.reloadDialog:SetCloseable(true)
+    uiElements.reloadDialog:SetTitleFontColor(1, .8, 0, 1)
+
+    uiElements.reloadDialog:SetColor({
+        type = "gradientLinear",
+        transform = Utility.Matrix.Create(2, 2, -(math.pi / 6), 0, 0), -- Negative angle for opposite direction
+        color = {
+            { r = 0.25, g = 0.25, b = 0.2, a = 0.7, position = 0 },
+            { r = 0.1, g = 0.1, b = 0.1, a = 0.7, position = 1 }
+            }
+    },  { r = 0, g = 0, b = 0, a = 1, thickness = 1})
 	
 	local msg = LibEKL.UICreateFrame("nkText", name .. ".msg", uiElements.reloadDialog:GetContent())
 	msg:SetText(privateVars.langTexts.msgReload)
 	msg:SetPoint("CENTERTOP", uiElements.reloadDialog:GetContent(), "CENTERTOP", 0, 10)
 	msg:SetFontSize(16)
 	msg:SetFontColor(1,1,1,1)
+
+	LibEKL.UI.SetFont(msg, addonInfo.id, "MontserratSemiBold")
 	
 	local button = LibEKL.UICreateFrame("nkButton", name .. ".button", uiElements.reloadDialog:GetContent())
 	button:SetPoint("CENTERTOP", msg, "CENTERBOTTOM", 0, 20)
 	button:SetText(privateVars.langTexts.reloadButton)
 	button:SetMacro("/reloadui")
+	button:SetFont(addonInfo.id, "MontserratSemiBold")
+    button:SetLabelColor({r = 1, g = 0.8, b = 0, a = 1})
+    button:SetEffectGlow ({ strength = 3 })
+    button:SetFillColor({ type = "solid", r = 0, g = 0, b = 0, a = .4})
+    button:SetBorderColor({ r = 0, g = 0, b = 0, a = .7, thickness = 1})
 	
 end
 
