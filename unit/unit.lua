@@ -351,6 +351,14 @@ function LibEKL.Unit.getPlayerDetails()
    
 end
 
+function LibEKL.Unit.getPlayerID()
+  
+	return LibEKL.Unit.getPlayerDetails().id
+   
+end
+
+
+
 function LibEKL.Unit.setPlayerDetails(detail, value)
 	LibEKL.Unit.getPlayerDetails()
 	unitData.unitCache[unitData.idCache.player[1]][detail] = value
