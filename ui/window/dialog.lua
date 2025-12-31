@@ -48,7 +48,7 @@ local function _uiDialog(name, parent)
 	dialog:SetValue("parent", parent)
 
 	--dialog:SetDragable(true)
-	dialog:SetCloseable(true)
+	dialog:SetCloseable(false)
 	dialog:SetStrata('main')
 	dialog:SetTitle("")
 		
@@ -57,21 +57,21 @@ local function _uiDialog(name, parent)
 	message:SetFontSize(16)
 	message:SetWordwrap(true)
 	
-	leftButton:SetPoint("BOTTOMLEFT", dialog:GetContent(), "BOTTOMLEFT", 5, -5)
+	leftButton:SetPoint("BOTTOMLEFT", dialog:GetContent(), "BOTTOMLEFT", 25, -15)
 	
 	leftButton:EventAttach(Event.UI.Input.Mouse.Left.Click, function ()
 		dialog:SetVisible(false)
 		LibEKL.eventHandlers[name]["LeftButtonClicked"]()
 	end, name .. "_leftButton_LeftClick")
 	
-	centerButton:SetPoint("BOTTOMCENTER", dialog:GetContent(), "BOTTOMCENTER", 0, -5)
+	centerButton:SetPoint("BOTTOMCENTER", dialog:GetContent(), "BOTTOMCENTER", 0, -15)
 	
 	centerButton:EventAttach(Event.UI.Input.Mouse.Left.Click, function ()
 		dialog:SetVisible(false)
 		LibEKL.eventHandlers[name]["CenterButtonClicked"]()
 	end, name .. "_centerButton_LeftClick")
 	
-	rightButton:SetPoint("BOTTOMRIGHT", dialog:GetContent(), "BOTTOMRIGHT", -5, -5)
+	rightButton:SetPoint("BOTTOMRIGHT", dialog:GetContent(), "BOTTOMRIGHT", -25, -15)
 	
 	rightButton:EventAttach(Event.UI.Input.Mouse.Left.Click, function ()
 		dialog:SetVisible(false)
@@ -105,6 +105,14 @@ local function _uiDialog(name, parent)
 		end
 		
 		dialog:SetHeight(message:GetHeight()+120)
+	end
+
+	function dialog:SetWarn(flag)
+		if flag then
+			message:SetFontColor(1, 0 ,0 ,1)
+		else
+			message:SetFontColor(1, 1, 1, 1)
+		end
 	end
 	
 	local oSetWidth, oSetHeight = dialog.SetWidth, dialog.SetHeight

@@ -432,6 +432,7 @@ function LibEKL.UI.confirmDialog (message, yesFunc, noFunc)
 	for idx = 1, #uiElements.confirmDialog, 1 do
 		if uiElements.confirmDialog[idx]:GetVisible() == false then
 			thisDialog = uiElements.confirmDialog[idx]
+
 			break
 		end
 	end
@@ -445,6 +446,7 @@ function LibEKL.UI.confirmDialog (message, yesFunc, noFunc)
 		local name = "LibEKLConfirmDialog." .. (#uiElements.messageDialog+1)
 	
 		thisDialog = LibEKL.UICreateFrame("nkDialog", name, privateVars.uiDialogContext)
+		thisDialog:SetWarn(false)
 		thisDialog:SetLayer(2)
 		thisDialog:SetWidth(500)
 		thisDialog:SetHeight(250)
@@ -492,6 +494,7 @@ function LibEKL.UI.messageDialog (message, okFunc)
 		local name = "LibEKLMessageDialog." .. LibEKL.Tools.UUID ()
 	
 		thisDialog = LibEKL.UICreateFrame("nkDialog", name, privateVars.uiDialogContext)
+		thisDialog:SetWarn(false)
 		thisDialog:SetLayer(2)
 		thisDialog:SetWidth(500)
 		thisDialog:SetHeight(250)

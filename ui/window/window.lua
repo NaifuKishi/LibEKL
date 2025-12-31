@@ -138,6 +138,7 @@ local function _uiWindow(name, parent)
  
   function window:SetCloseable(flag)
     closeable = flag
+    
     closeIcon:SetVisible(flag)
   end
   
