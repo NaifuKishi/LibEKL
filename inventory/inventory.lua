@@ -174,7 +174,7 @@ function LibEKL.Inventory.GetItemByKey (key)
 	return LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache[key]
 end
 
-function LibEKL.Inventory.querySlotById (id)
+function LibEKL.Inventory.GetSlotByItemId (id)
 
 	if not _invManager then 
 		LibEKL.Tools.Error.Display ("LibEKL", "Inventory manager not initialzed", 1)
