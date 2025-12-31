@@ -391,18 +391,18 @@ end
 function LibEKL.Inventory.GetItemColor(rarity)
 
 	local rarityColor = {
-		sellable = {r = 0.5, g = 0.5, b = 0.5},
-		uncommon = {r = 0, g = 1, b = 0},
-		rare = {r = 0, g = 0, b = 1},
-		epic = {r = 0.5, g = 0, b = 0.5},
-		relic = {r = 0.5, g = 0.5, b = 0},
+		sellable = {r=0.616, g=0.616, b=0.616},
+		uncommon = {r=0.118, g=1.000, b=0.000},
+		rare = {r=0.000, g=0.439, b=0.867},
+		epic = {r=0.639, g=0.208, b=0.933},
+		relic = {r=1.000, g=0.647, b=0.000},
 		transcendent = {r = 1, g = 0.5, b = 0},
-		quest = {r = 1, g = 0.5, b = 0}
+		quest = {r = .843, g = .796, b = 0}
 	}
 
 	local color = rarityColor[rarity]
 	if color == nil then 
-		color = {r = 1, g = 1, b = 1}
+		color = {r=1.000, g=1.000, b=1.000}
 	end
 
 	return color
