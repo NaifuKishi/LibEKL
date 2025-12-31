@@ -127,3 +127,23 @@ function LibEKL.Tools.Color.Adjust(red, green, blue, factor)
 
     return adjustedRed, adjustedGreen, adjustedBlue
 end
+
+-- Converts RGB (Red, Green, Blue) color values to a hexadecimal string.
+-- @param red The red component of the color (0-1).
+-- @param green The green component of the color (0-1).
+-- @param blue The blue component of the color (0-1).
+-- @return The hexadecimal string representation of the color.
+function LibEKL.Tools.Color.RGBToHexColor(red, green, blue)
+    -- Convert RGB values (0-1) to 0-255 range
+    local r = math.floor(red * 255)
+    local g = math.floor(green * 255)
+    local b = math.floor(blue * 255)
+
+    -- Format each component as two-digit hexadecimal
+    local hexR = string.format("%02X", r)
+    local hexG = string.format("%02X", g)
+    local hexB = string.format("%02X", b)
+
+    -- Concatenate the components to form the hex color code
+    return hexR .. hexG .. hexB
+end

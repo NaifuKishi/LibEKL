@@ -387,3 +387,24 @@ function LibEKL.Inventory.getBagSlots()
     return allItems
 
 end
+
+function LibEKL.Inventory.GetItemColor(rarity)
+
+	local rarityColor = {
+		sellable = {r = 0.5, g = 0.5, b = 0.5},
+		uncommon = {r = 0, g = 1, b = 0},
+		rare = {r = 0, g = 0, b = 1},
+		epic = {r = 0.5, g = 0, b = 0.5},
+		relic = {r = 0.5, g = 0.5, b = 0},
+		transcendent = {r = 1, g = 0.5, b = 0},
+		quest = {r = 1, g = 0.5, b = 0}
+	}
+
+	local color = rarityColor[rarity]
+	if color == nil then 
+		color = {r = 1, g = 1, b = 1}
+	end
+
+	return color
+
+end
