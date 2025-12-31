@@ -108,22 +108,29 @@ function inventoryEvents.processUpdate (_, updates)
 
 	local updatedKeys = {}
 	local updatedSlots = {}
-
+	
 	for slot, key in pairs(updates) do
 	
+		local qtyUpdate = 0
+
 		if not LibEKL.strings.startsWith(slot, 'sg') then
 
 			if key == "nil" then key = false end
 
 			if inventory.bySlot[slot] ~= nil then -- target slot is not empty
 			
-				if not inventory.bySlot[slot].id then -- content of slot not known => Error
+				local itemID = inventory.bySlot[slot].id
+
+				if not itemID then -- content of slot not known => Error
 					print ('content of slot not known')
-				else
-					if key ~= inventory.bySlot[slot].id then -- not just more of the same
-						if updatedKeys[inventory.bySlot[slot].id] == nil then updatedKeys[inventory.bySlot[slot].id] = 0 end
+				else					
+					if key ~= itemID then -- not just more of the same
+						if updatedKeys[itemID] == nil then 
+							updatedKeys[itemID] = 0 
+							qtyUpdate = 0
+						end
 												
-						updatedKeys[inventory.bySlot[slot].id] = updatedKeys[inventory.bySlot[slot].id] - inventory.bySlot[slot].stack						
+						updatedKeys[itemID] = updatedKeys[itemID] - inventory.bySlot[slot].stack						
 						removeItem (slot)
 						updatedSlots[slot] = false
 					end
@@ -135,18 +142,18 @@ function inventoryEvents.processUpdate (_, updates)
 				
 				if updateDetails ~= nil then
 					if updateDetails.stack == nil then updateDetails.stack = 1 end
-					local qty = 0
+					qtyUpdate = 0
 					
 					if inventory.bySlot[slot] ~= nil and inventory.bySlot[slot].id == updateDetails.id then
 						-- more of the same, get update qty
-						qty = updateDetails.stack - inventory.bySlot[slot].stack
+						qtyUpdate = updateDetails.stack - inventory.bySlot[slot].stack
 					end
 					
 					storeItem(slot, updateDetails)
 					if updatedKeys[inventory.bySlot[slot].id] == nil then updatedKeys[inventory.bySlot[slot].id] = 0 end
 					
-					if qty == 0 then qty = inventory.bySlot[slot].stack	end
-					updatedKeys[inventory.bySlot[slot].id] = updatedKeys[inventory.bySlot[slot].id] + qty
+					if qtyUpdate == 0 then qtyUpdate = inventory.bySlot[slot].stack	end
+					updatedKeys[inventory.bySlot[slot].id] = updatedKeys[inventory.bySlot[slot].id] + qtyUpdate
 					updatedSlots[slot] = inventory.bySlot[slot].id
 				end
 			end
