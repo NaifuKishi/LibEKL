@@ -5,16 +5,16 @@ local addonInfo, privateVars = ...
 if not LibEKL then LibEKL = {} end
 if not LibEKL.Unit then LibEKL.Unit = {} end
 
+local unitData		= privateVars.unitData
+
 local stringFind	= string.find
 local stringFormat	= string.format
 local stringSub		= string.sub
 local stringMatch	= string.match
 
-local debugUI
-
 ---------- local function block ---------
 
-local function buildDebugUI ()
+function LibEKL.Unit.buildDebugUI ()
 
 	local context = UI.CreateContext("nkUI") 
 	context:SetStrata ('dialog')
@@ -36,10 +36,10 @@ local function buildDebugUI ()
 	function frame:Update()
 		local thisText, thisText2 = "", ""
 
-		local sortedKeys = LibEKL.Tools.Table.GetSortedKeys (_idCache)
+		local sortedKeys = LibEKL.Tools.Table.GetSortedKeys (unitData.idCache)
 		
 		for _, key in pairs(sortedKeys) do
-			local units = _idCache[key]
+			local units = unitData.idCache[key]
 			thisText = stringFormat("%s%s: %s\n", thisText, key, LibEKL.Tools.Table.Serialize(units))
 		end
 

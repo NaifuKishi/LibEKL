@@ -34,6 +34,7 @@ unitData.isGroup = false
 unitData.groupMembers = 0
 unitData.raidMembers = 0
 unitData.watchUnits = {'player', 'player.pet', 'player.target', 'player.target.target', 'focus', 'focus.target'}
+unitData.debugUI = nil
 
 ---------- local function block ---------
 
@@ -96,7 +97,7 @@ function LibEKL.Unit.init()
 		end
 	end
 
-	--if nkDebug then  debugUI = buildDebugUI() end
+	if nkDebug then unitData.debugUI = LibEKL.Unit.buildDebugUI() end
 	
 	unitData.unitManager = true
 
@@ -251,6 +252,7 @@ end
         Returns a table with detailed information about the specified unit.
     Parameters:
         unitID (string): The unit ID to get details for
+		This can also by unit type like player
     Returns:
         unitDetails (table): A table with detailed information about the unit
     Notes:
@@ -260,9 +262,13 @@ end
 ]]
 function LibEKL.Unit.GetUnitDetail (unitID, force)
 
+	if unitID ==nil then return nil end
+
 	if unitData.idCache[unitID] ~= nil and #unitData.idCache[unitID] > 0 then
-		unitID = unitData.idCache[unitID][1]
+		unitID = unitData.idCache[unitID][1] -- check for case taht unitID is a unit type like player
 	end
+
+	--print ("LibEKL.Unit.GetUnitDetail", unitID)
 	
 	if force == true or unitData.unitCache[unitID] == nil then
 		local temp = inspectUnitDetail(unitID)
@@ -378,4 +384,3 @@ end
         - Uses the addon's language settings for localization
 ]]
 function LibEKL.Unit.getCallingText (calling) return lang.callings[calling] end
-

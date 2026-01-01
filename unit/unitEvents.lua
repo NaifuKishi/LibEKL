@@ -5,8 +5,8 @@ local addonInfo, privateVars = ...
 if not LibEKL then LibEKL = {} end
 if not LibEKL.Unit then LibEKL.Unit = {} end
 
-local lang        = privateVars.langTexts
-local data        = privateVars.data
+local lang        	= privateVars.langTexts
+local data        	= privateVars.data
 local unitData		= privateVars.unitData
 local unitEvents 	= privateVars.unitEvents
 
@@ -46,13 +46,14 @@ end
 
 function unitEvents.setIDCache(key, value, flag, source)
 
-	if nkDebug and value then nkDebug.logEntry (addonInfo.identifier, "unitEvents.setIDCache", key, {source = source, value = value, flag = flag}) end
+	--if nkDebug and value then nkDebug.logEntry (addonInfo.identifier, "unitEvents.setIDCache", key, {source = source, value = value, flag = flag}) end
 
 	if key == value then return end
 	
 	if flag == false then
 		if unitData.idCache[key] == nil then return end
 		LibEKL.Tools.Table.RemoveValue (unitData.idCache[key], value)
+		if #unitData.idCache[key] == 0 then unitData.idCache[key] = nil end
 	else
 		if unitData.idCache[key] == nil then
 			unitData.idCache[key] = {}
@@ -79,7 +80,7 @@ function unitEvents.combatDamage(_, info)
 			unitData.unitCache[info.caster].lastUpdate = inspectTimeReal()
 			LibEKL.eventHandlers["LibEKL.Unit"]["Available"]({[info.caster] = "combatlog"})
 			
-			if debugUI then debugUI:Update() end
+			if unitData.debugUI then unitData.debugUI:Update() end
 		end
 	end
 	
@@ -94,7 +95,7 @@ function unitEvents.combatDamage(_, info)
 			unitData.unitCache[info.target].lastUpdate = inspectTimeReal()
 			LibEKL.eventHandlers["LibEKL.Unit"]["Available"]({[info.target] = "combatlog"})
 			
-			if debugUI then debugUI:Update() end
+			if unitData.debugUI then unitData.debugUI:Update() end
 		end
 	end
 
@@ -115,7 +116,7 @@ local function _fctCombatDeath(_, info)
 			unitData.unitCache[info.target] = nil
 			LibEKL.eventHandlers["LibEKL.Unit"]["Unavailable"]({[info.target] = false})
 					
-			if debugUI then debugUI:Update() end
+			if unitData.debugUI then unitData.debugUI:Update() end
 		end
 	end
 
@@ -197,11 +198,13 @@ function unitEvents.unitAvailableHandler (_, unitInfo)
 
 	if fireEvent then LibEKL.eventHandlers["LibEKL.Unit"]["Available"](tempUnitInfo) end
 	
-	if debugUI then debugUI:Update() end
+	if unitData.debugUI then unitData.debugUI:Update() end
 
 end
 
 function unitEvents.unitUnAvailableHandler (_, unitInfo)
+
+	if nkDebug then nkDebug.logEntry (addonInfo.identifier, "unitEvents.unitUnAvailableHandler", "Startup", unitInfo) end
 
 	for unitId, _ in pairs (unitInfo) do
 	
@@ -214,11 +217,13 @@ function unitEvents.unitUnAvailableHandler (_, unitInfo)
 	
 	LibEKL.eventHandlers["LibEKL.Unit"]["Unavailable"](unitInfo)
 
-	if debugUI then debugUI:Update() end
+	if unitData.debugUI then unitData.debugUI:Update() end
 	
 end
 
 function unitEvents.unitChange (unitId, unitType)
+
+	if nkDebug then nkDebug.logEntry (addonInfo.identifier, "unitEvents.unitChange", unitId, unitType) end
 
 	unitData.idCache[unitType] = {}
 	
@@ -243,7 +248,7 @@ function unitEvents.unitChange (unitId, unitType)
 	for addon, _ in pairs(unitData.subscriptions[unitType]) do
 		LibEKL.eventHandlers["LibEKL.Unit"]["Change"](unitId, unitType)
 		
-		if debugUI then debugUI:Update() end
+		if unitData.debugUI then unitData.debugUI:Update() end
 		break
 	end
 
@@ -309,24 +314,16 @@ function unitEvents.processUnitChange (unitType, unitId)
 	elseif stringFind(unitType, 'player') == 1 then
 		
 		local playerId = inspectUnitLookup('player')
-		--[[local suffix = ''
-		
-		if stringFind(unitType, 'player.pet') == 1 then
-			suffix = '.pet'
-		elseif stringFind(unitType, 'player.target') == 1 then
-			suffix = '.target'
-		end
-		]]
 	
 		for idx = 1, 20, 1 do
-			local luID = inspectUnitLookup(stringFormat('group%02d', idx, suffix))
+			local luID = inspectUnitLookup(stringFormat('group%02d', idx))
 			
 			if luID == playerId then
 				local unitInfoTable = {}
 				if unitId == nil then
-					unitInfoTable[false] = stringFormat('group%02d%s', idx, suffix)
+					unitInfoTable[false] = stringFormat('group%02d', idx)
 				else
-					unitInfoTable[luID] = stringFormat('group%02d%s', idx, suffix)
+					unitInfoTable[luID] = stringFormat('group%02d', idx)
 				end
 				processUnitInfo (unitInfoTable)
 				break

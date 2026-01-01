@@ -68,6 +68,7 @@ RunOnStartup = {
   "ui/window/window.lua",
   
   "unit/unit.lua",
+  "unit/unitDebugUI.lua",
   "unit/unitEvents.lua",
   "unit/unitstats.lua",  
 }
