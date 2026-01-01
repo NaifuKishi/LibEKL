@@ -9,6 +9,8 @@ if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 local uiFunctions   = privateVars.uiFunctions
 local internal      = privateVars.internal
 
+local stringFind	= string.find
+
 ---------- addon internal function block ---------
 
 local function _uiMenu(name, parent) 
@@ -65,7 +67,7 @@ local function _uiMenu(name, parent)
 		if #entries == 0 then
 			menuEntry:SetPoint("TOPLEFT", menu, "TOPLEFT", 1, 1)
 		else
-			if string.find(entries[#entries]:GetName(), '.separator') == nil then
+			if stringFind(entries[#entries]:GetName(), '.separator') == nil then
 				menuEntry:SetPoint("TOPLEFT", entries[#entries], "BOTTOMLEFT")
 			else
 				menuEntry:SetPoint("TOPLEFT", entries[#entries], "BOTTOMLEFT", 1, 0)
@@ -128,7 +130,7 @@ local function _uiMenu(name, parent)
 		menuHeight = 0
 
 		for k, v in pairs (entries) do
-			if string.find(v:GetName(), '.separator') == nil then		
+			if stringFind(v:GetName(), '.separator') == nil then		
 				v:ClearWidth()
 				local newWidth = v:SetFontSize(newFontSize)
 				if newWidth > width then width = newWidth end
@@ -148,7 +150,7 @@ local function _uiMenu(name, parent)
 		fontInfo = { addonInfo = addonInfo, fontName = fontName }
 
 		for k, v in pairs (entries) do
-			if string.find(v:GetName(), '.separator') == nil then		
+			if stringFind(v:GetName(), '.separator') == nil then		
 				v:SetFont(addonInfo, fontName)
 			end 
     	end
@@ -171,7 +173,7 @@ local function _uiMenu(name, parent)
 			if menu:GetLeft() < 0 then
 				local width, height = menu:GetWidth(), menu:GetHeight()
 				menu:ClearAll()
-				if string.find(setPointInfo.from, "TOP") ~= nil then
+				if stringFind(setPointInfo.from, "TOP") ~= nil then
 					menu:SetPoint("TOPLEFT", setPointInfo.object, "TOPRIGHT", setPointInfo.x, setPointInfo.y)
 				else
 					menu:SetPoint("BOTTOMLEFT", setPointInfo.object, "BOTTOMRIGHT", setPointInfo.x, setPointInfo.y)
@@ -181,7 +183,7 @@ local function _uiMenu(name, parent)
 			elseif menu:GetRight() > UIParent:GetWidth() then
 				local width, height = menu:GetWidth(), menu:GetHeight()
 				menu:ClearAll()
-				if string.find(setPointInfo.from, "TOP") ~= nil then
+				if stringFind(setPointInfo.from, "TOP") ~= nil then
 					menu:SetPoint("TOPRIGHT", setPointInfo.object, "TOPLEFT", setPointInfo.x, setPointInfo.y)
 				else
 					menu:SetPoint("BOTTOMRIGHT", setPointInfo.object, "BOTTOMLEFT", setPointInfo.x, setPointInfo.y)
@@ -194,7 +196,7 @@ local function _uiMenu(name, parent)
 				local width, height = menu:GetWidth(), menu:GetHeight()
 				menu:ClearAll()
 				
-				if string.find(setPointInfo.from, "LEFT") ~= nil then
+				if stringFind(setPointInfo.from, "LEFT") ~= nil then
 					menu:SetPoint("BOTTOMLEFT", setPointInfo.object, "BOTTOMRIGHT", setPointInfo.x, setPointInfo.y)
 				else
 					menu:SetPoint("BOTTOMRIGHT", setPointInfo.object, "BOTTOMLEFT", setPointInfo.x, setPointInfo.y)
@@ -205,7 +207,7 @@ local function _uiMenu(name, parent)
 				local width, height = menu:GetWidth(), menu:GetHeight()
 				menu:ClearAll()
 				
-				if string.find(setPointInfo.from, "LEFT") ~= nil then
+				if stringFind(setPointInfo.from, "LEFT") ~= nil then
 					menu:SetPoint("TOPLEFT", setPointInfo.object, "TOPRIGHT", setPointInfo.x, setPointInfo.y)
 				else
 					menu:SetPoint("TOPRIGHT", setPointInfo.object, "TOPLEFT", setPointInfo.x, setPointInfo.y)
@@ -224,7 +226,7 @@ local function _uiMenu(name, parent)
 		oSetWidth(self, newWidth)
 		
 		for k, v in pairs (entries) do
-			if string.find(v:GetName(), '.separator') == nil then
+			if stringFind(v:GetName(), '.separator') == nil then
 				v:SetWidth(newWidth - 2)
 			else
 				v:SetWidth(newWidth)

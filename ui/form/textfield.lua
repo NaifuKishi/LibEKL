@@ -9,6 +9,8 @@ if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 local uiFunctions   = privateVars.uiFunctions
 local internalFunc  = privateVars.internalFunc
 
+local stringByte	= string.byte
+
 ---------- addon internalFunc function block ---------
 
 local function _uiTextfield(name, parent) 
@@ -93,7 +95,7 @@ local function _uiTextfield(name, parent)
 	end
 	
 	textFieldEdit:EventAttach(Event.UI.Input.Key.Down, function(self, _, key) 
-		local code = string.byte(key)
+		local code = stringByte(key)
 
 		if multiLine == true and key == "Return" then
 			local cursor = self:GetCursor()

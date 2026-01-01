@@ -7,7 +7,9 @@ if not LibEKL then LibEKL = {} end
 if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 
 local uiFunctions   = privateVars.uiFunctions
-local internalFunc      = privateVars.internalFunc
+local internalFunc  = privateVars.internalFunc
+
+local stringFormat	= string.format
 
 ---------- addon internalFunc function block ---------
 
@@ -85,14 +87,14 @@ local function _uiProgressBar(name, parent)
 	
 	function progressBar:SetValue(newValue)
 		if newValue < range[1] or newValue > range[2] then
-			LibEKL.Tools.Error.Display ("LibEKL", string.format("pogressBar [%s] value out of range %d-%d",name, range[1], range[2]), 2)
+			LibEKL.Tools.Error.Display ("LibEKL", stringFormat("pogressBar [%s] value out of range %d-%d",name, range[1], range[2]), 2)
 			return
 		end
 		
 		local percent = 1 / (range[2] - range[1] + 1) * newValue
 		inner:SetWidth(progressBar:GetWidth() * percent)
 		label:ClearWidth()
-		label:SetText(string.format("%2.2f%%", percent * 100))
+		label:SetText(stringFormat("%2.2f%%", percent * 100))
 				
 		if inner:GetWidth() > progressBar:GetWidth() / 2 + label:GetWidth() / 2 then
 			label:SetFontColor(backgroundColor[1], backgroundColor[2], backgroundColor[3], backgroundColor[4])

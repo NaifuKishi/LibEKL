@@ -97,7 +97,7 @@ function LibEKL.Unit.init()
 		end
 	end
 
-	if nkDebug then unitData.debugUI = LibEKL.Unit.buildDebugUI() end
+	--if nkDebug then unitData.debugUI = LibEKL.Unit.buildDebugUI() end
 	
 	unitData.unitManager = true
 

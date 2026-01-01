@@ -9,7 +9,9 @@ if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 local uiFunctions   = privateVars.uiFunctions
 local lang          = privateVars.langTexts
 
-local InspectItemDetail	= Inspect.Item.Detail
+local inspectItemDetail	= Inspect.Item.Detail
+
+local stringFormat		= string.format
 
 local itemCache = {}
 
@@ -217,14 +219,14 @@ local function _uiItemTooltip(name, parent)
 		thisItemID = itemID
 		if itemID == nil then return end		
 
-		local err, details = pcall (InspectItemDetail, itemID)
+		local err, details = pcall (inspectItemDetail, itemID)
 
 		--if err == true then tooltip:SetItemDetails(details, itemLibDetails, equipped, equipSlot) end
 
 		local tooltipCoRoutine = coroutine.create(
 		   function ()
 				for idx = 1, 10, 1 do
-					local err, details = pcall (InspectItemDetail, itemID)
+					local err, details = pcall (inspectItemDetail, itemID)
 					if err == true then 
 						tooltip:SetItemDetails(details, itemLibDetails, equipped, equipSlot)
 						coroutine.yield(nil)
@@ -257,9 +259,9 @@ local function _uiItemTooltip(name, parent)
 			height = height + isEquipped:GetHeight()
 			
 			if equipSlot ~= nil then
-				isEquipped:SetText(string.format(lang.isEquipped, "(" .. equipSlot .. ")"))
+				isEquipped:SetText(stringFormat(lang.isEquipped, "(" .. equipSlot .. ")"))
 			else
-				isEquipped:SetText(string.format(lang.isEquipped, ""))
+				isEquipped:SetText(stringFormat(lang.isEquipped, ""))
 			end
 			
 			title:SetPoint ("TOPLEFT", isEquipped, "BOTTOMLEFT")
@@ -313,7 +315,7 @@ local function _uiItemTooltip(name, parent)
 		  itemTypeText = LibEKL.items.getRessource ('itemTypeTranslation', riftSlot)
 			
 			if itemTypeText == nil then
-				LibEKL.Tools.Error.Display (addonInfo.toc.Identifier, string.format("itemTooltip could not get item type for rift slot %s", riftSlot), 2)
+				LibEKL.Tools.Error.Display (addonInfo.toc.Identifier, stringFormat("itemTooltip could not get item type for rift slot %s", riftSlot), 2)
 				itemCat:SetVisible(false)
 				itemType:SetVisible(false)
 			else
@@ -364,7 +366,7 @@ local function _uiItemTooltip(name, parent)
 		
 		if details.damageMin ~= nil then		
 			local dpsValue = (details.damageMax + details.damageMin) / 2 / details.damageDelay
-			dps:SetText (string.format (lang.dps, dpsValue, details.damageMax, details.damageMin, details.damageDelay))
+			dps:SetText (stringFormat (lang.dps, dpsValue, details.damageMax, details.damageMin, details.damageDelay))
 			dps:SetVisible(true)
 			object = dps
 			height = height + dps:GetHeight() + 10
@@ -396,7 +398,7 @@ local function _uiItemTooltip(name, parent)
 					end  
 					
 					statLine:SetPoint("TOPLEFT", object, "BOTTOMLEFT", 0, y)
-					statLine:SetText(string.format("%s: +%d", lang.stats[v], details.stats[v]))
+					statLine:SetText(stringFormat("%s: +%d", lang.stats[v], details.stats[v]))
 					statLine:SetVisible(true)
 					height = height + statLine:GetHeight() + y
 					
@@ -429,7 +431,7 @@ local function _uiItemTooltip(name, parent)
 					end  
 					
 					statLine:SetPoint("TOPLEFT", object, "BOTTOMLEFT", 0, y)
-					statLine:SetText(string.format("%s: +%d", lang.stats[labelist[v]], itemLibDetails[v]))
+					statLine:SetText(stringFormat("%s: +%d", lang.stats[labelist[v]], itemLibDetails[v]))
 					statLine:SetVisible(true)
 					height = height + statLine:GetHeight() + y
 					
@@ -457,7 +459,7 @@ local function _uiItemTooltip(name, parent)
 			local useText = itemLibDetails['use' .. LibEKL.Tools.Lang.GetLanguageShort () ]
 		
 			if useText ~= nil then
-				use:SetText (string.format(lang.use, useText))
+				use:SetText (stringFormat(lang.use, useText))
 				use:SetPoint("TOPLEFT", object, "BOTTOMLEFT", 0, y)
 				use:SetVisible(true)
 				height = height + use:GetHeight() + y
@@ -470,7 +472,7 @@ local function _uiItemTooltip(name, parent)
 			local equipText = itemLibDetails['equip' .. LibEKL.Tools.Lang.GetLanguageShort () ]
 			
 			if equipText ~= nil then
-				equip:SetText (string.format(lang.equip, equipText))
+				equip:SetText (stringFormat(lang.equip, equipText))
 				equip:SetPoint("TOPLEFT", object, "BOTTOMLEFT", 0, y)
 				equip:SetVisible(true)
 				height = height + equip:GetHeight() + y
@@ -523,7 +525,7 @@ local function _uiItemTooltip(name, parent)
 		end
 		
 		if details.requiredLevel ~= nil then
-			level:SetText (string.format(lang.requiredLevel, details.requiredLevel))
+			level:SetText (stringFormat(lang.requiredLevel, details.requiredLevel))
 			level:SetPoint("TOPLEFT", object, "BOTTOMLEFT", 0, y)
 			level:SetVisible(true)
 			height = height + level:GetHeight() + y
@@ -544,7 +546,7 @@ local function _uiItemTooltip(name, parent)
 				end
 			end
 		
-			calling:SetText (string.format(lang.requiredCalling, callingText))
+			calling:SetText (stringFormat(lang.requiredCalling, callingText))
 			if calling:GetWidth() > defaultWidth then 
 				defaultWidth = calling:GetWidth() 
 				if itemCat then itemCat:SetWidth(defaultWidth) end
@@ -572,7 +574,7 @@ local function _uiItemTooltip(name, parent)
   			  LibEKL.Tools.Error.Display ("LibEKL", "Unknown faction: " .. itemLibDetails.rf, 1) 
   			end
   	  end
-			local text = string.format(lang.requiredFaction, factionText, levelText)
+			local text = stringFormat(lang.requiredFaction, factionText, levelText)
 			faction:SetText (text)
 			faction:SetPoint("TOPLEFT", object, "BOTTOMLEFT", 0, y)
 			faction:SetVisible(true)
@@ -615,17 +617,17 @@ local function _uiItemTooltip(name, parent)
 					
 						if upgradeItemDetails ~= nil then
 							if counter == 1 then
-								upgradeItem1:SetTextureAsync("Rift", string.format('Data/\\UI\\item_icons\\%s.dds', upgradeItemDetails.icon))											
+								upgradeItem1:SetTextureAsync("Rift", stringFormat('Data/\\UI\\item_icons\\%s.dds', upgradeItemDetails.icon))											
 								upgradeCount1:SetText(tostring(v))
 								upgradeItem1:SetVisible(true)
 								upgradeCount1:SetVisible(true)
 							elseif counter == 2 then
-								upgradeItem2:SetTextureAsync("Rift", string.format('Data/\\UI\\item_icons\\%s.dds', upgradeItemDetails.icon))
+								upgradeItem2:SetTextureAsync("Rift", stringFormat('Data/\\UI\\item_icons\\%s.dds', upgradeItemDetails.icon))
 								upgradeCount2:SetText(tostring(v))											
 								upgradeItem2:SetVisible(true)
 								upgradeCount2:SetVisible(true)
 							else
-								upgradeItem3:SetTextureAsync("Rift", string.format('Data/\\UI\\item_icons\\%s.dds', upgradeItemDetails.icon))
+								upgradeItem3:SetTextureAsync("Rift", stringFormat('Data/\\UI\\item_icons\\%s.dds', upgradeItemDetails.icon))
 								upgradeCount3:SetText(tostring(v))											
 								upgradeItem3:SetVisible(true)
 								upgradeCount3:SetVisible(true)
@@ -659,7 +661,7 @@ local function _uiItemTooltip(name, parent)
 						
 						if currencyItem ~= nil then
 							costCurrencyIcon:SetPoint("CENTERLEFT", costObject, "CENTERRIGHT", 5, 0)
-							costCurrencyIcon:SetTextureAsync("Rift", string.format('Data/\\UI\\item_icons\\%s.dds', currencyItem.icon))
+							costCurrencyIcon:SetTextureAsync("Rift", stringFormat('Data/\\UI\\item_icons\\%s.dds', currencyItem.icon))
 							costCurrencyText:SetText(tostring(v))
 							costCurrencyText:SetVisible(true)
 							costCurrencyIcon:SetVisible(true)

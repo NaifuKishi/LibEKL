@@ -11,6 +11,8 @@ local internalFunc  = privateVars.internalFunc
 
 local inspectMouse	= Inspect.Mouse
 
+local stringFormat 	= string.format
+
 ---------- addon internalFunc function block ---------
 
 --[[
@@ -246,7 +248,7 @@ local function _uiSlider(name, parent)
 		labelText = text
 		labelHTML = html or false
 		if self:GetValue("value") ~= nil then
-			sliderLabel:SetText(string.format(text, self:GetValue("value")), labelHTML) 
+			sliderLabel:SetText(stringFormat(text, self:GetValue("value")), labelHTML) 
 		end
 	end	
 

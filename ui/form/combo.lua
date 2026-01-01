@@ -7,7 +7,9 @@ if not LibEKL then LibEKL = {} end
 if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 
 local uiFunctions   = privateVars.uiFunctions
-local internalFunc      = privateVars.internalFunc
+local internalFunc  = privateVars.internalFunc
+
+local stringFormat	= string.format
 
 ---------- addon internalFunc function block -----------
 
@@ -205,7 +207,7 @@ local function _uiCombobox(name, parent)
 	function combo:SetSelection(selection, sort)
 		
 		if selection == nil or #selection == 0 then
-			LibEKL.Tools.Error.Display (addonInfo.identifier, string.format("_uiCombobox - invalid number of parameters\nexpecting: selection (table)\nreceived: %s", LibEKL.Tools.Table.Serialize (selection))) 
+			LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("_uiCombobox - invalid number of parameters\nexpecting: selection (table)\nreceived: %s", LibEKL.Tools.Table.Serialize (selection))) 
 			return 
 		end
 		

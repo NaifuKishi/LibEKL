@@ -140,9 +140,9 @@ function LibEKL.Tools.Color.RGBToHexColor(red, green, blue)
     local b = math.floor(blue * 255)
 
     -- Format each component as two-digit hexadecimal
-    local hexR = string.format("%02X", r)
-    local hexG = string.format("%02X", g)
-    local hexB = string.format("%02X", b)
+    local hexR = stringFormat("%02X", r)
+    local hexG = stringFormat("%02X", g)
+    local hexB = stringFormat("%02X", b)
 
     -- Concatenate the components to form the hex color code
     return hexR .. hexG .. hexB

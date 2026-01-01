@@ -12,6 +12,7 @@ local stringFind    = string.find
 local stringSub     = string.sub
 local stringLen     = string.len
 local stringGSub    = string.gsub
+local stringUpper   = string.upper
 	
 
 ---------- library public function block ---------
@@ -20,7 +21,7 @@ function LibEKL.strings.find(source, pattern)
 
 	if source == nil then return nil end
 	
-	return string.find(source, pattern)
+	return stringFind(source, pattern)
 
 end
 
@@ -119,9 +120,9 @@ function LibEKL.strings.Capitalize(inputString)
     -- Capitalize the first letter of each word
     for i, word in ipairs(words) do
         if #word > 0 then
-            local firstChar = string.sub(word, 1, 1)
-            local restOfWord = string.sub(word, 2)
-            words[i] = string.upper(firstChar) .. restOfWord
+            local firstChar = stringSub(word, 1, 1)
+            local restOfWord = stringSub(word, 2)
+            words[i] = stringUpper(firstChar) .. restOfWord
         end
     end
 

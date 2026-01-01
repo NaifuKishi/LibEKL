@@ -23,6 +23,7 @@ local inspectTimeFrame				= Inspect.Time.Frame
 local commandSystemWatchdogQuiet	= Command.System.Watchdog.Quiet
 
 local stringFind	= string.find
+local stringFormat	= string.format
 
 local LibEKLUnitGetPlayerDetails
 
@@ -72,7 +73,7 @@ local function buildDebugUI ()
 			if slotInfo.details then
 				slotInfo.text:SetVisible(true)
 				slotInfo.text:SetPoint(from, object, to)
-				slotInfo.text:SetText(string.format("%s: %s %d", slotID, slotInfo.details.id, slotInfo.details.stack))
+				slotInfo.text:SetText(stringFormat("%s: %s %d", slotID, slotInfo.details.id, slotInfo.details.stack))
 				from, object, to = "TOPLEFT", slotInfo.text, "BOTTOMLEFT"
 			end
 		end
