@@ -198,7 +198,7 @@ end
         - Returns nil if no units match the specified type
         - The table may contain multiple unit IDs for the same type
 ]]
-function LibEKL.Unit.GetUnitIDByType (unitType) 
+function LibEKL.Unit.GetUnitIDByType (unitType)
 
 	if unitData.idCache[unitType] == nil then
 		local flag, details = pcall (inspectUnitDetail, unitType)
