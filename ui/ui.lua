@@ -136,6 +136,8 @@ function internalFunc.uiAddToGarbageCollector (frameType, element)
 	table.insert(_gc[checkFrameType][element:GetSecureMode()], element) 
 	if inspectSystemSecure() == false or element:GetSecureMode() == 'normal' then element:SetVisible(false) end
 	
+	--print ("LibEKL: Added " .. element:GetRealName() .. " to garbage collector")
+
 	LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"]()
   
 end  
@@ -532,6 +534,8 @@ function LibEKL.UICreateFrame (frameType, name, parent)
 	local checkFrameType = stringUpper(frameType) 
 
 	if _freeElements[checkFrameType] ~= nil and #_freeElements[checkFrameType] > 0 then
+
+		--print ("recycling " .. checkFrameType)
 
 		if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 

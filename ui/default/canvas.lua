@@ -61,6 +61,8 @@ local function _uiCanvas(name, parent)
 		for k, v in pairs (macros) do canvas:EventMacroSet(k, nil) end
 
 		internalFunc.uiAddToGarbageCollector ('nkCanvas', canvas)  
+
+		--print ('Destroyed Canvas: ' .. name)
 		
 	end	
 
