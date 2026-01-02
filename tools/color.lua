@@ -9,9 +9,9 @@ LibEKL.Tools.Color = {}
 
 ---------- init local variables ---------
 
-local mathFloor   = math.floor
-local stringLen   = string.len
-local stringFormat = string.format
+local mathFloor     = math.floor
+local stringLen     = string.len
+local stringFormat  = string.format
 
 -- ========== COLOR TOOLS ==========
 

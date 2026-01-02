@@ -308,10 +308,12 @@ local function _uiTabpane(name, parent)
 		
 		for k, pane in pairs(panes) do
 		
-			tabButtons[k]:SetPoint(from, paneHeaderObject, to, x, y)			
-			tabButtons[k]:SetColor(uiFrameStroke, {type = 'solid', r = uiFrameStroke.r, g = uiFrameStroke.g, b = uiFrameStroke.b, a = uiFrameStroke.a}, uiFrameFill, fontColor, fontColorSelected)
-			tabButtons[k]:SetBorder(border)
-			tabButtons[k]:SetVertical(vertical)
+			local thisTabButton = tabButtons[k]
+
+			thisTabButton:SetPoint(from, paneHeaderObject, to, x, y)			
+			thisTabButton:SetColor(uiFrameStroke, {type = 'solid', r = uiFrameStroke.r, g = uiFrameStroke.g, b = uiFrameStroke.b, a = uiFrameStroke.a}, uiFrameFill, fontColor, fontColorSelected)
+			thisTabButton:SetBorder(border)
+			thisTabButton:SetVertical(vertical)
 
 			if init == false then
 				if pane.initFunc ~= nil then
@@ -322,16 +324,18 @@ local function _uiTabpane(name, parent)
 					tabButtons[k]:SetSelected(true)					
 					pane.init = true					
 				end
-			end			
+			end
+
+			local paneFrame = pane.frame
 			
-  			pane.frame:SetVisible(false)
-			pane.frame:SetPoint("TOPLEFT", bodyFrame, "TOPLEFT")
-			pane.frame:SetPoint("BOTTOMRIGHT", bodyFrame, "BOTTOMRIGHT")
-			pane.frame:SetLayer(999)
+  			paneFrame:SetVisible(false)
+			paneFrame:SetPoint("TOPLEFT", bodyFrame, "TOPLEFT")
+			paneFrame:SetPoint("BOTTOMRIGHT", bodyFrame, "BOTTOMRIGHT")
+			paneFrame:SetLayer(999)
 						
 			if k == activePane then
-				pane.frame:SetVisible(true)
-				tabButtons[k]:SetLayer(3)
+				paneFrame:SetVisible(true)
+				thisTabButton:SetLayer(3)
 				
 				if border == true then
 					helperLine:SetVisible(true)
@@ -341,8 +345,8 @@ local function _uiTabpane(name, parent)
   			  		helperLine:SetVisible(false)
   				end
 			else
-				pane.frame:SetVisible(false)
-				tabButtons[k]:SetLayer(1)
+				paneFrame:SetVisible(false)
+				thisTabButton:SetLayer(1)
 			end
 			
 			paneHeaderObject = tabButtons[k]
@@ -366,9 +370,6 @@ local function _uiTabpane(name, parent)
 	
 	function tabPane:SetFont(addonInfo, fontName) 
 		fontInfo = { addonInfo = addonInfo, fontName = fontName}
-		--for k, v in pairs(tabButtons) do
-		--	LibEKL.UI.SetFont(v, addonInfo, fontName)
-		--end
 	end
 
 	function tabPane:SetBorder(flag)

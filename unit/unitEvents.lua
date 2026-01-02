@@ -101,28 +101,6 @@ function unitEvents.combatDamage(_, info)
 
 end
 
-
---[[
-local function _fctCombatDeath(_, info)
-
-	if info.target ~= nil then
-		
-		local unitTypes = LibEKL.Unit.getUnitTypes (info.target)
-		if unitTypes == nil then return end
-		
-		for key, _ in pairs(unitTypes) do
-		
-			unitEvents.setIDCache(key, info.target, false, "_fctCombatDeath")
-			unitData.unitCache[info.target] = nil
-			LibEKL.eventHandlers["LibEKL.Unit"]["Unavailable"]({[info.target] = false})
-					
-			if unitData.debugUI then unitData.debugUI:Update() end
-		end
-	end
-
-end
-]]
-
 function unitEvents.unitAvailableHandler (_, unitInfo)
 
 	if nkDebug then nkDebug.logEntry (addonInfo.identifier, "unitEvents.unitAvailableHandler", "Startup", unitInfo) end

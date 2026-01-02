@@ -204,11 +204,9 @@ function LibEKL.Unit.GetUnitIDByType (unitType)
 	if unitData.idCache[unitType] == nil then
 		local flag, details = pcall (inspectUnitDetail, unitType)
 		if flag and details ~= nil then
-			--if details.type == unitType then 
-				unitEvents.setIDCache(unitType, details.id, true, 'LibEKL.Unit.GetUnitIDByType')
-				unitData.unitCache[details.id] = details
-				unitData.unitCache[details.id].lastUpdate = inspectTimeReal()
-			--end
+			unitEvents.setIDCache(unitType, details.id, true, 'LibEKL.Unit.GetUnitIDByType')
+			unitData.unitCache[details.id] = details
+			unitData.unitCache[details.id].lastUpdate = inspectTimeReal()
 		end
 	else
 		--print "cache not nil"

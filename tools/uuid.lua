@@ -5,9 +5,9 @@ local addonInfo, privateVars = ...
 if not LibEKL then LibEKL = {} end
 if not LibEKL.Tools then LibEKL.Tools = {} end
 
-local mathRandom = math.random
-local stringGSub = string.gsub
-local stringFormat = string.format
+local mathRandom    = math.random
+local stringGSub    = string.gsub
+local stringFormat  = string.format
 
 -- Generates a UUID (Universally Unique Identifier).
 -- @return A string representing a UUID.

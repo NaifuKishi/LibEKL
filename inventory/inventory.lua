@@ -7,6 +7,8 @@ if not LibEKL.Inventory then LibEKL.Inventory = {} end
 if not privateVars.inventory then privateVars.inventory = {} end
 if not privateVars.inventoryEvents then privateVars.inventoryEvents = {} end
 
+if not LibEKL.Unit then LibEKL.Unit = {} end
+
 local data				= privateVars.data
 local uiElements		= privateVars.uiElements
 local inventory			= privateVars.inventory
@@ -28,6 +30,7 @@ local commandSystemWatchdogQuiet	= Command.System.Watchdog.Quiet
 local stringFind	= string.find
 
 local _invManager = false
+local playerName
 
 ------ internal inventory functions
 
@@ -35,12 +38,14 @@ function inventory.getInventory ()
 
 	if inspectSystemSecure() == false then commandSystemWatchdogQuiet() end
 
-	if (not LibEKLInv[LibEKL.Unit.GetPlayerDetails().name]) or (not LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory) then
-		LibEKLInv[LibEKL.Unit.GetPlayerDetails().name] = {}
+	local playerName = LibEKL.Unit.GetPlayerDetails().name
+
+	if (not LibEKLInv[playerName]) or (not LibEKLInv[playerName].inventory) then
+		LibEKLInv[playerName] = {}
 	end
 	
-	LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory = { byID = {}, byType = {}, bySlot = {} }
-	LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache = {}
+	LibEKLInv[playerName].inventory = { byID = {}, byType = {}, bySlot = {} }
+	LibEKLInv[playerName].itemCache = {}
 
 	local slots = { inspectItemList(utilityItemSlotInventory()), 
 					inspectItemList(utilityItemSlotEquipment()), 
@@ -49,7 +54,7 @@ function inventory.getInventory ()
 					inspectItemList(utilityItemSlotQuest()) }
 
 
-					for idx = 1, #slots, 1 do
+	for idx = 1, #slots, 1 do
 	
 		local lu = {}
 		
@@ -80,6 +85,8 @@ function LibEKL.Inventory.Init (updateFlag, showDebugUI)
 		
 		LibEKL.eventHandlers["LibEKL.InventoryManager"]["Update"], LibEKL.Events["LibEKL.InventoryManager"]["Update"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.InventoryManagerUpdate")
 		LibEKL.eventHandlers["LibEKL.InventoryManager"]["SlotUpdate"], LibEKL.Events["LibEKL.InventoryManager"]["SlotUpdate"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.InventoryManagerSlotUpdate")
+
+		playerName = LibEKL.Unit.GetPlayerDetails().name
 
 		_invManager = true
 		
@@ -165,13 +172,11 @@ function LibEKL.Inventory.findFreeVaultSlot(bag)
 end
 
 function LibEKL.Inventory.getAllItems ()
-
-	return LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache
-	
+	return LibEKLInv[playerName].itemCache	
 end
 
 function LibEKL.Inventory.GetItemByKey (key)
-	return LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache[key]
+	return LibEKLInv[playerName].itemCache[key]
 end
 
 function LibEKL.Inventory.GetSlotByItemId (id)
@@ -181,7 +186,7 @@ function LibEKL.Inventory.GetSlotByItemId (id)
 		return
 	end
 	
-	local inventory = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory
+	local inventory = LibEKLInv[playerName].inventory
 
 	for slot, v in pairs(inventory.bySlot) do
 		if v.id ~= nil and LibEKL.strings.startsWith(id, v.id) then return slot end
@@ -204,8 +209,8 @@ function LibEKL.Inventory.querySlotByType (typeId)
 		return
 	end
 	
-	local inventory = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory
-	local itemCache = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache
+	local inventory = LibEKLInv[playerName].inventory
+	local itemCache = LibEKLInv[playerName].itemCache
 
 	for slot, v in pairs(inventory.bySlot) do
 		if itemCache[v.id] ~= nil and LibEKL.strings.startsWith(typeId, itemCache[v.id].typeId) then return slot end
@@ -222,9 +227,9 @@ function LibEKL.Inventory.queryQtyById (key)
 		return
 	end
 	
-	if (not LibEKLInv[LibEKL.Unit.GetPlayerDetails().name]) or (not LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory) then inventory.getInventory() end
+	if (not LibEKLInv[playerName]) or (not LibEKLInv[playerName].inventory) then inventory.getInventory() end
 
-	local inventory = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory	
+	local inventory = LibEKLInv[playerName].inventory	
 
 	if not stringFind(key, ',') then
 		-- key is an id, get type			
@@ -246,11 +251,11 @@ function LibEKL.Inventory.queryByCategory (category)
 		return
 	end
 
-	if LibEKLInv[LibEKL.Unit.GetPlayerDetails().name] == nil then inventory.getInventory() end
+	if LibEKLInv[playerName] == nil then inventory.getInventory() end
 	
 	local retValues = {}
 	
-	local itemCache = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache
+	local itemCache = LibEKLInv[playerName].itemCache
 	
 	for id, details in pairs(itemCache) do
 		if details.category == category then
@@ -321,8 +326,8 @@ function LibEKL.Inventory.getBagItems()
         return
     end
 
-    local inventory = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory
-    local itemCache = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache
+    local inventory = LibEKLInv[playerName].inventory
+    local itemCache = LibEKLInv[playerName].itemCache
     local allItems = {}
 
 	for slot, details in pairs(inventory.bySlot) do
@@ -352,8 +357,8 @@ function LibEKL.Inventory.getBagSlots()
         return
     end
 
-    local inventory = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory
-    local itemCache = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache
+    local inventory = LibEKLInv[playerName].inventory
+    local itemCache = LibEKLInv[playerName].itemCache
     local allItems = {
 		["sibg.001"] = {},
 		["sibg.002"] = {},
