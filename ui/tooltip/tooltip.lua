@@ -112,9 +112,15 @@ local function _uiTooltip(name, parent)
 			subTitle:SetHeight(11)			
 		end
 	end
+
+	function tooltip:ClearLines()
+		for idx = 1, #lines, 1 do
+			lines[idx]:SetVisible(false)
+		end
+	end
 	
 	function tooltip:SetLines(newLines)
-		
+
 		local newHeight = title:GetHeight() + 7
 		local newWidth = 0
 		

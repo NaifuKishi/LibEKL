@@ -388,7 +388,12 @@ function LibEKL.UI.attachAbilityTooltip (target, abilityId)
 			
 			uiElements.abilityTooltip:SetWidth(200)
 			uiElements.abilityTooltip:SetTitle(stringGSub(abilityDetails.name, "\n", ""))
-			uiElements.abilityTooltip:SetLines({{ text = abilityDetails.description, wordwrap = true, minWidth = 200  }})
+
+			if abilityDetails.description then	
+				uiElements.abilityTooltip:SetLines({{ text = abilityDetails.description, wordwrap = true, minWidth = 200  }})
+			else
+				uiElements.abilityTooltip:ClearLines()
+			end
 						
 			uiElements.abilityTooltip:SetPoint("TOPLEFT", target, "BOTTOMRIGHT", 5, 5)
 			LibEKL.UI.showWithinBound (uiElements.abilityTooltip, target)
