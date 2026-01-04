@@ -84,6 +84,10 @@ local function _uiProgressBar(name, parent)
 	function progressBar:SetFontSize (newFontSize)
 		label:SetFontSize(newFontSize)		
 	end
+
+	function progressBar:SetFont (addonId, newFont)
+		LibEKL.UI.SetFont(label, addonId, newFont)
+	end
 	
 	function progressBar:SetValue(newValue)
 		if newValue < range[1] or newValue > range[2] then
