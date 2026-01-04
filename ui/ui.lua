@@ -375,6 +375,8 @@ function LibEKL.UI.attachAbilityTooltip (target, abilityId)
 		uiElements.abilityTooltip:SetVisible(false)
 	else
 		target:EventAttach(Event.UI.Input.Mouse.Cursor.In, function (self)
+			--print (abilityId)
+
 			uiElements.abilityTooltip:ClearAll()
 			local err, abilityDetails = pcall (inspectAbilityNewDetail, abilityId)
 			if err == false or abilityDetails == nil then
