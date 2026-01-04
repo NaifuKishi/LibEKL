@@ -98,7 +98,7 @@ local function _uiDialog(name, parent)
 	function dialog:SetMessage(messageText)
 		message:ClearAll()
 		message:SetPoint("CENTER", dialog:GetContent(), "CENTER", 0, -30)		
-		message:SetText(messageText)
+		message:SetText(messageText, true)
 		
 		if message:GetWidth() > ( dialog:GetWidth() - 40) then		
 			message:SetWidth(dialog:GetWidth() - 40)
