@@ -292,6 +292,32 @@ function LibEKL.Inventory.getAvailableSlots()
 
 end
 
+function LibEKL.Inventory.getAvailableBankSlots()
+
+	local availSlots = {}
+	local allSlots = nil
+	
+	local slots = inspectItemList(utilityItemSlotBank())
+	local initOk = false
+	
+	for slot, details in pairs (slots) do
+		if not LibEKL.strings.startsWith(slot, "sbbg.") then initOk = true end 		
+		if details == false then table.insert (availSlots, slot) end
+	end
+	
+	slots = inspectItemList(utilityItemSlotVault())
+
+	for slot, details in pairs (slots) do
+		if not LibEKL.strings.startsWith(slot, "sbbg.") then initOk = true end 		
+		if details == false then table.insert (availSlots, slot) end
+	end
+	
+	if not initOk then return false end
+	
+	return availSlots
+
+end
+
 function LibEKL.Inventory.getQuestItems ()
 
 	local slots = inspectItemList(utilityItemSlotQuest())
@@ -348,6 +374,41 @@ function LibEKL.Inventory.getBagItems()
     end
 
     return allItems
+end
+
+function LibEKL.Inventory.getBankItems()
+
+    if not _invManager then
+        LibEKL.Tools.Error.Display("LibEKL", "Inventory manager not initialized", 1)
+        return
+    end
+
+    local inventory = LibEKLInv[playerName].inventory
+    local itemCache = LibEKLInv[playerName].itemCache
+    local allItems = {}
+
+	for slot, details in pairs(inventory.bySlot) do
+		if ((stringFind(slot, "sv") and not stringFind(slot, "svbg")) or 
+			(stringFind(slot, "sb") and not stringFind(slot, "sbbg"))) and
+			 details.id and itemCache[details.id] 
+		then
+            allItems[slot] = {
+                id = details.id,
+                stack = details.stack,
+                typeId = itemCache[details.id].typeId,
+                category = itemCache[details.id].category,
+                cooldown = itemCache[details.id].cooldown,
+                name = itemCache[details.id].name,
+                icon = itemCache[details.id].icon,
+				rarity = itemCache[details.id].rarity,
+				bind = itemCache[details.id].bind,
+				bound = itemCache[details.id].bound,
+            }
+        end
+    end
+
+    return allItems
+
 end
 
 function LibEKL.Inventory.getBagSlots()
