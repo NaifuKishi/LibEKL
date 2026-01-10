@@ -91,7 +91,7 @@ local function _uiWindow(name, parent)
     -- dummy event to prevent click through
   end, name .. ".Right.Down")
   
-  header:EventAttach(Event.UI.Input.Mouse.Left.Down, function (self)    
+  header:EventAttach(Event.UI.Input.Mouse.Left.Down.Bubble, function (self)
     if dragable == false then return end
     if window:GetSecureMode() == 'restricted' and inspectSystemSecure() == true then return end
     
@@ -105,7 +105,7 @@ local function _uiWindow(name, parent)
     
     window:ClearPoint("TOPLEFT")
     window:SetPoint("TOPLEFT", UIParent, "TOPLEFT", left, top)
-  end, name .. ".header.Left.Down")
+  end, name .. ".header.Left.Down.Bubble")
   
   header:EventAttach( Event.UI.Input.Mouse.Cursor.Move, function (self, _, x, y)  
     if self.leftDown ~= true then return end
@@ -164,6 +164,14 @@ local function _uiWindow(name, parent)
     if newAlign == "center" or newAlign == "left" or newAlign == "right" then titleAlign = newAlign end
     if newOffSet ~= nil then titleOffSet = tonumber(newOffSet) end
     window:SetTitle(title:GetText())
+  end
+
+  function window:GetTitle()
+    return title
+  end
+
+  function window:GetHeader()
+    return header
   end
 
   function window:SetFontSize(newFontSize)
