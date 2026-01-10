@@ -56,16 +56,17 @@ local function _uiWindow(name, parent)
   window:SetHeight(100)
   
   header:SetPoint("TOPLEFT", window, "TOPLEFT")
-  header:SetPoint("TOPRIGHT", window, "TOPRIGHT", 0, 10)
+  header:SetPoint("TOPRIGHT", window, "TOPRIGHT")
+  header:SetHeight(30)
   header:SetLayer(1)
   
-  body:SetPoint("TOPLEFT", window, "TOPLEFT", 0, 30)
+  body:SetPoint("TOPLEFT", header, "BOTTOMLEFT")
   body:SetPoint("BOTTOMRIGHT", window, "BOTTOMRIGHT")
 
-  title:SetPoint("TOPLEFT", window, "TOPLEFT", 15, 15)
+  title:SetPoint("CENTERLEFT", header, "CENTERLEFT", 5, 0)
   title:SetFontSize(14)
   
-  closeIcon:SetPoint("TOPRIGHT", window, "TOPRIGHT", -10, 10)
+  closeIcon:SetPoint("CENTERRIGHT", header, "CENTERRIGHT", -5, 0)
   closeIcon:SetText("X")
   closeIcon:SetHeight(12)
   closeIcon:SetWidth(12)
@@ -152,11 +153,11 @@ local function _uiWindow(name, parent)
     if title:GetWidth() > window:GetWidth() then title:SetWidth(window:GetWidth()) end
     
     if titleAlign == "center" then
-      title:SetPoint("CENTERTOP", window, "CENTERTOP", titleOffSet, 5)
+      title:SetPoint("CENTER", header, "CENTER", titleOffSet, 0)
     elseif titleAlign == "left" then
-      title:SetPoint("TOPLEFT", window, "TOPLEFT", titleOffSet, 5)
+      title:SetPoint("CENTERLEFT", header, "CENTERLEFT", titleOffSet, 0)
     else
-      title:SetPoint("TOPRIGHT", window, "TOPRIGHT", titleOffSet, 5)
+      title:SetPoint("CENTERRIGHT", header, "CENTERRIGHT", titleOffSet, 0)
     end
   end
   

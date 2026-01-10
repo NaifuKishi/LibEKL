@@ -7,7 +7,9 @@ if not LibEKL then LibEKL = {} end
 if not privateVars.uiFunctions then privateVars.uiFunctions = {} end
 
 local uiFunctions   = privateVars.uiFunctions
-local internalFunc      = privateVars.internalFunc
+local internalFunc  = privateVars.internalFunc
+
+local DEFAULT_ADJUST = 10
 
 ---------- addon internalFunc function block ---------
 
@@ -16,6 +18,7 @@ local function _uiScrollpane(name, parent)
 	if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 
 	local elementColor, innerColor, highlightColor
+	local adjust = DEFAULT_ADJUST
 	
 	--local elementColor = LibEKL.art.GetThemeColor("elementSubColor2")
   	--local innerColor = LibEKL.art.GetThemeColor("elementSubColor2")
@@ -44,15 +47,15 @@ local function _uiScrollpane(name, parent)
 	scrollPane:EventAttach(Event.UI.Input.Mouse.Wheel.Forward, function ()
 		local thisValue = scrollLane:GetValue('value')
 		if thisValue == nil then return end
-		if thisValue-10 < scrollLane:GetValue("range")[1] then return end
-		scrollLane:AdjustValue(thisValue-10) 
+		if thisValue - adjust < scrollLane:GetValue("range")[1] then return end
+		scrollLane:AdjustValue(thisValue-adjust) 
 	end, name .. ".Mouse.Wheel.Forward")
 	
 	scrollPane:EventAttach(Event.UI.Input.Mouse.Wheel.Back, function ()
 		local thisValue = scrollLane:GetValue('value')
 		if thisValue == nil then return end
-		if thisValue+10 > scrollLane:GetValue("range")[2] then return end
-		scrollLane:AdjustValue(thisValue+10)		
+		if thisValue + adjust > scrollLane:GetValue("range")[2] then return end
+		scrollLane:AdjustValue(thisValue+adjust)		
 	end, name .. ".Mouse.Wheel.Back")
 	
 	
@@ -72,6 +75,10 @@ local function _uiScrollpane(name, parent)
 		content:SetPoint("TOPLEFT", scrollPane, "TOPLEFT", 0, ypos)
 		content:SetHeight(height)
 		content:SetWidth(width)
+	end
+
+	function scrollPane:SetAdjust(newAdjust)
+		adjust = newAdjust
 	end
 	
 	function scrollPane:SetContent(widget)
