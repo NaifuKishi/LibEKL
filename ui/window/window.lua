@@ -23,7 +23,9 @@ local function _uiWindow(name, parent)
   local body = LibEKL.UICreateFrame("nkFrame", name .. '.body', window)
   local header = LibEKL.UICreateFrame("nkFrame", name .. '.header', window)
   local title = LibEKL.UICreateFrame("nkText", name .. ".title", window)
-  local closeIcon = LibEKL.UICreateFrame("nkClickButton", name .. ".closeIcon", window)
+--  local closeIcon = LibEKL.UICreateFrame("nkClickButton", name .. ".closeIcon", window)
+  local closeIcon = LibEKL.UICreateFrame("nkTexture", name .. ".closeIcon", window)  
+
    
   -- GARBAGE COLLECTOR ROUTINES
   
@@ -66,17 +68,17 @@ local function _uiWindow(name, parent)
   title:SetPoint("CENTERLEFT", header, "CENTERLEFT", 5, 0)
   title:SetFontSize(14)
   
-  closeIcon:SetPoint("CENTERRIGHT", header, "CENTERRIGHT", -5, 0)
-  closeIcon:SetText("X")
-  closeIcon:SetHeight(12)
-  closeIcon:SetWidth(12)
+  closeIcon:SetPoint("CENTERRIGHT", header, "CENTERRIGHT", -10, 0)
+  closeIcon:SetTextureAsync("LibEKL", "gfx/circle-x.png")
+  closeIcon:SetHeight(16)
+  closeIcon:SetWidth(16)
   closeIcon:SetLayer(2)
-  
-  Command.Event.Attach(LibEKL.Events[name .. ".closeIcon"].Clicked, function (_, newValue)		
-		window:SetVisible(false)
+
+  closeIcon:EventAttach(Event.UI.Input.Mouse.Left.Down, function (self)
+    window:SetVisible(false)
     LibEKL.eventHandlers[name]["Closed"]()
-	end, name .. ".closeIcon.Clicked")
-  
+  end, closeIcon:GetName() .. ".Left.Down")  
+    
   function window:SetTitleFontColor(r, g, b, a)
     title:SetFontColor(r, g, b, a)
     headerColor = {r = r, g = g, b = b, a = a}
