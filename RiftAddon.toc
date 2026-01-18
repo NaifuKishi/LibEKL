@@ -29,8 +29,6 @@ RunOnStartup = {
 
   "manager/manager.lua",
 
-  "map/location.lua",
-
   "strings/strings.lua",
 
   "tools/color.lua",
@@ -41,6 +39,14 @@ RunOnStartup = {
   "tools/settings.lua",
   "tools/table.lua",
   "tools/uuid.lua",
+
+  "zip/encdec.lua",
+  "zip/zip.lua",
+
+  "map/location.lua",
+  "map/data.lua",
+  "map/zone.lua",
+  "map/map.lua",
 
   "ui/ui.lua",
   "ui/button/button.lua",
@@ -66,6 +72,9 @@ RunOnStartup = {
   "ui/tooltip/tooltip.lua",
   "ui/window/dialog.lua",
   "ui/window/window.lua",
+  "ui/map/map.lua",
+  "ui/map/elementCanvas.lua",
+  "ui/map/elementTexture.lua",
   
   "unit/unit.lua",
   "unit/unitDebugUI.lua",

@@ -22,8 +22,8 @@ local function storeItem (slot, details)
 
 	if not details then return end
 
-	local inventory = LibEKLInv[LibEKL.Unit.getPlayerDetails().name].inventory
-	local itemCache = LibEKLInv[LibEKL.Unit.getPlayerDetails().name].itemCache
+	local inventory = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory
+	local itemCache = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache
 	
 	if not details.type then details.type = "t" .. details.id end
 	if details.stack == nil then details.stack = 1 end
@@ -50,8 +50,8 @@ end
 
 local function removeItem (slot)
 
-	local inventory = LibEKLInv[LibEKL.Unit.getPlayerDetails().name].inventory
-	local itemCache = LibEKLInv[LibEKL.Unit.getPlayerDetails().name].itemCache
+	local inventory = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].inventory
+	local itemCache = LibEKLInv[LibEKL.Unit.GetPlayerDetails().name].itemCache
 	
 	local slotDetails = inventory.bySlot[slot]
 	local cacheDetails = itemCache[slotDetails.id]
@@ -99,9 +99,9 @@ end
 
 function inventoryEvents.processUpdate (_, updates)
 
-	if LibEKL.Unit.getPlayerDetails() == nil then return end
+	if LibEKL.Unit.GetPlayerDetails() == nil then return end
 
-	local playerName = LibEKL.Unit.getPlayerDetails().name
+	local playerName = LibEKL.Unit.GetPlayerDetails().name
 
 	if (not LibEKLInv[playerName]) or (not LibEKLInv[playerName].inventory) then inventory.getInventory() end
 

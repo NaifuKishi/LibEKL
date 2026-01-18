@@ -72,7 +72,7 @@ end
 
 function LibEKL.Inventory.Init (updateFlag, showDebugUI)
 
-	if not LibEKL.Unit.GetPlayerDetails then LibEKL.Unit.GetPlayerDetails = LibEKL.Unit.getPlayerDetails end -- required to not mess up loading of addons
+	if not LibEKL.Unit.GetPlayerDetails then LibEKL.Unit.GetPlayerDetails = LibEKL.Unit.GetPlayerDetails end -- required to not mess up loading of addons
 
 	if not _invManager then
 	

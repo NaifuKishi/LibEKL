@@ -60,7 +60,7 @@ unitData.debugUI = nil
         - Sets up the foundation for all unit tracking functionality
         - Creates events that other parts of the addon can subscribe to
 ]]
-function LibEKL.Unit.init()
+function LibEKL.Unit.Init()
 
 	unitData.subscriptions[inspectAddonCurrent()] = {} -- probably useless
 
@@ -337,13 +337,13 @@ end
         - This is a convenience function for getting player unit details
         - The returned table contains various player properties
 ]]
-function LibEKL.Unit.getPlayerDetails()
+function LibEKL.Unit.GetPlayerDetails()
   
 	if unitData.idCache.player == nil or unitData.unitCache[unitData.idCache.player[1]] == nil then 
 		local temp = inspectUnitDetail('player') 
 		
 		if temp.id ~= 'player' then
-			unitEvents.setIDCache('player', temp.id, true, 'LibEKL.Unit.getPlayerDetails')
+			unitEvents.setIDCache('player', temp.id, true, 'LibEKL.Unit.GetPlayerDetails')
 			unitData.unitCache[unitData.idCache.player[1]] = temp
 			unitData.unitCache[unitData.idCache.player[1]].lastUpdate = inspectTimeReal()
 		end
@@ -357,14 +357,14 @@ end
 
 function LibEKL.Unit.getPlayerID()
   
-	return LibEKL.Unit.getPlayerDetails().id
+	return LibEKL.Unit.GetPlayerDetails().id
    
 end
 
 
 
 function LibEKL.Unit.setPlayerDetails(detail, value)
-	LibEKL.Unit.getPlayerDetails()
+	LibEKL.Unit.GetPlayerDetails()
 	unitData.unitCache[unitData.idCache.player[1]][detail] = value
 end
 
