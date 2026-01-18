@@ -22,7 +22,7 @@ local arrowTextureAddon =  "LibEKL"
 
 local function _uiWindowElement(name, parent)
 
-  --if EnKai.internalFunc.checkEvents (name, true) == false then return nil end
+  --if LibMap.internalFunc.checkEvents (name, true) == false then return nil end
 
   local window = LibEKL.UICreateFrame ('nkFrame', name, parent)
   local body = LibEKL.UICreateFrame ('nkFrame', name .. '.body', window)
@@ -262,9 +262,9 @@ local function _uiWindowElement(name, parent)
     if duration == nil then duration = 5 end
     
     if flag == true then
-      if autoHide == false then EnKai.fx.register (name .. '.autohide', body, { id = 'timedhide', duration = duration, callback = function() window:Collapse(true) end  } ) end
+      if autoHide == false then LibMap.fx.register (name .. '.autohide', body, { id = 'timedhide', duration = duration, callback = function() window:Collapse(true) end  } ) end
     else
-      if autoHide == true then EnKai.fx.cancel (name .. '.autohide' ) end
+      if autoHide == true then LibMap.fx.cancel (name .. '.autohide' ) end
     end
     
     autoHide = flag
@@ -278,12 +278,12 @@ local function _uiWindowElement(name, parent)
       
     if flag == true then
       window:SetAutoHide(flag, delay-1)
-      EnKai.fx.register (name .. '.autoHideHeader', header, { id = 'alpha', delay = delay, startAlpha=1, endAlpha=.2, duration = duration, modifier = -1, 
+      LibMap.fx.register (name .. '.autoHideHeader', header, { id = 'alpha', delay = delay, startAlpha=1, endAlpha=.2, duration = duration, modifier = -1, 
                                                               initCallback = function() LibEKL.eventHandlers[name]["HeaderHide"]() end,
                                                               callback = function() LibEKL.eventHandlers[name]["HeaderHidden"]() end  } )
     else
       window:SetAutoHide(flag, delay-1)
-      EnKai.fx.cancel (name .. '.autoHideHeader' )
+      LibMap.fx.cancel (name .. '.autoHideHeader' )
     end
     
     autoHideHeader = flag
@@ -352,7 +352,7 @@ local function _uiWindowElement(name, parent)
   
   function window:ShowContent(flag)
     if flag == true and autoHide == true then
-      EnKai.fx.updateTime (name .. '.autohide' )      
+      LibMap.fx.updateTime (name .. '.autohide' )      
     end
     body:SetVisible(flag)
   end
@@ -420,12 +420,12 @@ local function _uiWindowElement(name, parent)
   function window:Collapse(flag)
     
     if flag == true then
-      --arrow:SetTextureAsync("EnKai", "gfx/windowModernArrowRight.png")
+      --arrow:SetTextureAsync("LibMap", "gfx/windowModernArrowRight.png")
       arrow:SetTextureAsync(arrowTextureAddon, arrowTextureRight)
       body:SetVisible(false)
       LibEKL.eventHandlers[name]["Collapsed"](true)
     else
-      --arrow:SetTextureAsync("EnKai", "gfx/windowModernArrowDown.png")
+      --arrow:SetTextureAsync("LibMap", "gfx/windowModernArrowDown.png")
       arrow:SetTextureAsync(arrowTextureAddon, arrowTextureDown)
       body:SetVisible(true)
       LibEKL.eventHandlers[name]["Collapsed"](false)
@@ -436,7 +436,7 @@ local function _uiWindowElement(name, parent)
     collapseable = flag
     if flag == true or autoHide == true then
       arrow:SetVisible(true)
-      --arrow:SetTextureAsync("EnKai", "gfx/windowModernArrowDown.png")
+      --arrow:SetTextureAsync("LibMap", "gfx/windowModernArrowDown.png")
       arrow:SetTextureAsync(arrowTextureAddon, arrowTextureDown)
       body:SetVisible(true)
     else
@@ -454,26 +454,26 @@ local function _uiWindowElement(name, parent)
     
     if collapseable == true then
       if body:GetVisible() == true then       
-        --arrow:SetTextureAsync("EnKai", "gfx/windowModernArrowRight.png")
+        --arrow:SetTextureAsync("LibMap", "gfx/windowModernArrowRight.png")
         arrow:SetTextureAsync(arrowTextureAddon, arrowTextureRight)
         body:SetVisible(false)
         --if autoHideHeader == true then window:SetAutoHideHeader(true, autoHideHeaderDuration, autoHideHeaderDelay) end
         LibEKL.eventHandlers[name]["Collapsed"](true)        
       else
-        --arrow:SetTextureAsync("EnKai", "gfx/windowModernArrowDown.png")
+        --arrow:SetTextureAsync("LibMap", "gfx/windowModernArrowDown.png")
         arrow:SetTextureAsync(arrowTextureAddon, arrowTextureDown)
         body:SetVisible(true)
         LibEKL.eventHandlers[name]["Collapsed"](false)
-        --EnKai.fx.cancel (name .. '.autoHideHeader' )
+        --LibMap.fx.cancel (name .. '.autoHideHeader' )
       end
     elseif autoHide == true then
       window:SetAutoHide(false, 5)
-      --arrow:SetTextureAsync("EnKai", "gfx/windowModernArrowDown.png")
+      --arrow:SetTextureAsync("LibMap", "gfx/windowModernArrowDown.png")
       arrow:SetTextureAsync(arrowTextureAddon, arrowTextureDown)
       LibEKL.eventHandlers[name]["Collapsed"](true)
     else
       window:SetAutoHide(true, 5)
-      --arrow:SetTextureAsync("EnKai", "gfx/windowModernArrowRight.png")
+      --arrow:SetTextureAsync("LibMap", "gfx/windowModernArrowRight.png")
       arrow:SetTextureAsync(arrowTextureAddon, arrowTextureRight)
       LibEKL.eventHandlers[name]["Collapsed"](false)
     end
