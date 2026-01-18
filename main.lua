@@ -31,7 +31,7 @@ local function settingsHandler(_, addon)
     LibEKL.UI.setupBoundCheck()
 
 	LibEKL.UI.registerFont(addonInfo.id, "Montserrat", "fonts/Montserrat-Regular.ttf")
-	LibEKL.UI.registerFont(addonInfo.id, "MontserratSemiBold", "fonts/Montserrat-SemiBold.ttf")
+	LibEKL.UI.registerFont(addonInfo.id, "MontserratSemiBold", "fonts/LibEKL-Montserrat-SemiBold.ttf")
 	LibEKL.UI.registerFont(addonInfo.id, "MontserratBold", "fonts/Montserrat-Bold.ttf")
 
 	LibEKL.UI.registerFont(addonInfo.id, "FiraMonoBold", "fonts/FiraMono-Bold.ttf")
