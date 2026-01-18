@@ -46,7 +46,7 @@ local _playerDeath = false
 local function _fctCheckForColossus (values)
 
   if _mapColossus == nil then
-    local data = LibEKL.zip.uncompress (colossusData)
+    local data = LibEKL.Zip.Uncompress (colossusData)
     local err, func = pcall(loadstring, "return {" .. data .. "}")
     if func ~= nil then _mapColossus = func() end
     
