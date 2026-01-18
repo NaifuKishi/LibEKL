@@ -70,6 +70,7 @@ local function _uiTooltip(name, parent)
 	separator:SetBackgroundColor(defaultBorderColor[1], defaultBorderColor[2], defaultBorderColor[3], defaultBorderColor[4])
 
 	function tooltip:SetFont (addonId, fontName)
+
 		font = { addonId = addonId, fontName = fontName}
 
 		LibEKL.UI.SetFont(title, addonId, fontName)
