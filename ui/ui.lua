@@ -426,7 +426,11 @@ function LibEKL.UI.registerFont (addonId, name, path)
 
 end
 
-function LibEKL.UI.SetFont (uiElement, addonId, name)
+function LibEKL.UI.SetFont (uiElement, addonId, name)	
+
+	if not _fonts[addonId] then return end
+
+	--print (addonId, _fonts[addonId][name])
 
 	uiElement:SetFont(addonId, _fonts[addonId][name])
 
@@ -571,11 +575,3 @@ function LibEKL.UICreateFrame (frameType, name, parent)
 	return uiObject
 
 end
-
-LibEKL.UI.registerFont(addonInfo.id, "Montserrat", "fonts/Montserrat-Regular.ttf")
-LibEKL.UI.registerFont(addonInfo.id, "MontserratSemiBold", "fonts/Montserrat-SemiBold.ttf")
-LibEKL.UI.registerFont(addonInfo.id, "MontserratBold", "fonts/Montserrat-Bold.ttf")
-
-LibEKL.UI.registerFont(addonInfo.id, "FiraMonoBold", "fonts/FiraMono-Bold.ttf")
-LibEKL.UI.registerFont(addonInfo.id, "FiraMonoMedium", "fonts/FiraMono-Medium.ttf")
-LibEKL.UI.registerFont(addonInfo.id, "FiraMono", "fonts/FiraMono-Regular.ttf")

@@ -30,11 +30,19 @@ local function settingsHandler(_, addon)
 
     LibEKL.UI.setupBoundCheck()
 
+	LibEKL.UI.registerFont(addonInfo.id, "Montserrat", "fonts/Montserrat-Regular.ttf")
+	LibEKL.UI.registerFont(addonInfo.id, "MontserratSemiBold", "fonts/Montserrat-SemiBold.ttf")
+	LibEKL.UI.registerFont(addonInfo.id, "MontserratBold", "fonts/Montserrat-Bold.ttf")
+
+	LibEKL.UI.registerFont(addonInfo.id, "FiraMonoBold", "fonts/FiraMono-Bold.ttf")
+	LibEKL.UI.registerFont(addonInfo.id, "FiraMonoMedium", "fonts/FiraMono-Medium.ttf")
+	LibEKL.UI.registerFont(addonInfo.id, "FiraMono", "fonts/FiraMono-Regular.ttf")	
+
 	LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"], LibEKL.Events["LibEKL.internal"]["gcChanged"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.internal.gcChanged")
 
 	LibEKL.Events.CheckEvents ("LibEKL.Map", true)
 	LibEKL.Events.CheckEvents ("LibEKL.waypoint", true)
-
+	
 	LibEKL.eventHandlers["LibEKL.Map"]["add"], LibEKL.Events["LibEKL.Map"]["add"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Map.mapAdd")
 	LibEKL.eventHandlers["LibEKL.Map"]["change"], LibEKL.Events["LibEKL.Map"]["change"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Map.mapChange")
 	LibEKL.eventHandlers["LibEKL.Map"]["remove"], LibEKL.Events["LibEKL.Map"]["remove"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.Map.mapRemove")
