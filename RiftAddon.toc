@@ -29,6 +29,8 @@ RunOnStartup = {
 
   "manager/manager.lua",
 
+  "art/theme.lua",
+
   "strings/strings.lua",
 
   "tools/color.lua",
