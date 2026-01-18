@@ -156,7 +156,7 @@ function LibEKL.UI.setupBoundCheck()
 		data.uiBoundLeft, data.uiBoundTop, data.uiBoundRight, data.uiBoundBottom = UIParent:GetBounds()
 	end, testFrameH:GetName() .. ".UI.Layout.Size")
 
-	local testFrameV = LibEKL.UICreateFrame("nkFrame", "boundTestFrameV", uiContext)
+	local testFrameV = LibEKL.UICreateFrame("nkFrame", "LibEKL.UI.boundTestFrameV", uiContext)
 	testFrameV:SetBackgroundColor(0, 0, 0, 0)
 	testFrameV:SetPoint("TOPLEFT", UIParent, "TOPLEFT")
 	testFrameV:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 1, 0)

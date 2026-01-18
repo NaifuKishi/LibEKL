@@ -73,6 +73,6 @@ local _themes = { default = { logo              = {'LibEKL', 'gfx/nkUILogo.png'}
 
 function nkArt.SetTheme(themeId)    _activeTheme = themeId                        end
 function nkArt.GetTheme(themeId)    return _activeTheme                           end
-function nkArt.GetThemeList()       return LibEKL.tools.table.getSortedKeys (_themes)  end
+function nkArt.GetThemeList()       return LibEKL.Tools.Table.GetSortedKeys (_themes)  end
 function nkArt.GetThemeColor(index) return _themes[_activeTheme][index]           end
 function nkArt.GetThemeLogo()       return _themes[_activeTheme].logo             end

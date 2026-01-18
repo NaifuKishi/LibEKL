@@ -265,7 +265,7 @@ local function _uiMap(name, parent)
 			if cursorCoordX >= (waypoint.x - 5) and cursorCoordX <= (waypoint.x + 5) and cursorCoordY >= (waypoint.y -5 ) and cursorCoordY <= (waypoint.y +5) then
 				waypoint = nil
 				Command.Map.Waypoint.Clear()
-				internalFunc.MapEventWaypoint(_, {[LibEKL.unit.getPlayerDetails().id] = true})
+				internalFunc.MapEventWaypoint(_, {[LibEKL.Unit.GetPlayerDetails().id] = true})
 			else
 				Command.Map.Waypoint.Clear()
 				Command.Map.Waypoint.Set (cursorCoordX, cursorCoordY)
@@ -530,7 +530,7 @@ local function _uiMap(name, parent)
 		if (thisY == nil or newElement.coordX == nil) then
 			if nkDebug then
 				
-				LibEKL.Tools.error.display ("LibEKL", "map entry without coordinates", 2)
+				LibEKL.Tools.Error.Display ("LibEKL", "map entry without coordinates", 2)
 				nkDebug.logEntry (inspectAddonCurrent(), "_uiMap", "ui:AddElement error", "map entry without coordinates" .. newElement.id .. "\n\n" .. LibEKL.Tools.Table.Serialize(newElement))
 			end
 		else

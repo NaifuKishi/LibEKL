@@ -216,7 +216,7 @@ local function _uiMapElementCanvas(name, parent)
 		local scale = 1 / thisMapData.width * mapElement:GetWidth()
 
 		if radian ~= nil then 
-			local m = LibEKL.tools.gfx.rotate(mapElement, radian, scale)
+			local m = LibEKL.Tools.Gfx.Rotate(mapElement, radian, scale)
 			fill.transform = m:Get()
 		end
 

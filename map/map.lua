@@ -118,7 +118,7 @@ local function _fctCheckPattern (value)
 					if stringMatch(subValue, k) then return idx, details, details.type .. "." .. v end
 				end
 
-				--LibEKL.Tools.Error.Display ("LibEKL", subValue .. " not found in " .. LibEKL.Tools.table.serialize(details.regExValues), 2)
+				--LibEKL.Tools.Error.Display ("LibEKL", subValue .. " not found in " .. LibEKL.Tools.Table.Serialize(details.regExValues), 2)
 
 			end          
 		elseif details.exact == false then

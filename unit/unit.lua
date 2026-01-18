@@ -119,7 +119,7 @@ end
         - Use this to receive notifications when a specific unit changes
         - The addon will receive Change events for the specified unit type
 ]]
-function LibEKL.Unit.subscribe(sType)
+function LibEKL.Unit.Subscribe(sType)
 
 	if unitData.subscriptions == nil then unitData.subscriptions = {} end
 	if unitData.subscriptions[sType] == nil then unitData.subscriptions[sType] = {} end
@@ -151,7 +151,7 @@ end
         - Use this to stop receiving notifications for a specific unit type
 ]]
 
-function LibEKL.Unit.unsubscribe(sType)
+function LibEKL.Unit.Unsubscribe(sType)
 
 	if unitData.subscriptions[sType] ~= nil then
 		subscriptions[sType][inspectAddonCurrent()] = nil
@@ -174,7 +174,7 @@ end
         - Useful for determining the player's current group situation
         - The count parameter is nil when status is "single"
 ]]
-function LibEKL.Unit.getGroupStatus ()
+function LibEKL.Unit.GetGroupStatus ()
 
 	if unitData.isRaid == true then
 		return 'raid', unitData.raidMembers
@@ -229,7 +229,7 @@ end
         - A unit can belong to multiple types (e.g., "player" and "group01")
 ]]
 
-function LibEKL.Unit.getUnitTypes (unitID) 
+function LibEKL.Unit.GetUnitTypes (unitID) 
 
 	local retValues = {}
 
@@ -363,7 +363,7 @@ end
 
 
 
-function LibEKL.Unit.setPlayerDetails(detail, value)
+function LibEKL.Unit.SetPlayerDetails(detail, value)
 	LibEKL.Unit.GetPlayerDetails()
 	unitData.unitCache[unitData.idCache.player[1]][detail] = value
 end
@@ -381,4 +381,4 @@ end
         - Returns nil if the calling is not found
         - Uses the addon's language settings for localization
 ]]
-function LibEKL.Unit.getCallingText (calling) return lang.callings[calling] end
+function LibEKL.Unit.GetCallingText (calling) return lang.callings[calling] end

@@ -186,7 +186,7 @@ function unitEvents.unitUnAvailableHandler (_, unitInfo)
 
 	for unitId, _ in pairs (unitInfo) do
 	
-		local unitTypes = LibEKL.Unit.getUnitTypes (unitId)
+		local unitTypes = LibEKL.Unit.GetUnitTypes (unitId)
 		
 		for idx = 1, #unitTypes, 1 do
 			unitEvents.processUnitChange (unitTypes[idx], nil)

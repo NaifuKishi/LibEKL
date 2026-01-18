@@ -29,7 +29,7 @@ local function settingsHandler(_, addon)
 	if LibEKL.Events.CheckEvents ("LibEKL.internal", true) == false then return nil end
 
     LibEKL.UI.setupBoundCheck()
-	
+
 	LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"], LibEKL.Events["LibEKL.internal"]["gcChanged"] = Utility.Event.Create(addonInfo.identifier, "LibEKL.internal.gcChanged")
 
 	LibEKL.Events.CheckEvents ("LibEKL.Map", true)

@@ -41,6 +41,7 @@ RunOnStartup = {
   "tools/settings.lua",
   "tools/table.lua",
   "tools/uuid.lua",
+  "tools/gfx.lua",
 
   "zip/encdec.lua",
   "zip/zip.lua",
@@ -74,9 +75,7 @@ RunOnStartup = {
   "ui/tooltip/tooltip.lua",
   "ui/window/dialog.lua",
   "ui/window/window.lua",
-  "ui/map/map.lua",
-  "ui/map/elementCanvas.lua",
-  "ui/map/elementTexture.lua",
+  "ui/window/windowElement.lua",
   
   "unit/unit.lua",
   "unit/unitDebugUI.lua",
@@ -94,9 +93,4 @@ Dependencies = {
   LibUnitChange = {"required", "before"}
 }
 
-SavedVariables = {
-  nkManagerSettings = "account",
-  EnKaiSetup = "account",
-  EnKaiInv = "account",
-  EnKaiDebug = "account",
-}
+SavedVariables = {}
