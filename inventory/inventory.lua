@@ -220,6 +220,58 @@ function LibEKL.Inventory.querySlotByType (typeId)
 
 end
 
+function LibEKL.Inventory.GetAllSlotsByItemId (id)
+
+	if not _invManager then 
+		LibEKL.Tools.Error.Display ("LibEKL", "Inventory manager not initialzed", 1)
+		return
+	end
+	
+	local slots = {}
+
+	local inventory = LibEKLInv[playerName].inventory
+
+	for slot, v in pairs(inventory.bySlot) do
+		if v.id ~= nil and LibEKL.strings.startsWith(id, v.id) then 
+			slots[slot] = true
+		end
+	end
+
+	-- try with typeID if available
+	
+	if inventory.byID[id] ~= nil then
+		local typeSlots = LibEKL.Inventory.GetAllSlotsByType (inventory.byID[id])
+		for slot, v in pairs(typeSlots) do
+			slots[slot] = true
+		end
+	end
+	
+	return slots
+
+end
+
+function LibEKL.Inventory.GetAllSlotsByType (typeId)
+
+	if _invManager == false then 
+		LibEKL.Tools.Error.Display ("LibEKL", "Inventory manager not initialzed", 1)
+		return
+	end
+
+	local slots = {}
+	
+	local inventory = LibEKLInv[playerName].inventory
+	local itemCache = LibEKLInv[playerName].itemCache
+
+	for slot, v in pairs(inventory.bySlot) do
+		if itemCache[v.id] ~= nil and LibEKL.strings.startsWith(typeId, itemCache[v.id].typeId) then 
+			slots[slot] = true
+		end
+	end
+
+	return slots
+
+end
+
 function LibEKL.Inventory.queryQtyById (key)
 
 	if not _invManager then 
@@ -472,5 +524,12 @@ function LibEKL.Inventory.GetItemColor(rarity)
 	end
 
 	return color
+
+end
+
+function LibEKL.Inventory.GetSlotContent(slot)
+
+	local inventory = LibEKLInv[playerName].inventory
+	return inventory.bySlot[slot]
 
 end
