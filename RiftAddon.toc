@@ -76,6 +76,9 @@ RunOnStartup = {
   "ui/window/dialog.lua",
   "ui/window/window.lua",
   "ui/window/windowElement.lua",
+  "ui/grid/grid.lua",
+  "ui/grid/gridCell.lua",
+  "ui/grid/gridHeaderCell.lua",
   
   "unit/unit.lua",
   "unit/unitDebugUI.lua",
