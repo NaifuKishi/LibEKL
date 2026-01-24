@@ -14,7 +14,10 @@ local inventoryEvents	= privateVars.inventoryEvents
 
 ---------- make global functions local ---------
 
-local inspectItemDetail				= Inspect.Item.Detail
+local inspectItemDetail	= Inspect.Item.Detail
+
+local stringFormat		= string.format
+
 
 ---------- local function block ---------
 
@@ -99,9 +102,21 @@ end
 
 function inventoryEvents.processUpdate (_, updates)
 
-	if LibEKL.Unit.GetPlayerDetails() == nil then return end
+	local playerDetails = LibEKL.Unit.GetPlayerDetails()
 
-	local playerName = LibEKL.Unit.GetPlayerDetails().name
+	if playerDetails == nil then return end
+
+	local playerName = playerDetails.name
+
+	local counter = 0
+
+	for idx = 1, 5, 1 do
+		if updates[stringFormat("sb01.00%d", idx)] then
+			counter = counter + 1
+		end
+	end
+
+	if counter == 5 then return end -- stupid workaround to prevent running event on porting as rift reports all slots as being changed in that case
 
 	if (not LibEKLInv[playerName]) or (not LibEKLInv[playerName].inventory) then inventory.getInventory() end
 
