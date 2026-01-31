@@ -46,11 +46,6 @@ RunOnStartup = {
   "zip/encdec.lua",
   "zip/zip.lua",
 
-  "map/location.lua",
-  "map/data.lua",
-  "map/zone.lua",
-  "map/map.lua",
-
   "ui/ui.lua",
   "ui/button/button.lua",
   "ui/button/clickButton.lua",  
