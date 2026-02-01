@@ -235,11 +235,11 @@ function LibEKL.UI.reloadDialog (title)
 
     uiElements.reloadDialog:SetColor({
         type = "gradientLinear",
-        transform = Utility.Matrix.Create(2, 2, -(math.pi / 6), 0, 0), -- Negative angle for opposite direction
+        transform = Utility.Matrix.Create(6, 0.5, math.pi / 4, 0, 0),  -- 45° rotation
         color = {
-            { r = 0.25, g = 0.25, b = 0.2, a = 0.7, position = 0 },
-            { r = 0.1, g = 0.1, b = 0.1, a = 0.7, position = 1 }
-            }
+            {r = 0.08, g = 0.10, b = 0.15, a = 1, position = 0}, -- Start color
+            {r = 0.0549, g = 0.0706, b = 0.1059, a = 1, position = 1}  -- End color
+        }
     },  { r = 0, g = 0, b = 0, a = 1, thickness = 1})
 	
 	local msg = LibEKL.UICreateFrame("nkText", name .. ".msg", uiElements.reloadDialog:GetContent())

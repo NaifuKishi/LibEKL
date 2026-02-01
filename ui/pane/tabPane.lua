@@ -22,11 +22,6 @@ local function tabHeader (name, parent)
 
   local uiFrameStroke, uiFrameFill, uiFrameFillSelected, fontColor, fontColorSelected
   
-  --local uiFrameStroke = { thickness = 1, r = LibEKL.art.GetThemeColor('tabPaneColor')[1].r, g = LibEKL.art.GetThemeColor('tabPaneColor')[1].g, b = LibEKL.art.GetThemeColor('tabPaneColor')[1].b, a = LibEKL.art.GetThemeColor('tabPaneColor')[1].a}
-  --local uiFrameFill = { type = 'solid', r = LibEKL.art.GetThemeColor('tabPaneColor')[2].r, g = LibEKL.art.GetThemeColor('tabPaneColor')[2].g, b = LibEKL.art.GetThemeColor('tabPaneColor')[2].b, a = LibEKL.art.GetThemeColor('tabPaneColor')[2].a}
-  --local uiFrameFillSelected = LibEKL.art.GetThemeColor('tabPaneColor')[3]
-  --local fontColor = LibEKL.art.GetThemeColor('tabPaneColor')[4]
-  --local fontColorSelected = LibEKL.art.GetThemeColor('tabPaneColor')[5]
   local border = true
   
   local cornerRelX = 1 / headerTabWidth * 2
@@ -44,18 +39,15 @@ local function tabHeader (name, parent)
   local label = LibEKL.UICreateFrame("nkText", name .. ".label", tabButton)
   local selectedLine = LibEKL.UICreateFrame("nkFrame", name .. ".selectedLine", tabButton)
       
-  --tabButton:SetShape(path, uiFrameFill, uiFrameStroke)
   tabButton:SetHeight(headerTabHeight)
   tabButton:SetWidth(headerTabWidth)
   
   label:SetFontSize(12)
-  --label:SetFontColor(fontColor.r, fontColor.g, fontColor.b, fontColor.a)
   label:SetPoint("CENTER", tabButton, "CENTER")
 
   selectedLine:SetPoint("TOPCENTER", label, "BOTTOMCENTER")
   selectedLine:SetHeight(1)
   selectedLine:SetWidth(headerTabWidth-4)
-  --selectedLine:SetBackgroundColor(fontColor.r, fontColor.g, fontColor.b, fontColor.a)
   
   tabButton:EventAttach(Event.UI.Input.Mouse.Left.Click, function ()
     LibEKL.eventHandlers[name]["Clicked"]()

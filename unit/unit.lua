@@ -355,7 +355,7 @@ function LibEKL.Unit.GetPlayerDetails()
    
 end
 
-function LibEKL.Unit.getPlayerID()
+function LibEKL.Unit.GetPlayerID()
   
 	return LibEKL.Unit.GetPlayerDetails().id
    
