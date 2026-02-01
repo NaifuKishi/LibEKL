@@ -5,7 +5,7 @@ Description = "A light version of the EnKai library specifically with the stuff 
 Author = "NaifuKishi"
 Email = "rift@naifukishi.com"
 
-Version = "1.0.2"
+Version = "1.0.3"
 Environment = "4.0"
 
 RunOnStartup = {
@@ -83,12 +83,14 @@ RunOnStartup = {
 
 Embed = {
   ["Libs/LibAsyncTextures"] = true,
-  ["Libs/LibUnitChange"] = true
+  ["Libs/LibUnitChange"] = true,
+  ["Libs/LibTransform2"] = true,
 }
 
 Dependencies = {
   LibAsyncTextures = {"required", "before"},
-  LibUnitChange = {"required", "before"}
+  LibUnitChange = {"required", "before"},
+  LibTransform2 = {"required", "before"}
 }
 
 SavedVariables = {}

@@ -21,16 +21,16 @@ function LibEKL.Tools.Gfx.Rotate(frame, angle, scale)
   
 end
 
-function LibEKL.Tools.Gfx.Pulse(frame, scale)
+function LibEKL.Tools.Gfx.Scale(frame, scale)
 
   local midx = frame:GetHeight() / 2
   local midy = frame:GetWidth() / 2
   local m = Libs.Transform2:new()
   
-  --m:Translate(midx,midy)
-  --m:Rotate(angle)
-  --m:Translate(-midx,-midy)
+  m:Translate(midx,midy)
+  --m:Rotate(angle)  
   if scale then m:Scale(scale, scale) end
+  m:Translate(-midx,-midy)
   
   return m
   
