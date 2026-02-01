@@ -57,7 +57,10 @@ function internalFunc.coRoutinesProcess()
                     local errorMsg = type(value) == 'function' and 'error in coroutine within supplied function' or 'error in coroutine: ' .. tostring(value)
                     LibEKL.Tools.Error.Display("LibEKL", errorMsg, 1)
                     coroutineInfo.active = false
-                elseif value == nil or value >= coroutineInfo.counter then
+                elseif not value then
+                    coroutineInfo.active = false
+                    if coroutineInfo.callBack then coroutineInfo.callBack() end
+                elseif type(value) == "number" and value >= coroutineInfo.counter then
                     coroutineInfo.active = false
                     if coroutineInfo.callBack then coroutineInfo.callBack() end
                 end
