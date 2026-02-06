@@ -20,6 +20,7 @@ local uiElements		= privateVars.uiElements
 
 local uiContext   		= privateVars.uiContext
 local uiTooltipContext	= nil
+local uiRecycleContext	= UI.CreateContext("LibEKL.UIRecycle")
 
 local inspectSystemSecure 		= Inspect.System.Secure
 local inspectAddonCurrent 		= Inspect.Addon.Current
@@ -58,6 +59,7 @@ local function recycleElement (element, elementType)
 	element:SetMouseMasking('full')
 	element:SetWidth(0)
 	element:SetHeight(0)
+	element:SetParent(uiRecycleContext)
 	
 	if element:GetMouseoverUnit() ~= nil then element:SetMouseoverUnit(nil) end
 	
@@ -81,42 +83,48 @@ function internalFunc.uiGarbageCollector ()
 
 	for elementType, secureModes in pairs(_gc) do
 
-		if secure == false and #_gc[elementType].restricted > 0 then
-			for idx = 1, #_gc[elementType].restricted, 1 do
+		local gcList = _gc[elementType].restricted 
 
-				if _gc[elementType].restricted[idx] ~= false then
+		if secure == false and #gcList > 0 then
+			for idx = 1, #gcList, 1 do
 
-					local element = _gc[elementType].restricted[idx]
-					local err = pcall (_setInsecure, element)
+				local gcElement = gcList[idx]
+
+				if gcElement ~= false then
+
+					--local element = gcElement
+					local err = pcall (_setInsecure, gcElement)
 	
 					if err == true then -- no error
 						flag = true
-						recycleElement(element, elementType)
-						uiNames[elementType][element:GetRealName()] = ""
+						recycleElement(gcElement, elementType)
+						uiNames[elementType][gcElement:GetRealName()] = ""
 
 						if _freeElements[elementType] == nil then _freeElements[elementType] = {} end
-						table.insert(_freeElements[elementType], element)
-						_gc[elementType].restricted[idx] = false
+						table.insert(_freeElements[elementType], gcElement)
+						gcList[idx] = false
 					else
 						restrictedFailed = true
 					end
 				end
 			end
 
-			if restrictedFailed == false then _gc[elementType].restricted = {} end
+			if restrictedFailed == false then _gc[elementType].restricted  = {} end
 		end
 
-		for idx = 1, #_gc[elementType].normal, 1 do
+		gcList = _gc[elementType].normal 
+
+		for idx = 1, #gcList, 1 do
 			flag = true
-			local element = _gc[elementType].normal[idx]
-			recycleElement(element, elementType)
-			uiNames[elementType][element:GetRealName()] = ""
+			local gcElement = gcList[idx]
+			recycleElement(gcElement, elementType)
+			uiNames[elementType][gcElement:GetRealName()] = ""
 
 			if _freeElements[elementType] == nil then _freeElements[elementType] = {} end
-			table.insert(_freeElements[elementType], element)
+			table.insert(_freeElements[elementType], gcElement)
 		end
 
-		_gc[elementType].normal = {}
+		_gc[elementType].normal  = {}
 		
 	end
 
