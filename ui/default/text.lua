@@ -67,17 +67,6 @@ local function _uiText(name, parent)
     
   	end
 
-	function text:recycle()
-		internalFunc.deRegisterEvents (name)
-		for k, v in pairs (macros) do
-			text:EventMacroSet(k, nil)
-		end
-	end
-
-	function text:destroy()
-		internalFunc.uiAddToGarbageCollector ('nkText', text)  
-	end	
-	
 	local oEventAttach, oEventDetach = text.EventAttach, text.EventDetach
 	
 	function text:EventAttach(handle, callback, label, priority)

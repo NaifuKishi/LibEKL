@@ -146,19 +146,6 @@ local function _uiTabpane(name, parent)
 	local panes = {}
 	local tabButtons = {}
 	local fontInfo = {}
-
-	-- GARBAGE COLLECTOR ROUTINES
-  
-	function tabPane:destroy()
-		internalFunc.uiAddToGarbageCollector ('nkFrame', tabPane)
-		internalFunc.uiAddToGarbageCollector ('nkCanvas', uiFrame)
-		internalFunc.uiAddToGarbageCollector ('nkFrame', bodyFrame)
-		internalFunc.uiAddToGarbageCollector ('nkFrame', helperLine)
-
-		for k, v in pairs(tabButtons) do
-			v:destroy()
-		end
-	end   
   
   	-- SPECIFIC FUNCTIONS
 	

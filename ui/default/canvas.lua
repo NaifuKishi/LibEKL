@@ -48,24 +48,6 @@ local function _uiCanvas(name, parent)
 
 	end
 
-	function canvas:recycle() end
-
-	function canvas:destroy()
-	
-		internalFunc.deRegisterEvents (name)
-
-		for handle, details in pairs (events) do
-			canvas:EventDetach(handle, details.callback, details.label, details.priority, nil)
-		end
-
-		for k, v in pairs (macros) do canvas:EventMacroSet(k, nil) end
-
-		internalFunc.uiAddToGarbageCollector ('nkCanvas', canvas)  
-
-		--print ('Destroyed Canvas: ' .. name)
-		
-	end	
-
 	local oEventAttach, oEventDetach = canvas.EventAttach, canvas.EventDetach
 
 	function canvas:EventAttach(handle, callback, label, priority)

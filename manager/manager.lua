@@ -72,11 +72,6 @@ function LibEKL.manager.UpdateFrame(targetFrame)
         createFrame()
     end
 
-    -- Clear existing buttons
-    for _, child in ipairs(frame:GetChildren()) do
-        child:Destroy()
-    end	
-		
     local from, object, to, x, y = "TOPLEFT", frame, "TOPLEFT", 5, 5
     local counter = 1
 

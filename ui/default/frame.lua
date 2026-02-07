@@ -48,22 +48,6 @@ local function _uiFrame(name, parent)
 		
 	end
 
-	function frame:recycle() 
-		frame:ClearAll()
-		internalFunc.deRegisterEvents (name)
-
-		for handle, details in pairs (events) do
-			frame:EventDetach(handle, details.callback, details.label, details.priority, nil)
-		end
-
-		for k, v in pairs (macros) do frame:EventMacroSet(k, nil) end
-
-	end
-
-	function frame:destroy()   
-		internalFunc.uiAddToGarbageCollector ('nkFrame', frame)  
-	end 
-
 	local oEventAttach, oEventDetach = frame.EventAttach, frame.EventDetach
 
 	function frame:EventAttach(handle, callback, label, priority)

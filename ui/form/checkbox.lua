@@ -58,8 +58,6 @@ local internalFunc  = privateVars.internalFunc
     **Checkbox State Methods:**
         - SetValue(property, value): Sets a property value for the checkbox
         - GetValue(property): Gets a property value for the checkbox
-    **UI Element Accessor Methods:**
-        - destroy(): Cleans up and destroys the checkbox and its components
 ]]
 local function _uiCheckbox(name, parent) 
 
@@ -81,24 +79,6 @@ local function _uiCheckbox(name, parent)
 	local boxMark = LibEKL.UICreateFrame ('nkFrame', name .. '.boxMark', boxInner)
 	local roundOuter, roundInner
 	
-	-- GARBAGE COLLECTOR ROUTINES
-  
-	function checkBox:destroy()
-		internalFunc.uiAddToGarbageCollector ('nkFrame', checkBox)
-		internalFunc.uiAddToGarbageCollector ('nkFrame', boxOuter)
-		internalFunc.uiAddToGarbageCollector ('nkFrame', boxInner)
-		internalFunc.uiAddToGarbageCollector ('nkFrame', boxMark)
-		internalFunc.uiAddToGarbageCollector ('nkText', label)
-
-		if roundOuter ~= nil then
-			internalFunc.uiAddToGarbageCollector ('nkCanvas', roundOuter)
-		end
-
-		if roundInner ~= nil then
-			internalFunc.uiAddToGarbageCollector ('nkCanvas', roundInner)
-		end
-	end 
-  
 	-- SPECIFIC FUNCTIONS	
 	
 	local properties = {}

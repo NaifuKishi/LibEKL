@@ -48,17 +48,6 @@ local function _uiTexture(name, parent)
 		
 	end
 
-	function texture:recycle()
-		internalFunc.deRegisterEvents (name)
-		for k, v in pairs (macros) do
-		texture:EventMacroSet(k, nil)
-		end
-	end
-
-	function texture:destroy()
-	  internalFunc.uiAddToGarbageCollector ('nkTexture', texture)  
-	end	
-	
 	local oEventAttach, oEventDetach = texture.EventAttach, texture.EventDetach
 	
 	function texture:EventAttach(handle, callback, label, priority)

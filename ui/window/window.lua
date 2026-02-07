@@ -26,17 +26,6 @@ local function _uiWindow(name, parent)
 --  local closeIcon = LibEKL.UICreateFrame("nkClickButton", name .. ".closeIcon", window)
   local closeIcon = LibEKL.UICreateFrame("nkTexture", name .. ".closeIcon", window)  
 
-   
-  -- GARBAGE COLLECTOR ROUTINES
-  
-  function window:destroy()
-    internalFunc.uiAddToGarbageCollector ('nkCanvas', window)
-    internalFunc.uiAddToGarbageCollector ('nkFrame', body)
-	  internalFunc.uiAddToGarbageCollector ('nkFrame', header)
-    internalFunc.uiAddToGarbageCollector ('nkText', title)
-    internalFunc.uiAddToGarbageCollector ('nkFrame', closeIcon)
-  end 
-  
   -- SPECIFIC FUNCTIONS
   
   local dragable = true

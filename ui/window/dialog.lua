@@ -32,18 +32,6 @@ local function _uiDialog(name, parent)
 		return properties[property]
 	end
 	
-	-- GARBAGE COLLECTOR ROUTINES
-  
-	local oDialogDestroy = dialog.destroy
-  
-	function dialog:destroy()
-		rightButton:destroy()
-		centerButton:destroy()
-		leftButton:destroy()
-		message:destroy()
-		oDialogDestroy()
-	end 
-	
 	dialog:SetValue("name", name)
 	dialog:SetValue("parent", parent)
 

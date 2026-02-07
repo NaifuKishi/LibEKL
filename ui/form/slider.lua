@@ -56,8 +56,6 @@ local stringFormat 	= string.format
     **Slider State Methods:**
         - SetValue(property, value): Sets a property value for the slider
         - GetValue(property): Gets a property value for the slider
-    **UI Element Accessor Methods:**
-        - destroy(): Cleans up and destroys the slider and its components
 ]]
 local function _uiSlider(name, parent) 
 

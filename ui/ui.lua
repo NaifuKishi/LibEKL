@@ -51,6 +51,8 @@ local _fonts = {}
 
 local function recycleElement (element, elementType)
 
+	--print ("destroy " .. element:GetName())
+
 	element:SetVisible(false)
 	element:ClearAll()
 	element:SetBackgroundColor(0,0,0,0)
@@ -60,7 +62,7 @@ local function recycleElement (element, elementType)
 	element:SetWidth(0)
 	element:SetHeight(0)
 	element:SetParent(uiRecycleContext)
-	
+
 	if element:GetMouseoverUnit() ~= nil then element:SetMouseoverUnit(nil) end
 	
 	--element:SetSecureMode("normal")
@@ -558,7 +560,7 @@ function LibEKL.UICreateFrame (frameType, name, parent)
 
 		if LibEKL.Events.CheckEvents (name, true) == false then return nil end
 
-		uiObject = _freeElements[checkFrameType][1]    
+		uiObject = _freeElements[checkFrameType][1]    		
 		uiObject:SetParent(parent)
 
 		if uiNames[checkFrameType] == nil then uiNames[checkFrameType] = {} end
@@ -566,7 +568,7 @@ function LibEKL.UICreateFrame (frameType, name, parent)
 		uiNames[checkFrameType][uiObject:GetRealName()] = name
 		uiObject:SetVisible(true)
 		uiObject:ClearAll() -- no clue why this is needed for canvas here but the one in _recycleElement doesn't seem to work
-
+		
 		table.remove(_freeElements[checkFrameType], 1)
 		
 		LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"]()
