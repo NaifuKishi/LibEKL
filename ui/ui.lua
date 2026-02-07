@@ -20,7 +20,6 @@ local uiElements		= privateVars.uiElements
 
 local uiContext   		= privateVars.uiContext
 local uiTooltipContext	= nil
-local uiRecycleContext	= UI.CreateContext("LibEKL.UIRecycle")
 
 local inspectSystemSecure 		= Inspect.System.Secure
 local inspectAddonCurrent 		= Inspect.Addon.Current
@@ -45,113 +44,7 @@ data.uiBoundLeft, data.uiBoundTop, data.uiBoundRight, data.uiBoundBottom = UIPar
 
 ---------- init local variables ---------
 
-local _gc = {}
-local _freeElements = {}
 local _fonts = {}
-
-local function recycleElement (element, elementType)
-
-	--print ("destroy " .. element:GetName())
-
-	element:SetVisible(false)
-	element:ClearAll()
-	element:SetBackgroundColor(0,0,0,0)
-	element:SetStrata('main')
-	element:SetLayer(0)
-	element:SetMouseMasking('full')
-	element:SetWidth(0)
-	element:SetHeight(0)
-	element:SetParent(uiRecycleContext)
-
-	if element:GetMouseoverUnit() ~= nil then element:SetMouseoverUnit(nil) end
-	
-	--element:SetSecureMode("normal")
-	
-	for k, v in pairs (element:GetEvents()) do
-	  element:EventDetach(k, nil, v.label, v.priority, v.owner)
-	end
-	
-	element:recycle()
-	
-end
-
-function internalFunc.uiGarbageCollector ()
-	local debugId  
-    if nkDebug then debugId = nkDebug.traceStart (inspectAddonCurrent(), "LibEKL internal.uiGarbageCollector") end
-
-	local secure = inspectSystemSecure()
-	local flag = false
-	local restrictedFailed = false
-
-	for elementType, secureModes in pairs(_gc) do
-
-		local gcList = _gc[elementType].restricted 
-
-		if secure == false and #gcList > 0 then
-			for idx = 1, #gcList, 1 do
-
-				local gcElement = gcList[idx]
-
-				if gcElement ~= false then
-
-					--local element = gcElement
-					local err = pcall (_setInsecure, gcElement)
-	
-					if err == true then -- no error
-						flag = true
-						recycleElement(gcElement, elementType)
-						uiNames[elementType][gcElement:GetRealName()] = ""
-
-						if _freeElements[elementType] == nil then _freeElements[elementType] = {} end
-						table.insert(_freeElements[elementType], gcElement)
-						gcList[idx] = false
-					else
-						restrictedFailed = true
-					end
-				end
-			end
-
-			if restrictedFailed == false then _gc[elementType].restricted  = {} end
-		end
-
-		gcList = _gc[elementType].normal 
-
-		for idx = 1, #gcList, 1 do
-			flag = true
-			local gcElement = gcList[idx]
-			recycleElement(gcElement, elementType)
-			uiNames[elementType][gcElement:GetRealName()] = ""
-
-			if _freeElements[elementType] == nil then _freeElements[elementType] = {} end
-			table.insert(_freeElements[elementType], gcElement)
-		end
-
-		_gc[elementType].normal  = {}
-		
-	end
-
-	if flag == true then LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"]() end
-
-	if nkDebug then nkDebug.traceEnd (inspectAddonCurrent(), "LibEKL internal.uiGarbageCollector", debugId) end	
-end
-
-function internalFunc.uiAddToGarbageCollector (frameType, element)
-
-	local checkFrameType = stringUpper(frameType) 
-
-	if _gc[checkFrameType] == nil then _gc[checkFrameType] = {} end
-	if _gc[checkFrameType].normal == nil then _gc[checkFrameType].normal = {} end
-	if _gc[checkFrameType].restricted == nil then _gc[checkFrameType].restricted = {} end
-	
-	table.insert(_gc[checkFrameType][element:GetSecureMode()], element) 
-	if inspectSystemSecure() == false or element:GetSecureMode() == 'normal' then element:SetVisible(false) end
-	
-	--print ("LibEKL: Added " .. element:GetRealName() .. " to garbage collector")
-
-	LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"]()
-  
-end  
-
 
 -- generic ui functions to handle screen size and bounds
 
@@ -551,35 +444,13 @@ function LibEKL.UICreateFrame (frameType, name, parent)
 	end
 
 	local uiObject = nil
-
 	local checkFrameType = stringUpper(frameType) 
+	local func = uiFunctions[checkFrameType]
 
-	if _freeElements[checkFrameType] ~= nil and #_freeElements[checkFrameType] > 0 then
-
-		--print ("recycling " .. checkFrameType)
-
-		if LibEKL.Events.CheckEvents (name, true) == false then return nil end
-
-		uiObject = _freeElements[checkFrameType][1]    		
-		uiObject:SetParent(parent)
-
-		if uiNames[checkFrameType] == nil then uiNames[checkFrameType] = {} end
-		
-		uiNames[checkFrameType][uiObject:GetRealName()] = name
-		uiObject:SetVisible(true)
-		uiObject:ClearAll() -- no clue why this is needed for canvas here but the one in _recycleElement doesn't seem to work
-		
-		table.remove(_freeElements[checkFrameType], 1)
-		
-		LibEKL.eventHandlers["LibEKL.internal"]["gcChanged"]()
-		
+	if func == nil then
+		LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("LibEKL.UICreateFrame - unknown frame type [%s]", frameType))
 	else
-		local func = uiFunctions[checkFrameType]
-		if func == nil then
-			LibEKL.Tools.Error.Display (addonInfo.identifier, stringFormat("LibEKL.UICreateFrame - unknown frame type [%s]", frameType))
-		else
-			uiObject = func(name, parent)
-		end
+		uiObject = func(name, parent)
 	end
 
 	return uiObject

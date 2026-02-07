@@ -165,8 +165,7 @@ local function updateHandler()
 		_eventsRemIndex = 2
 	end
 	
-	if thisWatchDog >= 0.1 and _eventsRemIndex == 2 then
-		internalFunc.uiGarbageCollector()
+	if thisWatchDog >= 0.1 and _eventsRemIndex == 2 then		
 		_eventsRemIndex = 1
 	end
 	
