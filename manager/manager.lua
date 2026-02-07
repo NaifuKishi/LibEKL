@@ -61,11 +61,12 @@ local function createFrame()
           frame:SetAlpha(0)
         end
     end, "LibEKL.manager.UI.Input.Mouse.Cursor.Out")
+
 end
 
 -- Updates the frame by clearing existing buttons and adding new ones based on registered buttons.
 -- @return nil
-local function updateFrame()
+function LibEKL.manager.UpdateFrame(targetFrame)
 
     if not frame then
         createFrame()
@@ -78,11 +79,14 @@ local function updateFrame()
 		
     local from, object, to, x, y = "TOPLEFT", frame, "TOPLEFT", 5, 5
     local counter = 1
-    local maxCounter = mathFloor(UI.Native.MapMini:GetWidth() / 37)    
+
+    local width = targetFrame:GetWidth()
+
+    local maxCounter = mathFloor(width / 37)
     local height = 42
     local firstButton
 
-    x = (UI.Native.MapMini:GetWidth() - (maxCounter * 32) - ((maxCounter -1) * 5)) / 2    
+    x = (width - (maxCounter * 32) - ((maxCounter -1) * 5)) / 2    
 
     -- Add new buttons
     for name, buttonInfo in pairs(_buttons) do
@@ -128,7 +132,7 @@ end
 function LibEKL.manager.RegisterButton(name, iconSource, icon, callBack)
     
     _buttons[name] = {icon = icon, iconSource = iconSource, callback = callBack}
-    updateFrame()
+    LibEKL.manager.UpdateFrame(UI.Native.MapMini)
 
 end
 
@@ -137,7 +141,7 @@ end
 -- @return nil
 function LibEKL.manager.UnregisterButton(name)
     _buttons[name] = nil
-    updateFrame()
+    LibEKL.manager.UpdateFrame(UI.Native.MapMini)
 end
 
 -- Gets the frame object of the manager UI.

@@ -5,7 +5,7 @@ Description = "A light version of the EnKai library specifically with the stuff 
 Author = "NaifuKishi"
 Email = "rift@naifukishi.com"
 
-Version = "1.0.5"
+Version = "1.0.6"
 Environment = "4.0"
 
 RunOnStartup = {
