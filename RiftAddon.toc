@@ -84,13 +84,11 @@ RunOnStartup = {
 Embed = {
   ["Libs/LibAsyncTextures"] = true,
   ["Libs/LibUnitChange"] = true,
-  ["Libs/LibTransform2"] = true,
 }
 
 Dependencies = {
   LibAsyncTextures = {"required", "before"},
   LibUnitChange = {"required", "before"},
-  LibTransform2 = {"required", "before"}
 }
 
 SavedVariables = {}
