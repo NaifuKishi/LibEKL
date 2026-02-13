@@ -22,13 +22,10 @@ local stringFormat	= string.format
 local function groupStatus ()
 
 	if unitData.isRaid == true then
-		--print ("raid")
 		LibEKL.eventHandlers["LibEKL.Unit"]["GroupStatus"]('raid', unitData.raidMembers)
 	elseif unitData.isGroup == true then
-		--print ("group")
 		LibEKL.eventHandlers["LibEKL.Unit"]["GroupStatus"]('group', unitData.groupMembers)
 	else
-		--print ("single")
 		LibEKL.eventHandlers["LibEKL.Unit"]["GroupStatus"]('single', nil)
 	end
 
@@ -240,8 +237,6 @@ function unitEvents.processUnitChange (unitType, unitId)
 		 unitEvents.setIDCache(unitType, unitId, true, 'unitEvents.processUnitChange')
 	end
 
-	--print ("---------------------------------")
-
 	if stringFind(unitType, 'group') == 1 and stringFind (unitType, 'group..%.') == nil then
 
 		-- process groups and check for group size change
@@ -253,7 +248,6 @@ function unitEvents.processUnitChange (unitType, unitId)
 
 		for idx = 1, 20, 1 do
 			local thisGroupTable = unitData.idCache[stringFormat('group%02d', idx)]
-			--dump (idx, thisGroupTable)			
 
 			if thisGroupTable and next(thisGroupTable) ~= nil then 				
 				if idx > 5 then 
@@ -268,9 +262,6 @@ function unitEvents.processUnitChange (unitType, unitId)
 				end
 			end
 		end
-
-		--print ("raid", thisIsRaid, unitData.isRaid)
-		--print ("group", thisIsGroup, unitData.isGroup)
 
 		if thisIsRaid == true and unitData.isRaid == false then
 			unitData.isRaid = true

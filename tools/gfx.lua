@@ -70,8 +70,6 @@ function LibEKL.Tools.Gfx.Rotate(frame, angle, scale)
     {0, 0, 1}
   }
 
-  --print (scale)
-
   -- 3. Skalierung (falls gewünscht)
   local scaleMatrix = {
     {scale or 1, 0, 0},

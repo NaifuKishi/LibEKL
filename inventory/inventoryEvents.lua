@@ -60,8 +60,6 @@ local function removeItem (slot)
 	local cacheDetails = itemCache[slotDetails.id]
 	
 	if cacheDetails == nil then -- wie auch immer das passieren kann
-		--print ("cacheDetails == nil")
-
 		local details = inspectItemDetail(slotDetails.id)
 		if not details then details = { id = slotDetails.id } end
 				

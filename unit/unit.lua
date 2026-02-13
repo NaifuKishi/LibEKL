@@ -266,8 +266,6 @@ function LibEKL.Unit.GetUnitDetail (unitID, force)
 		unitID = unitData.idCache[unitID][1] -- check for case taht unitID is a unit type like player
 	end
 
-	--print ("LibEKL.Unit.GetUnitDetail", unitID)
-	
 	if force == true or unitData.unitCache[unitID] == nil then
 		local temp = inspectUnitDetail(unitID)
 		if temp ~= nil then
