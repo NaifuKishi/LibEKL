@@ -44,9 +44,7 @@ end
 -- @return Transformationsmatrix im Format für Canvas:SetShape (flaches Array mit 6 Werten).
 function LibEKL.Tools.Gfx.Rotate(frame, angle, scale)
 
-  --m:Translate(midx,midy)
-  --m:Rotate(angle)
-  --m:Translate(-midx,-midy)
+--  if frame:GetWidth() > 64 then print (frame:GetWidth()) end
 
   local midx = frame:GetWidth() / 2
   local midy = frame:GetHeight() / 2
@@ -72,6 +70,8 @@ function LibEKL.Tools.Gfx.Rotate(frame, angle, scale)
     {0, 0, 1}
   }
 
+  --print (scale)
+
   -- 3. Skalierung (falls gewünscht)
   local scaleMatrix = {
     {scale or 1, 0, 0},
@@ -84,7 +84,8 @@ function LibEKL.Tools.Gfx.Rotate(frame, angle, scale)
   --local matrix3x3 = LibEKL.Tools.Gfx.multiplyMatrices(translationToCenter, LibEKL.Tools.Gfx.multiplyMatrices(rotationMatrix, scaleMatrix))
   local matrix1 = LibEKL.Tools.Gfx.multiplyMatrices(translationToCenter, rotationMatrix)
   local matrix2 = LibEKL.Tools.Gfx.multiplyMatrices(matrix1, translationToCenter2)
+  local matrix3 = LibEKL.Tools.Gfx.multiplyMatrices(matrix2, scaleMatrix)
 
   -- 5. Konvertiere in das Format für Canvas:SetShape
-  return LibEKL.Tools.Gfx.MatrixToCanvasTransform(matrix2)
+  return LibEKL.Tools.Gfx.MatrixToCanvasTransform(matrix3)
 end
