@@ -139,7 +139,7 @@ function LibEKL.strings.formatNumber (number)
   local formatted = tostring(mathFloor(number))
   local k
   while true do
-      formatted, k = stringGSub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+      formatted, k = stringGSub(formatted, "^(-?%d+)(%d%d%d)", '%1.%2')
       if k == 0 then
           break
       end
