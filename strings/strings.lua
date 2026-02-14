@@ -13,6 +13,8 @@ local stringSub     = string.sub
 local stringLen     = string.len
 local stringGSub    = string.gsub
 local stringUpper   = string.upper
+
+local mathFloor     = math.floor
 	
 
 ---------- library public function block ---------
@@ -130,4 +132,19 @@ function LibEKL.strings.Capitalize(inputString)
     local result = table.concat(words, " ")
 
     return result
+end
+
+function LibEKL.strings.formatNumber (number)
+
+  local formatted = tostring(mathFloor(number))
+  local k
+  while true do
+      formatted, k = stringGSub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+      if k == 0 then
+          break
+      end
+  end
+
+  return formatted
+
 end
