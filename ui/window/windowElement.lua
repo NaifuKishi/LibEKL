@@ -107,7 +107,7 @@ local function _uiWindowElement(name, parent)
   moveIcon:SetAlpha(0)
   moveIcon:SetLayer(2)
 
-  moveIcon:EventAttach(Event.UI.Input.Mouse.Cursor.In, function (self) 
+  moveIcon:EventAttach(Event.UI.Input.Mouse.Cursor.In, function (self)     
     if dragable == true then moveIcon:SetAlpha(1) end 
   end, name .. ".moveIcon.Mouse.Cursor.In")
   moveIcon:EventAttach(Event.UI.Input.Mouse.Cursor.Out, function (self) if dragable == true then moveIcon:SetAlpha(0) end end, name .. ".moveIcon.Mouse.Cursor.Out")
