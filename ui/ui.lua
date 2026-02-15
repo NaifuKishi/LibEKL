@@ -46,6 +46,19 @@ data.uiBoundLeft, data.uiBoundTop, data.uiBoundRight, data.uiBoundBottom = UIPar
 
 local _fonts = {}
 
+--[[function LibEKL.UI.GetStrata(layer)
+	hud
+	notify
+	dialog
+	tutorial
+	menu
+	layout
+	topmost
+	loading
+	modal
+	tooltip
+end]]
+
 -- generic ui functions to handle screen size and bounds
 
 function LibEKL.UI.setupBoundCheck()

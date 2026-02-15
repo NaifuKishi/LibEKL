@@ -37,7 +37,7 @@ local function _uiDialog(name, parent)
 
 	--dialog:SetDragable(true)
 	dialog:SetCloseable(false)
-	dialog:SetStrata('main')
+	dialog:SetStrata('dialog')
 	dialog:SetTitle("")
 		
 	message:SetPoint("CENTER", dialog:GetContent(), "CENTER", 0, -30)
