@@ -142,12 +142,17 @@ function LibEKL.UI.reloadDialog (title)
 	uiElements.reloadDialog:SetWidth(400)
 	uiElements.reloadDialog:SetHeight(150)
 	uiElements.reloadDialog:SetCloseable(false)	
-	uiElements.reloadDialog:SetPoint("CENTERTOP", UIParent, "CENTERTOP", 0, 50)
 	uiElements.reloadDialog:SetTitleFont(addonInfo.id, "MontserratBold")
     uiElements.reloadDialog:SetTitleFontSize(16)
     uiElements.reloadDialog:SetTitleEffect ( {strength = 3})
     uiElements.reloadDialog:SetCloseable(true)
     uiElements.reloadDialog:SetTitleFontColor(1, .8, 0, 1)
+
+	local screenWidth = UIParent:GetWidth()
+    local dialogWidth = uiElements.reloadDialog:GetWidth()
+    local offsetX = (screenWidth - dialogWidth) / 2
+    -- Position the dialog at the top middle using TOPLEFT anchor
+    uiElements.reloadDialog:SetPoint("TOPLEFT", UIParent, "TOPLEFT", offsetX, 50)
 
     uiElements.reloadDialog:SetColor({
         type = "gradientLinear",

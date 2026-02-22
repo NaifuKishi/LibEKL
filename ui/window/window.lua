@@ -94,9 +94,9 @@ local function _uiWindow(name, parent)
     self.originalYDiff = mouse.y - self:GetTop()
     
     local left, top, right, bottom = window:GetBounds()
-    
-    window:ClearPoint("TOPLEFT")
-    window:SetPoint("TOPLEFT", UIParent, "TOPLEFT", left, top)
+
+    --window:ClearAll()
+    --window:SetPoint("TOPLEFT", UIParent, "TOPLEFT", left, top)
   end, name .. ".header.Left.Down.Bubble")
   
   header:EventAttach( Event.UI.Input.Mouse.Cursor.Move, function (self, _, x, y)  

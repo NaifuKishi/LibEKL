@@ -177,21 +177,23 @@ local function _uiWindowElement(name, parent)
     self.origHeight= window:GetHeight() 
   end, name .. ".resizeIcon.Mouse.Left.Down")
   
-  resizeIcon:EventAttach(Event.UI.Input.Mouse.Cursor.Move, function (self, _, x, y) 
-    
+  resizeIcon:EventAttach(Event.UI.Input.Mouse.Cursor.Move, function (self, _, x, y)
+
     if self.leftDown ~= true then return end
-    
+
     local mouse = Inspect.Mouse()
-    
+
     local newHeight = self.origHeight + (mouse.y - self.origY)
     if newHeight < 100 then newHeight = 100 end
-    
+
     local newWidth = self.origWidth + (mouse.x - self.origX)
     if newWidth < 100 then newWidth = 100 end
-    
+
     window:SetHeight(newHeight)
     window:SetWidth(newWidth)
-    
+
+    LibEKL.eventHandlers[name]["Resized"](newWidth, newHeight)
+
   end, name .. ".header.Cursor.Move")
   
   resizeIcon:EventAttach(Event.UI.Input.Mouse.Left.Up, function (self)

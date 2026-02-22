@@ -79,11 +79,26 @@ local function processInsecure()
 		if v ~= false then
 
 			if v.timer == nil or v.period == nil then
-				v.func()
+				local success, err = pcall(v.func)
+                if not success then
+                    -- Log the error if debugging is enabled
+					LibEKL.Tools.Error.Display(addonInfo.id, err, FATAL_ERROR_LEVEL)
+
+                    if nkDebug then
+                        nkDebug.logEntry(inspectAddonCurrent(), "processInsecure", "Error in insecure event function", err)
+                    end
+                end
 				_insecureEvents[k] = false
 			else
 				if currentTime - v.timer > v.period then
-					v.func()
+					local success, err = pcall(v.func)
+                    if not success then
+                        -- Log the error if debugging is enabled
+						LibEKL.Tools.Error.Display(addonInfo.id, err, FATAL_ERROR_LEVEL)
+                        if nkDebug then
+                            nkDebug.logEntry(inspectAddonCurrent(), "processInsecure", "Error in insecure event function", err)
+                        end
+                    end
 					_insecureEvents[k] = false
 				else
 					remainingEvents = true
