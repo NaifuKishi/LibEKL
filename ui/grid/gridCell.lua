@@ -75,7 +75,7 @@ local function _uiGridCell(name, parent)
 	function cell:SetText(text)
 	
 	  if backupText ~= text then 			
-		  label:SetText(text)
+		  label:SetText(text, true)
 		  cell:SetAlign(align)
 		  backupText = text
 	  end
