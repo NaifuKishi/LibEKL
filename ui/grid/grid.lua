@@ -156,7 +156,7 @@ local function _uiGrid(name, parent)
 	
 	function grid:SetLabelHighlightColor (r, g, b, a)
 	  if type(r) == 'table' then -- V2.1.0 compatability check
-	    labelHighlightColor = r	label:SetFont(addonId, fontName)
+	    labelHighlightColor = r
 	  else
 	    labelHighlightColor = { r = r, g = g, b = b, a = a}
 	  end
