@@ -48,6 +48,10 @@ local function _uiButton(name, parent)
 		label:SetEffectGlow(effect) 
 	end
 
+	function button:SetFontSize (newFontSize)
+		label:SetFontSize(newFontSize)
+	end
+
 	function button:SetFillColor(newFill)
 		fill = newFill
 		button:SetShape(path, fill, stroke)
