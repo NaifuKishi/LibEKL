@@ -57,6 +57,13 @@ function LibEKL.Tools.Error.Display(addon, message, level)
     local color, errorType = getErrorDetails(level)
 
     -- Display the error message in the console
-    Command.Console.Display("general", true, stringFormat('<font color="%s">%s in %s: %s</font>', color, errorType, addon, message), true)
+    local ok, result = pcall(Command.Console.Display, "general", true, stringFormat('<font color="%s">%s in %s: %s</font>', color, errorType, addon, message), true)
+
+    if not ok then
+        print (color)
+        print (errorType)
+        print (addon)
+        print (message)
+    end
 
 end
