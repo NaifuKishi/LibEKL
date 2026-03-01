@@ -80,7 +80,11 @@ local function _uiScrollpane(name, parent)
 	function scrollPane:SetAdjust(newAdjust)
 		adjust = newAdjust
 	end
-	
+
+	function scrollPane:GetScrollChild()
+		return content
+	end
+
 	function scrollPane:SetContent(widget)
 	
 		local height, width = widget:GetHeight(), widget:GetWidth()

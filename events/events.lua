@@ -42,9 +42,9 @@ local function processPeriodic()
 			if currentTime - eventDetails.timer > eventDetails.period then
 				eventDetails.timer = currentTime
 				if eventDetails.func() == true then _periodicEvents[k] = false end
-				
+
 				if eventDetails ~= false and eventDetails.tries ~= nil then
-					_eventDetails.currentTries = _eventDetails.currentTries + 1
+					eventDetails.currentTries = (eventDetails.currentTries or 0) + 1
 					if eventDetails.currentTries >= eventDetails.tries then
 						_periodicEvents[k] = false
 					end

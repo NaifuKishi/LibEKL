@@ -35,6 +35,7 @@ function LibEKL.Tools.Settings.UpdateSettings(defaultSettings, thisSettings)
     -- Iterate over the default settings
     for key, value in pairs(defaultSettings) do
         -- If the key is not present in the current settings, add it
+
         if thisSettings[key] == nil then
             thisSettings[key] = value
         -- If both the default and current settings are tables, recursively update the settings
